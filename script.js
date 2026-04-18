@@ -323,8 +323,6 @@ ambientBtn?.addEventListener('click', async () => {
 
 
 // ─── Video Carousel ──────────────────────────────────────
-let allVideos = [];   // cached list for Shuffle button
-
 async function loadVideos() {
   const track = document.getElementById('videoTrack');
   if (!track) return;
@@ -332,7 +330,6 @@ async function loadVideos() {
     const res    = await fetch('/api/videos');
     const videos = await res.json();
     if (!videos.length) return;
-    allVideos = videos;
     const makeCard = ({ id, title, url }) =>
       `<a href="${url}" target="_blank" class="video-card" title="${title}">
         <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="${title}" loading="lazy"/>
@@ -345,18 +342,6 @@ async function loadVideos() {
   } catch (e) { /* silent */ }
 }
 loadVideos();
-
-
-// ─── Shuffle Button (random video) ───────────────────────
-const shuffleBtn = document.getElementById('shuffleBtn');
-shuffleBtn?.addEventListener('click', () => {
-  if (!allVideos.length) return;
-  const pick = allVideos[Math.floor(Math.random() * allVideos.length)];
-  shuffleBtn.classList.add('spinning');
-  setTimeout(() => shuffleBtn.classList.remove('spinning'), 700);
-  // small delay so the spin is visible before the tab opens
-  setTimeout(() => window.open(pick.url, '_blank', 'noopener'), 280);
-});
 
 
 // ─── Camper ID (persistent visitor number) ───────────────
