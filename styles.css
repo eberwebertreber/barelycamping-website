@@ -91,7 +91,7 @@ a, button, .logo-stack, .ambient-btn {
 /* ─── Handwritten "listen to the fire →" hint ──────────── */
 .ambient-hint {
   position: fixed;
-  top: 1.4rem;
+  top: 2.3rem;
   right: 4.5rem;
   width: 160px;
   height: auto;
