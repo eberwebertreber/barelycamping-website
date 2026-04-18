@@ -216,6 +216,7 @@ ambientBtn?.addEventListener('click', async () => {
       await ambientAudio.play();
       ambientPlaying = true;
       ambientBtn.classList.add('playing');
+      document.body.classList.add('ambient-on');
     } catch (err) {
       console.warn('Ambient audio failed to play:', err);
       ambientBtn.style.borderColor = 'rgba(255,80,80,0.6)';
@@ -225,6 +226,7 @@ ambientBtn?.addEventListener('click', async () => {
     ambientAudio.pause();
     ambientPlaying = false;
     ambientBtn.classList.remove('playing');
+    document.body.classList.remove('ambient-on');
   }
 });
 
