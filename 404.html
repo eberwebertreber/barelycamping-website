@@ -10,22 +10,21 @@
   <link rel="apple-touch-icon" href="/submarine_white.png" />
   <link rel="stylesheet" href="/styles.css" />
   <style>
-    /* Deep-water background gradient — lighter "surface" up top,
-       pitch black at the bottom. Sells the descent. */
+    /* Depth gradient — soft warm haze up top, pitch black descent. */
     body {
       background:
         radial-gradient(ellipse 80% 60% at 50% -10%,
-          rgba(60, 120, 180, 0.18) 0%,
+          rgba(220, 210, 195, 0.10) 0%,
           transparent 55%),
         linear-gradient(180deg,
-          #0a1822 0%,
-          #050a12 45%,
-          #02040a 80%,
+          #141210 0%,
+          #0a0907 45%,
+          #040404 80%,
           #000 100%);
       background-attachment: fixed;
     }
 
-    /* God rays — volumetric light shafts descending from surface */
+    /* God rays — volumetric light shafts, warm ivory (moonlight / distant firelight) */
     .godrays {
       position: fixed;
       inset: 0;
@@ -41,9 +40,9 @@
       height: 130%;
       left: var(--x);
       background: linear-gradient(180deg,
-        rgba(170, 215, 255, 0.22) 0%,
-        rgba(140, 200, 255, 0.14) 25%,
-        rgba(120, 180, 240, 0.06) 55%,
+        rgba(250, 240, 220, 0.22) 0%,
+        rgba(235, 220, 195, 0.13) 25%,
+        rgba(210, 195, 170, 0.06) 55%,
         transparent 85%);
       transform: rotate(var(--rot, -6deg));
       transform-origin: top center;
@@ -58,18 +57,18 @@
       100% { opacity: 0.5;  transform: rotate(calc(var(--rot, -6deg) + 1.2deg)) translateX(14px); }
     }
 
-    /* Subtle caustics shimmer at the upper half — light dancing on particles */
+    /* Subtle shimmer at the upper half — dust in a light beam */
     .caustics {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 1;
-      opacity: 0.35;
+      opacity: 0.3;
       mix-blend-mode: screen;
       background:
-        radial-gradient(ellipse 40% 25% at 30% 15%, rgba(150, 210, 255, 0.2), transparent 60%),
-        radial-gradient(ellipse 30% 20% at 70% 25%, rgba(180, 220, 255, 0.15), transparent 60%),
-        radial-gradient(ellipse 35% 22% at 50% 8%,  rgba(140, 200, 240, 0.18), transparent 60%);
+        radial-gradient(ellipse 40% 25% at 30% 15%, rgba(245, 230, 205, 0.18), transparent 60%),
+        radial-gradient(ellipse 30% 20% at 70% 25%, rgba(230, 215, 190, 0.13), transparent 60%),
+        radial-gradient(ellipse 35% 22% at 50% 8%,  rgba(240, 225, 200, 0.16), transparent 60%);
       animation: caustics-shimmer 9s ease-in-out infinite alternate;
     }
     @keyframes caustics-shimmer {
