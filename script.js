@@ -1,14 +1,27 @@
 // ─── DOM Cursor (no tilt) ────────────────────────────────
 const cursorEl = document.getElementById('cursor');
 
+// Track latest mouse position always — used for submarine boot landing
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+let lastMoveAt = Date.now();
+let bootComplete = false;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  lastMoveAt = Date.now();
+});
+
 if (window.innerWidth > 768 && cursorEl) {
   document.addEventListener('mousemove', (e) => {
+    if (!bootComplete) return;                         // boot owns the cursor until ready
     cursorEl.style.transform = `translate(${e.clientX - 34}px, ${e.clientY - 16}px)`;
   });
 
   // Hide submarine over clickable elements (let native pointer show)
-  const hideSub = () => { cursorEl.style.opacity = '0'; };
-  const showSub = () => { cursorEl.style.opacity = '1'; };
+  const hideSub = () => { if (bootComplete) cursorEl.style.opacity = '0'; };
+  const showSub = () => { if (bootComplete) cursorEl.style.opacity = '1'; };
   document.addEventListener('mouseover', (e) => {
     if (e.target.closest('a, button, .logo-stack, .ambient-btn')) hideSub();
     else showSub();
@@ -310,6 +323,8 @@ ambientBtn?.addEventListener('click', async () => {
 
 
 // ─── Video Carousel ──────────────────────────────────────
+let allVideos = [];   // cached list for Shuffle button
+
 async function loadVideos() {
   const track = document.getElementById('videoTrack');
   if (!track) return;
@@ -317,6 +332,7 @@ async function loadVideos() {
     const res    = await fetch('/api/videos');
     const videos = await res.json();
     if (!videos.length) return;
+    allVideos = videos;
     const makeCard = ({ id, title, url }) =>
       `<a href="${url}" target="_blank" class="video-card" title="${title}">
         <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="${title}" loading="lazy"/>
@@ -329,6 +345,142 @@ async function loadVideos() {
   } catch (e) { /* silent */ }
 }
 loadVideos();
+
+
+// ─── Shuffle Button (random video) ───────────────────────
+const shuffleBtn = document.getElementById('shuffleBtn');
+shuffleBtn?.addEventListener('click', () => {
+  if (!allVideos.length) return;
+  const pick = allVideos[Math.floor(Math.random() * allVideos.length)];
+  shuffleBtn.classList.add('spinning');
+  setTimeout(() => shuffleBtn.classList.remove('spinning'), 700);
+  // small delay so the spin is visible before the tab opens
+  setTimeout(() => window.open(pick.url, '_blank', 'noopener'), 280);
+});
+
+
+// ─── Camper ID (persistent visitor number) ───────────────
+(async function assignCamperId() {
+  const el = document.getElementById('camperId');
+  if (!el) return;
+  let id = localStorage.getItem('bc_camperId');
+  if (!id) {
+    try {
+      const r = await fetch('https://abacus.jasoncameron.dev/hit/barelycamping.com/camper');
+      const data = await r.json();
+      id = data.value;
+    } catch {
+      id = Math.floor(Math.random() * 90000) + 10000;   // fallback
+    }
+    localStorage.setItem('bc_camperId', id);
+  }
+  el.textContent = `camper #${Number(id).toLocaleString()}`;
+})();
+
+
+// ─── Idle Sonar Ping (30s of stillness → ring + ping) ────
+let audioCtx = null;
+function playPing() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const now = audioCtx.currentTime;
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(900, now);
+    osc.frequency.exponentialRampToValueAtTime(380, now + 0.55);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.09, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(now); osc.stop(now + 0.65);
+  } catch { /* silent */ }
+}
+
+if (window.innerWidth > 768) {
+  let lastIdlePing = 0;
+  setInterval(() => {
+    const now = Date.now();
+    if (!bootComplete) return;
+    if (now - lastMoveAt > 30000 && now - lastIdlePing > 30000) {
+      // Emit ring at last cursor position
+      rings.push(new RadarRing(mouseX, mouseY, 0));
+      playPing();
+      lastIdlePing = now;
+    }
+  }, 1000);
+}
+
+
+// ─── Boot Sequence ───────────────────────────────────────
+(function boot() {
+  document.body.classList.add('booting');
+  const isDesktop = window.innerWidth > 768;
+
+  // Pre-position submarine off-screen (top center) so it can drop
+  if (cursorEl && isDesktop) {
+    cursorEl.style.transition = 'none';
+    cursorEl.style.transform =
+      `translate(${window.innerWidth / 2 - 34}px, -140px)`;
+  }
+
+  // Stage 1 — Letters (already animating via existing CSS)
+  // Stage 2 @ 1.5s — Background fades in
+  setTimeout(() => document.body.classList.add('boot-bg'), 1500);
+
+  // Stage 3 @ 2.0s — Ember canvas appears + big burst from bottom
+  setTimeout(() => {
+    document.body.classList.add('boot-particles');
+    spawnBottomSurge();
+  }, 2000);
+
+  // Stage 4 @ 3.0s — Buttons, ambient, scroll hint, camper ID stagger in
+  setTimeout(() => document.body.classList.add('boot-buttons'), 3000);
+
+  // Stage 5 @ 4.3s — Submarine drops from top and descends to cursor
+  setTimeout(() => {
+    if (!cursorEl || !isDesktop) return;
+    document.body.classList.add('boot-sub');
+    const targetX = mouseX - 34;
+    const targetY = mouseY - 16;
+    cursorEl.style.transition =
+      'transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease';
+    requestAnimationFrame(() => {
+      cursorEl.style.transform = `translate(${targetX}px, ${targetY}px)`;
+    });
+  }, 4300);
+
+  // Stage 6 @ 5.9s — Boot finished, cursor follows mouse normally
+  setTimeout(() => {
+    document.body.classList.remove('booting');
+    if (cursorEl) {
+      cursorEl.style.transition = 'opacity 0.18s ease';
+      // Sync to current mouse position so there's no stale jump
+      if (isDesktop) {
+        cursorEl.style.transform = `translate(${mouseX - 34}px, ${mouseY - 16}px)`;
+      }
+    }
+    bootComplete = true;
+  }, 5900);
+})();
+
+function spawnBottomSurge() {
+  if (embers.length > 1000) return;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  for (let i = 0; i < 220; i++) {
+    const b = new Ember();
+    b.x       = Math.random() * w;
+    b.y       = h + Math.random() * 30;
+    b.speedY  = Math.random() * 4 + 2.2;
+    b.speedX  = (Math.random() - 0.5) * 1.4;
+    b.alpha   = Math.random() * 0.5 + 0.55;
+    b.size    = Math.random() * 2.6 + 0.9;
+    b.decay   = Math.random() * 0.005 + 0.0025;
+    embers.push(b);
+  }
+}
 
 function initMobileCarousel(track) {
   const wrap = track.parentElement;

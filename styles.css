@@ -384,6 +384,63 @@ body.glitching {
   50%       { transform: translateX(-50%) translateY(6px); }
 }
 
+/* ─── Boot Sequence ─────────────────────────────────────── */
+/* Hide everything except the logo initially, then reveal in stages */
+body.booting .hero-video,
+body.booting .hero-overlay {
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+body.booting.boot-bg .hero-video,
+body.booting.boot-bg .hero-overlay {
+  opacity: 1;
+}
+
+body.booting #particles {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+body.booting.boot-particles #particles { opacity: 1; }
+
+/* Wipe existing button stagger during boot, apply new one at stage-3 */
+body.booting .link-btn {
+  animation: none;
+  opacity: 0;
+  transform: translateY(14px);
+}
+body.booting.boot-buttons .link-btn {
+  animation: btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+body.booting.boot-buttons .link-btn:nth-child(1) { animation-delay: 0.00s; }
+body.booting.boot-buttons .link-btn:nth-child(2) { animation-delay: 0.14s; }
+body.booting.boot-buttons .link-btn:nth-child(3) { animation-delay: 0.28s; }
+body.booting.boot-buttons .link-btn:nth-child(4) { animation-delay: 0.42s; }
+body.booting.boot-buttons .link-btn:nth-child(5) { animation-delay: 0.56s; }
+
+/* Hide the ambient controls, scroll hint, camper ID until late */
+body.booting .ambient-btn,
+body.booting .ambient-hint,
+body.booting .scroll-hint,
+body.booting .camper-id,
+body.booting .shuffle-wrap {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+body.booting.boot-buttons .ambient-btn,
+body.booting.boot-buttons .scroll-hint,
+body.booting.boot-buttons .camper-id,
+body.booting.boot-buttons .shuffle-wrap {
+  opacity: 1;
+}
+
+/* Submarine cursor: hidden until stage-4, JS positions and animates it */
+body.booting #cursor {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+body.booting.boot-sub #cursor { opacity: 1; }
+
+
 /* ─── Videos ────────────────────────────────────────────── */
 .videos-section {
   background: var(--bg);
@@ -412,6 +469,61 @@ body.glitching {
 @keyframes scroll-left {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
+}
+
+/* ─── Shuffle Button (below videos) ─────────────────────── */
+.shuffle-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem 0;
+}
+.shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 1.8rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  color: #f0ece6;
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background 0.2s, border-color 0.2s, transform 0.18s;
+}
+.shuffle-btn svg { opacity: 0.8; }
+.shuffle-btn:hover {
+  background: var(--glass-hover);
+  border-color: rgba(255, 255, 255, 0.32);
+  transform: translateY(-2px);
+}
+.shuffle-btn:active { transform: translateY(0); }
+.shuffle-btn.spinning svg {
+  animation: shuffle-spin 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes shuffle-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ─── Camper ID (bottom corner) ─────────────────────────── */
+.camper-id {
+  position: fixed;
+  bottom: 0.9rem;
+  left: 1rem;
+  font-family: ui-monospace, 'SF Mono', Consolas, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+  z-index: 5;
+  text-transform: lowercase;
+}
+@media (max-width: 768px) {
+  .camper-id { font-size: 0.62rem; bottom: 0.6rem; left: 0.7rem; }
 }
 
 .video-card {
