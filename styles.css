@@ -57,6 +57,8 @@ a, button, .logo-stack, .ambient-btn {
   top: 1.2rem;
   right: 1.5rem;
   z-index: 1000;
+  opacity: 0;
+  animation: btn-in 0.7s ease 1.1s both;
   width: 38px;
   height: 38px;
   border-radius: 50%;
@@ -255,6 +257,21 @@ body.glitching {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   transition: background 0.2s, border-color 0.2s, transform 0.18s;
+
+  /* Staggered fade-in — each button drifts up into place */
+  opacity: 0;
+  transform: translateY(14px);
+  animation: btn-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.link-btn:nth-child(1) { animation-delay: 1.25s; }
+.link-btn:nth-child(2) { animation-delay: 1.40s; }
+.link-btn:nth-child(3) { animation-delay: 1.55s; }
+.link-btn:nth-child(4) { animation-delay: 1.70s; }
+.link-btn:nth-child(5) { animation-delay: 1.85s; }
+
+@keyframes btn-in {
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .link-btn svg {
@@ -355,6 +372,9 @@ body.glitching {
   /* Keep the hero video on mobile — it's the whole vibe */
   .hero-video { display: block; transform: scale(1.1); }
 
+  /* Shrink hero so the video carousel peeks at the bottom */
+  .hero { height: auto; min-height: 82vh; padding: 3.5rem 0 2rem; }
+
   /* Strengthen the overlay so text stays legible over video */
   .hero-overlay {
     background: linear-gradient(
@@ -387,28 +407,12 @@ body.glitching {
 
   .scroll-hint { bottom: 1rem; font-size: 0.65rem; }
 
-  /* ── Video carousel: swipe instead of auto-scroll ── */
-  .videos-section { padding: 2rem 0 3rem; }
-  .videos-track-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-  }
-  .videos-track-wrap::-webkit-scrollbar { display: none; }
-  .videos-track {
-    animation: none;           /* stop the auto-scroll on mobile */
-    width: max-content;
-    padding: 0 1rem;
-  }
-  .video-card {
-    width: 260px;
-    scroll-snap-align: center;
-  }
+  /* ── Video carousel: auto-scroll on mobile too ── */
+  .videos-section { padding: 1.5rem 0 2.5rem; }
+  .videos-track { animation-duration: 42s; }
+  .video-card { width: 240px; }
   .video-card:hover {
-    transform: none;           /* no hover-grow on touch */
+    transform: none;
     border-color: rgba(255,255,255,0.07);
   }
 }

@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       .slice(1) // skip the channel title
       .map(m => m[1]);
 
-    const videos = ids.slice(0, 8).map((id, i) => ({
+    const videos = ids.slice(0, 10).map((id, i) => ({
       id,
       title: titles[i] || '',
       thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
