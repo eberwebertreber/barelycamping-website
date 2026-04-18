@@ -1,31 +1,19 @@
-// ─── DOM Cursor ──────────────────────────────────────────
+// ─── DOM Cursor (no tilt) ────────────────────────────────
 const cursorEl = document.getElementById('cursor');
-let cx = -200, cy = -200;
 
-if (window.innerWidth > 768) {
+if (window.innerWidth > 768 && cursorEl) {
   document.addEventListener('mousemove', (e) => {
-    cx = e.clientX;
-    cy = e.clientY;
-    cursorEl.style.transform = `translate(${cx - 34}px, ${cy - 16}px)`;
+    cursorEl.style.transform = `translate(${e.clientX - 34}px, ${e.clientY - 16}px)`;
   });
-
-  // Slight tilt on horizontal movement
-  let lastX = cx;
-  setInterval(() => {
-    const dx = cx - lastX;
-    const tilt = Math.max(-15, Math.min(15, dx * 0.8));
-    cursorEl.style.transform = `translate(${cx - 34}px, ${cy - 16}px) rotate(${tilt}deg)`;
-    lastX = cx;
-  }, 60);
 }
 
 
 // ─── Canvas Setup ────────────────────────────────────────
 const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
+const ctx    = canvas.getContext('2d');
 
 function resize() {
-  canvas.width = window.innerWidth;
+  canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
 }
 resize();
@@ -34,43 +22,38 @@ window.addEventListener('resize', resize);
 
 // ─── Ember Particles ─────────────────────────────────────
 const EMBER_COLORS = [
-  'rgba(255, 100, 20,',
-  'rgba(255, 60, 10,',
-  'rgba(255, 160, 40,',
-  'rgba(255, 200, 80,',
-  'rgba(200, 40, 10,',
+  'rgba(255,100,20,', 'rgba(255,60,10,',
+  'rgba(255,160,40,', 'rgba(255,200,80,',
+  'rgba(200,40,10,',
 ];
 
 class Ember {
   constructor() { this.reset(true); }
-
   reset(initial = false) {
-    this.x = window.innerWidth * 0.3 + Math.random() * window.innerWidth * 0.4;
-    this.y = initial ? Math.random() * window.innerHeight : window.innerHeight + 10;
-    this.size = Math.random() * 2.2 + 0.6;
-    this.speedY = Math.random() * 1.2 + 0.4;
-    this.speedX = (Math.random() - 0.5) * 0.7;
-    this.wobble = Math.random() * Math.PI * 2;
-    this.wobbleSpeed = (Math.random() - 0.5) * 0.04;
-    this.alpha = Math.random() * 0.6 + 0.3;
-    this.decay = Math.random() * 0.004 + 0.002;
-    this.color = EMBER_COLORS[Math.floor(Math.random() * EMBER_COLORS.length)];
+    this.x        = window.innerWidth * 0.3 + Math.random() * window.innerWidth * 0.4;
+    this.y        = initial ? Math.random() * window.innerHeight : window.innerHeight + 10;
+    this.size     = Math.random() * 2.2 + 0.6;
+    this.speedY   = Math.random() * 1.2 + 0.4;
+    this.speedX   = (Math.random() - 0.5) * 0.7;
+    this.wobble   = Math.random() * Math.PI * 2;
+    this.wobbleSpd= (Math.random() - 0.5) * 0.04;
+    this.alpha    = Math.random() * 0.6 + 0.3;
+    this.decay    = Math.random() * 0.004 + 0.002;
+    this.color    = EMBER_COLORS[Math.floor(Math.random() * EMBER_COLORS.length)];
   }
-
   update() {
-    this.y -= this.speedY;
-    this.wobble += this.wobbleSpeed;
-    this.x += Math.sin(this.wobble) * 0.5 + this.speedX;
-    this.alpha -= this.decay;
+    this.y      -= this.speedY;
+    this.wobble += this.wobbleSpd;
+    this.x      += Math.sin(this.wobble) * 0.5 + this.speedX;
+    this.alpha  -= this.decay;
     if (this.alpha <= 0 || this.y < -10) this.reset();
   }
-
   draw() {
     ctx.save();
     ctx.globalAlpha = this.alpha;
-    ctx.shadowBlur = 8;
+    ctx.shadowBlur  = 8;
     ctx.shadowColor = this.color + '0.8)';
-    ctx.fillStyle = this.color + this.alpha + ')';
+    ctx.fillStyle   = this.color + this.alpha + ')';
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fill();
@@ -81,55 +64,45 @@ class Ember {
 const embers = Array.from({ length: 55 }, () => new Ember());
 
 
-// ─── Radar Rings (slow, rare) ────────────────────────────
+// ─── Radar Rings (slow sonar pings) ─────────────────────
 const rings = [];
 let lastRingTime = 0;
-let mouseX = window.innerWidth / 2;
-let mouseY = window.innerHeight / 2;
 
 class RadarRing {
   constructor(x, y, delay = 0) {
-    this.x = x;
-    this.y = y;
-    this.radius = 0;
-    this.maxRadius = 110;
-    this.alpha = 0;
-    this.speed = 0.55;
-    this.startTime = Date.now() + delay;
-    this.started = false;
+    this.x = x; this.y = y;
+    this.radius   = 0;
+    this.maxRadius= 120;
+    this.alpha    = 0;
+    this.speed    = 0.5;
+    this.startAt  = Date.now() + delay;
+    this.alive    = true;
   }
-
   update() {
-    if (Date.now() < this.startTime) return;
-    this.started = true;
+    if (Date.now() < this.startAt) return;
     this.radius += this.speed;
-    this.alpha = 0.45 * (1 - this.radius / this.maxRadius);
+    this.alpha   = 0.4 * (1 - this.radius / this.maxRadius);
+    if (this.radius >= this.maxRadius) this.alive = false;
   }
-
   draw() {
-    if (!this.started) return;
+    if (Date.now() < this.startAt) return;
     ctx.save();
-    ctx.strokeStyle = `rgba(255, 255, 255, ${this.alpha})`;
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = `rgba(255,255,255,${this.alpha})`;
+    ctx.lineWidth   = 1;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.stroke();
     ctx.restore();
   }
-
-  isDead() { return this.started && this.radius >= this.maxRadius; }
 }
 
 if (window.innerWidth > 768) {
   document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
     const now = Date.now();
     if (now - lastRingTime > 2400) {
-      // 3 concentric rings staggered in time
-      rings.push(new RadarRing(mouseX, mouseY, 0));
-      rings.push(new RadarRing(mouseX, mouseY, 350));
-      rings.push(new RadarRing(mouseX, mouseY, 700));
+      rings.push(new RadarRing(e.clientX, e.clientY, 0));
+      rings.push(new RadarRing(e.clientX, e.clientY, 380));
+      rings.push(new RadarRing(e.clientX, e.clientY, 760));
       lastRingTime = now;
     }
   });
@@ -143,7 +116,7 @@ function animate() {
   for (let i = rings.length - 1; i >= 0; i--) {
     rings[i].update();
     rings[i].draw();
-    if (rings[i].isDead()) rings.splice(i, 1);
+    if (!rings[i].alive) rings.splice(i, 1);
   }
   requestAnimationFrame(animate);
 }
@@ -154,34 +127,100 @@ animate();
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo && window.innerWidth > 768) {
   document.addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 18;
+    const x = (e.clientX / window.innerWidth  - 0.5) * 18;
     const y = (e.clientY / window.innerHeight - 0.5) * 18;
     heroVideo.style.transform = `scale(1.06) translate(${x}px, ${y}px)`;
   });
 }
 
 
-// ─── Letter Drop Animation ───────────────────────────────
+// ─── Letter Drop (random directions) ────────────────────
+const DIRS = [
+  ['0px',   '-50px'],  // top
+  ['0px',    '50px'],  // bottom
+  ['-50px',  '0px'],   // left
+  ['50px',   '0px'],   // right
+  ['-40px', '-40px'],  // top-left
+  ['40px',  '-40px'],  // top-right
+  ['-40px',  '40px'],  // bottom-left
+  ['40px',   '40px'],  // bottom-right
+];
+
 function splitLetters(lineEl, offset = 0) {
   const text = lineEl.textContent.trim();
-  lineEl.innerHTML = text.split('').map((ch, i) =>
-    `<span class="letter" style="--i:${i + offset}">${ch}</span>`
-  ).join('');
+  lineEl.innerHTML = text.split('').map((ch, i) => {
+    const [fx, fy] = DIRS[Math.floor(Math.random() * DIRS.length)];
+    return `<span class="letter" data-char="${ch}" style="--i:${i + offset};--fx:${fx};--fy:${fy}">${ch}</span>`;
+  }).join('');
 }
 
 const line1 = document.getElementById('line1');
 const line2 = document.getElementById('line2');
 if (line1 && line2) {
+  const l1len = line1.textContent.trim().length;
   splitLetters(line1, 0);
-  splitLetters(line2, line1.textContent.length + 1);
+  splitLetters(line2, l1len + 1);
 }
+
+
+// ─── Logo Easter Egg (5 clicks = page glitch) ───────────
+const GLITCH_CHARS = '!@#$%Δ∑≠∞◆▲░▒▓';
+let logoClicks = 0;
+
+document.getElementById('logoStack')?.addEventListener('click', () => {
+  logoClicks++;
+  if (logoClicks >= 5) {
+    logoClicks = 0;
+
+    // Scramble letters
+    const letters = document.querySelectorAll('.letter');
+    let frame = 0;
+    const interval = setInterval(() => {
+      letters.forEach(l => {
+        l.textContent = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+      });
+      frame++;
+      if (frame >= 18) {
+        clearInterval(interval);
+        letters.forEach(l => { l.textContent = l.dataset.char; });
+      }
+    }, 50);
+
+    // Full page colour glitch
+    document.body.classList.add('glitching');
+    setTimeout(() => document.body.classList.remove('glitching'), 950);
+  }
+});
+
+
+// ─── Ambient Sound Toggle ────────────────────────────────
+const ambientBtn   = document.getElementById('ambientBtn');
+const ambientAudio = document.getElementById('ambientAudio');
+let ambientPlaying = false;
+
+ambientBtn?.addEventListener('click', async () => {
+  if (!ambientPlaying) {
+    try {
+      ambientAudio.volume = 0.35;
+      await ambientAudio.play();
+      ambientPlaying = true;
+      ambientBtn.classList.add('playing');
+    } catch (e) { /* no file yet */ }
+  } else {
+    ambientAudio.pause();
+    ambientAudio.currentTime = 0;
+    ambientPlaying = false;
+    ambientBtn.classList.remove('playing');
+  }
+});
 
 
 // ─── Video Carousel ──────────────────────────────────────
 async function loadVideos() {
   const track = document.getElementById('videoTrack');
+  if (!track) return;
   try {
-    const res = await fetch('/api/videos');
+    const res    = await fetch('/api/videos');
     const videos = await res.json();
     if (!videos.length) return;
     const makeCard = ({ id, title, url }) =>
@@ -190,36 +229,37 @@ async function loadVideos() {
       </a>`;
     const cards = videos.map(makeCard).join('');
     track.innerHTML = cards + cards;
-  } catch (e) { /* silent fail */ }
+  } catch (e) { /* silent */ }
 }
 loadVideos();
 
 
-// ─── Fade in content ─────────────────────────────────────
+// ─── Fade in hero content ─────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   const content = document.querySelector('.hero-content');
-  content.style.opacity = '0';
+  if (!content) return;
+  content.style.opacity   = '0';
   content.style.transform = 'translateY(16px)';
-  content.style.transition = 'opacity 1.1s ease, transform 1.1s ease';
+  content.style.transition= 'opacity 1.1s ease, transform 1.1s ease';
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    content.style.opacity = '1';
+    content.style.opacity   = '1';
     content.style.transform = 'translateY(0)';
   }));
 });
 
 
 // ─── Console Easter Egg ──────────────────────────────────
+// For a proper woodcock go to: text-image.com → upload your woodcock PNG → ASCII art
+// Then paste the result here to replace this placeholder
 console.log(
-  '%c\n' +
-  '     (  .  )   W O O D C O C K\n' +
-  '    (       )\n' +
-  '   (  o   o )\n' +
-  '  (    ~~~   )    found the console, huh\n' +
-  '   (  ___  )      nothing to see here\n' +
-  '    -------\n' +
-  '    |     |       just fire and vibes\n' +
-  '   /       \\\n' +
-  '  /  /   \\  \\\n',
-  'color: #c8a96e; font-family: monospace; font-size: 12px; line-height: 1.8'
+  '%c' +
+  '\n       ,-----,\n' +
+  '      /  o      \\\n' +
+  '  ===<   ~~~~~   >======================================>\n' +
+  '      \\         /\n' +
+  "       '---------'\n" +
+  '           | |\n' +
+  '          /   \\\n' +
+  '\n  caught you snooping.\n  hello@barelycamping.com\n',
+  'color:#c8a96e;font-family:monospace;font-size:13px;line-height:1.75'
 );
-console.log('%chello@barelycamping.com', 'color: #666; font-family: monospace; font-size: 11px');
