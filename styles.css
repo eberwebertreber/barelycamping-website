@@ -92,8 +92,8 @@ a, button, .logo-stack, .ambient-btn {
 .ambient-hint {
   position: fixed;
   top: 1.4rem;
-  right: 3rem;
-  width: 170px;
+  right: 4.5rem;
+  width: 160px;
   height: auto;
   z-index: 999;
   pointer-events: none;
