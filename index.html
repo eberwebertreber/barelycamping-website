@@ -8,6 +8,29 @@
 </head>
 <body>
 
+  <!-- Custom cursor (DOM element, much more reliable than CSS cursor URL) -->
+  <div id="cursor">
+    <svg viewBox="0 0 240 110" xmlns="http://www.w3.org/2000/svg">
+      <!-- Main hull -->
+      <ellipse cx="130" cy="72" rx="95" ry="30" fill="white"/>
+      <!-- Conning tower -->
+      <rect x="138" y="38" width="52" height="35" rx="8" fill="white"/>
+      <!-- Small bump before tower -->
+      <rect x="122" y="50" width="18" height="24" rx="5" fill="white"/>
+      <!-- Periscope stem -->
+      <rect x="177" y="16" width="9" height="26" rx="3" fill="white"/>
+      <!-- Periscope head -->
+      <rect x="177" y="16" width="22" height="9" rx="3" fill="white"/>
+      <!-- Propeller housing -->
+      <rect x="30" y="61" width="32" height="22" rx="5" fill="white"/>
+      <!-- Propeller disc -->
+      <ellipse cx="16" cy="72" rx="14" ry="19" fill="white"/>
+      <!-- Propeller cross -->
+      <rect x="12" y="54" width="7" height="36" rx="2" fill="#0a0a0a"/>
+      <rect x="3" y="68" width="26" height="7" rx="2" fill="#0a0a0a"/>
+    </svg>
+  </div>
+
   <canvas id="particles"></canvas>
 
   <!-- HERO -->
@@ -18,9 +41,11 @@
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
-      <div class="logo-stack">
-        <span class="logo-line">Barely</span>
-        <span class="logo-line">Camping</span>
+      <div class="logo-glass">
+        <div class="logo-stack">
+          <span class="logo-line" id="line1">Barely</span>
+          <span class="logo-line" id="line2">Camping</span>
+        </div>
       </div>
 
       <nav class="links">
@@ -49,7 +74,7 @@
     </div>
   </section>
 
-  <!-- VIDEOS - auto-populated from YouTube RSS, horizontal scroll -->
+  <!-- VIDEOS - auto-populated from YouTube RSS -->
   <section class="videos-section">
     <div class="videos-track-wrap">
       <div class="videos-track" id="videoTrack"></div>

@@ -22,7 +22,26 @@ body {
   color: var(--text);
   font-family: system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
-  cursor: url('submarine.svg') 56 17, auto;
+  cursor: none;
+}
+
+/* ─── Custom Cursor ─────────────────────────────────────── */
+#cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 68px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.3));
+}
+
+#cursor svg {
+  width: 100%;
+  height: 100%;
 }
 
 /* ─── Particles canvas ──────────────────────────────────── */
@@ -51,7 +70,6 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: 0;
-  transition: transform 0.1s ease-out;
   transform: scale(1.06);
   will-change: transform;
 }
@@ -62,11 +80,10 @@ body {
   z-index: 1;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.28) 0%,
-    rgba(0,0,0,0.18) 40%,
-    rgba(8,8,8,0.88) 100%
+    rgba(0,0,0,0.25) 0%,
+    rgba(0,0,0,0.15) 40%,
+    rgba(8,8,8,0.9) 100%
   );
-  mix-blend-mode: multiply;
 }
 
 .hero-content {
@@ -78,23 +95,49 @@ body {
   gap: 2.5rem;
 }
 
-/* ─── Logo ──────────────────────────────────────────────── */
+/* ─── Glass Logo ────────────────────────────────────────── */
+.logo-glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 1.4rem 3.2rem;
+  mix-blend-mode: overlay;
+}
+
 .logo-stack {
   display: flex;
   flex-direction: column;
   align-items: center;
-  line-height: 0.92;
+  line-height: 0.9;
   user-select: none;
-  mix-blend-mode: overlay;
-  isolation: isolate;
 }
 
 .logo-line {
   font-family: 'Bonfire', serif;
-  font-size: clamp(3rem, 7.5vw, 6.5rem);
-  color: rgba(255, 230, 190, 0.95);
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  color: rgba(255, 235, 200, 0.98);
   letter-spacing: 0.04em;
   display: block;
+  overflow: hidden;
+}
+
+/* ─── Letter drop animation ─────────────────────────────── */
+.letter {
+  display: inline-block;
+  animation: letter-drop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 0.06s + 0.2s);
+}
+
+@keyframes letter-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-36px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ─── Linktree Buttons ──────────────────────────────────── */
@@ -188,7 +231,7 @@ body {
   display: flex;
   gap: 1.25rem;
   width: max-content;
-  animation: scroll-left 28s linear infinite;
+  animation: scroll-left 55s linear infinite;
 }
 
 @keyframes scroll-left {
@@ -219,8 +262,11 @@ body {
 }
 
 /* ─── Mobile ────────────────────────────────────────────── */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  #cursor { display: none; }
   .hero-video { display: none; }
   .hero { background: radial-gradient(ellipse at 50% 80%, #2a1200 0%, #080808 70%); }
   .link-btn { font-size: 0.82rem; }
+  .logo-glass { mix-blend-mode: normal; }
 }
