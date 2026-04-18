@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 34" width="64" height="34">
+  <g fill="white">
+    <!-- Main body -->
+    <ellipse cx="38" cy="22" rx="24" ry="9"/>
+    <!-- Conning tower -->
+    <rect x="40" y="12" width="13" height="11" rx="3"/>
+    <!-- Small front tower detail -->
+    <rect x="36" y="15" width="5" height="8" rx="2"/>
+    <!-- Periscope stem -->
+    <rect x="50" y="5" width="3" height="9" rx="1"/>
+    <!-- Periscope head -->
+    <rect x="50" y="5" width="6" height="3" rx="1"/>
+    <!-- Propeller housing (left) -->
+    <rect x="10" y="17" width="10" height="10" rx="2"/>
+    <!-- Propeller disc -->
+    <ellipse cx="6" cy="22" rx="5" ry="7"/>
+  </g>
+</svg>
