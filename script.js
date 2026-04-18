@@ -245,9 +245,50 @@ async function loadVideos() {
       </a>`;
     const cards = videos.map(makeCard).join('');
     track.innerHTML = cards + cards;
+
+    // Mobile: replace CSS auto-scroll with a touchable JS version
+    if (window.innerWidth <= 768) initMobileCarousel(track);
   } catch (e) { /* silent */ }
 }
 loadVideos();
+
+function initMobileCarousel(track) {
+  const wrap = track.parentElement;
+  if (!wrap) return;
+
+  // Override desktop animation / transform so the container scrolls natively
+  wrap.classList.add('mobile-carousel');
+  track.style.animation = 'none';
+  track.style.transform = 'none';
+
+  let paused = false;
+  let resumeTimer = null;
+  const SPEED = 0.5; // px per frame (~30px/s)
+
+  function tick() {
+    if (!paused) {
+      const half = track.scrollWidth / 2;
+      if (wrap.scrollLeft >= half) {
+        wrap.scrollLeft -= half; // seamless loop — we have cards duplicated
+      } else {
+        wrap.scrollLeft += SPEED;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  wrap.addEventListener('touchstart', () => {
+    paused = true;
+    clearTimeout(resumeTimer);
+  }, { passive: true });
+
+  wrap.addEventListener('touchend', () => {
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => { paused = false; }, 2500);
+  }, { passive: true });
+
+  tick();
+}
 
 
 // ─── Fade in hero content ─────────────────────────────────
