@@ -24,7 +24,6 @@ class Ember {
   constructor() { this.reset(true); }
 
   reset(initial = false) {
-    // Spawn from lower center-ish of screen (where the fire is)
     this.x = window.innerWidth * 0.3 + Math.random() * window.innerWidth * 0.4;
     this.y = initial
       ? Math.random() * window.innerHeight
@@ -62,22 +61,84 @@ class Ember {
 
 for (let i = 0; i < EMBER_COUNT; i++) embers.push(new Ember());
 
-function animateEmbers() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  embers.forEach(e => { e.update(); e.draw(); });
-  requestAnimationFrame(animateEmbers);
+
+// ─── Radar Ring System (desktop only) ───────────────────
+const rings = [];
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+let lastRingTime = 0;
+
+class RadarRing {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.radius = 6;
+    this.maxRadius = 90;
+    this.alpha = 0.55;
+    this.speed = 1.8;
+  }
+
+  update() {
+    this.radius += this.speed;
+    this.alpha = 0.55 * (1 - this.radius / this.maxRadius);
+  }
+
+  draw() {
+    ctx.save();
+    ctx.strokeStyle = `rgba(255, 255, 255, ${this.alpha})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  isDead() { return this.radius >= this.maxRadius; }
 }
-animateEmbers();
+
+if (window.innerWidth > 768) {
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    const now = Date.now();
+    if (now - lastRingTime > 700) {
+      rings.push(new RadarRing(mouseX, mouseY));
+      // Burst of 2 rings slightly offset in time for depth
+      setTimeout(() => rings.push(new RadarRing(mouseX, mouseY)), 200);
+      lastRingTime = now;
+    }
+  });
+}
+
+
+// ─── Main Animation Loop ─────────────────────────────────
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  embers.forEach(e => { e.update(); e.draw(); });
+
+  for (let i = rings.length - 1; i >= 0; i--) {
+    rings[i].update();
+    rings[i].draw();
+    if (rings[i].isDead()) rings.splice(i, 1);
+  }
+
+  requestAnimationFrame(animate);
+}
+animate();
 
 
 // ─── Mouse Parallax on Hero Video ───────────────────────
 const heroVideo = document.getElementById('heroVideo');
 
-document.addEventListener('mousemove', (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 18;
-  const y = (e.clientY / window.innerHeight - 0.5) * 18;
-  heroVideo.style.transform = `scale(1.06) translate(${x}px, ${y}px)`;
-});
+if (heroVideo && window.innerWidth > 768) {
+  document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 18;
+    const y = (e.clientY / window.innerHeight - 0.5) * 18;
+    heroVideo.style.transform = `scale(1.06) translate(${x}px, ${y}px)`;
+  });
+}
 
 
 // ─── Auto-populate Video Carousel ───────────────────────
@@ -88,16 +149,15 @@ async function loadVideos() {
     const videos = await res.json();
     if (!videos.length) return;
 
-    // Build cards, duplicated for seamless loop
     const makeCard = ({ id, title, url }) =>
       `<a href="${url}" target="_blank" class="video-card" title="${title}">
         <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="${title}" loading="lazy" />
       </a>`;
 
     const cards = videos.map(makeCard).join('');
-    track.innerHTML = cards + cards; // duplicate for infinite loop
+    track.innerHTML = cards + cards;
   } catch (e) {
-    // silently fail — section just stays empty
+    // silently fail
   }
 }
 loadVideos();
@@ -109,10 +169,36 @@ window.addEventListener('DOMContentLoaded', () => {
   content.style.opacity = '0';
   content.style.transform = 'translateY(16px)';
   content.style.transition = 'opacity 1.1s ease, transform 1.1s ease';
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      content.style.opacity = '1';
-      content.style.transform = 'translateY(0)';
-    });
-  });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    content.style.opacity = '1';
+    content.style.transform = 'translateY(0)';
+  }));
 });
+
+
+// ─── Console Easter Egg ──────────────────────────────────
+(function () {
+  const b = 'color:#c8a96e;font-family:monospace;font-size:13px;line-height:1.6';
+  const d = 'color:#666;font-family:monospace;font-size:11px;line-height:1.5';
+  console.log(
+    `%c
+       ___     __
+      / o \\___/ o\\     W O O D C O C K
+     (  '-------' )
+      \\  snooping \\
+       \\  around?  \\___
+        \\               \\
+         '._____________.'
+
+    ⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀
+    ⠀⠀⠀⣴⣿⣿⣿⣿⣷⡄⠀⠀⠀⠀⠀
+    ⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀
+    ⠀⢸⣿⡟⠉⠉⠉⠉⢻⣿⣿⠀⠀⠀
+    ⠀⠘⣿⣷⣤⣤⣤⣤⣾⣿⠏⠀⠀⠀
+    ⠀⠀⠈⠛⠿⣿⣿⠿⠛⠁⠀⠀⠀⠀
+
+    nothing here but fire and vibes.`,
+    b
+  );
+  console.log('%c    hello@barelycamping.com', d);
+})();

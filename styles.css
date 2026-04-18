@@ -85,15 +85,16 @@ body {
   align-items: center;
   line-height: 0.92;
   user-select: none;
+  mix-blend-mode: overlay;
+  isolation: isolate;
 }
 
 .logo-line {
   font-family: 'Bonfire', serif;
   font-size: clamp(3rem, 7.5vw, 6.5rem);
-  color: #fff;
+  color: rgba(255, 230, 190, 0.95);
   letter-spacing: 0.04em;
   display: block;
-  text-shadow: 0 2px 24px rgba(0,0,0,0.6);
 }
 
 /* ─── Linktree Buttons ──────────────────────────────────── */
