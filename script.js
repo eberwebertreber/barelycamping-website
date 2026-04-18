@@ -174,6 +174,49 @@ if (line1 && line2) {
 }
 
 
+// ─── Konami Code Easter Egg (↑↑↓↓←→←→BA = ember burst) ──
+const KONAMI = [
+  'ArrowUp','ArrowUp','ArrowDown','ArrowDown',
+  'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight',
+  'b','a'
+];
+let konamiPos = 0;
+
+document.addEventListener('keydown', (e) => {
+  const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+  if (key === KONAMI[konamiPos]) {
+    konamiPos++;
+    if (konamiPos === KONAMI.length) {
+      spawnEmberBurst();
+      konamiPos = 0;
+    }
+  } else {
+    konamiPos = 0;
+  }
+});
+
+function spawnEmberBurst() {
+  if (embers.length > 500) return;     // safety cap
+  const cx = window.innerWidth  / 2;
+  const cy = window.innerHeight / 2;
+  for (let i = 0; i < 180; i++) {
+    const b = new Ember();
+    b.x       = cx + (Math.random() - 0.5) * 320;
+    b.y       = cy + (Math.random() - 0.5) * 180;
+    b.speedY  = Math.random() * 3.5 + 1.2;
+    b.speedX  = (Math.random() - 0.5) * 4;
+    b.alpha   = Math.random() * 0.4 + 0.65;
+    b.decay   = Math.random() * 0.006 + 0.003;
+    b.size    = Math.random() * 2.8 + 1;
+    embers.push(b);
+  }
+  // Brief whoosh-style flash via the body glitch filter
+  document.body.style.transition = 'filter 0.5s ease';
+  document.body.style.filter = 'brightness(1.15) saturate(1.3)';
+  setTimeout(() => { document.body.style.filter = ''; }, 500);
+}
+
+
 // ─── Logo Easter Egg (5 clicks = page glitch) ───────────
 const GLITCH_CHARS = '!@#$%Δ∑≠∞◆▲░▒▓';
 let logoClicks = 0;
