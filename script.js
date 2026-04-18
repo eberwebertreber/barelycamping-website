@@ -196,24 +196,24 @@ document.addEventListener('keydown', (e) => {
 });
 
 function spawnEmberBurst() {
-  if (embers.length > 500) return;     // safety cap
+  if (embers.length > 1000) return;    // safety cap (raised for bigger burst)
   const cx = window.innerWidth  / 2;
   const cy = window.innerHeight / 2;
-  for (let i = 0; i < 180; i++) {
+  for (let i = 0; i < 360; i++) {
     const b = new Ember();
-    b.x       = cx + (Math.random() - 0.5) * 320;
-    b.y       = cy + (Math.random() - 0.5) * 180;
-    b.speedY  = Math.random() * 3.5 + 1.2;
-    b.speedX  = (Math.random() - 0.5) * 4;
+    b.x       = cx + (Math.random() - 0.5) * 640;
+    b.y       = cy + (Math.random() - 0.5) * 360;
+    b.speedY  = Math.random() * 5 + 1.8;
+    b.speedX  = (Math.random() - 0.5) * 6;
     b.alpha   = Math.random() * 0.4 + 0.65;
     b.decay   = Math.random() * 0.006 + 0.003;
-    b.size    = Math.random() * 2.8 + 1;
+    b.size    = Math.random() * 3.4 + 1.2;
     embers.push(b);
   }
   // Brief whoosh-style flash via the body glitch filter
-  document.body.style.transition = 'filter 0.5s ease';
-  document.body.style.filter = 'brightness(1.15) saturate(1.3)';
-  setTimeout(() => { document.body.style.filter = ''; }, 500);
+  document.body.style.transition = 'filter 0.6s ease';
+  document.body.style.filter = 'brightness(1.22) saturate(1.45)';
+  setTimeout(() => { document.body.style.filter = ''; }, 600);
 }
 
 
