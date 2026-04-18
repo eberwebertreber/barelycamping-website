@@ -72,7 +72,10 @@ a, button, .logo-stack, .ambient-btn {
   transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
-.ambient-btn svg { width: 16px; height: 16px; }
+.ambient-btn svg { width: 17px; height: 17px; }
+.ambient-btn .icon-on  { display: none; }
+.ambient-btn.playing .icon-muted { display: none; }
+.ambient-btn.playing .icon-on    { display: block; }
 
 .ambient-btn:hover {
   color: rgba(255,255,255,0.9);
@@ -88,8 +91,8 @@ a, button, .logo-stack, .ambient-btn {
 /* ─── Handwritten "listen to the fire →" hint ──────────── */
 .ambient-hint {
   position: fixed;
-  top: 3.2rem;
-  right: 3.8rem;
+  top: 1.4rem;
+  right: 3rem;
   width: 170px;
   height: auto;
   z-index: 999;
@@ -103,13 +106,6 @@ a, button, .logo-stack, .ambient-btn {
 
 @keyframes hint-in {
   to { opacity: 0.85; transform: translate(0, 0); }
-}
-
-/* Fade the hint out once audio is on — the nudge isn't needed anymore */
-body.ambient-on .ambient-hint {
-  opacity: 0 !important;
-  transform: translate(0, -6px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 /* ─── Particles canvas ──────────────────────────────────── */
