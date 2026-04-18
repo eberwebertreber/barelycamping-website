@@ -249,17 +249,31 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 // ─── Console Easter Egg ──────────────────────────────────
-// For a proper woodcock go to: text-image.com → upload your woodcock PNG → ASCII art
-// Then paste the result here to replace this placeholder
 console.log(
-  '%c' +
-  '\n       ,-----,\n' +
-  '      /  o      \\\n' +
-  '  ===<   ~~~~~   >======================================>\n' +
-  '      \\         /\n' +
-  "       '---------'\n" +
-  '           | |\n' +
-  '          /   \\\n' +
-  '\n  caught you snooping.\n  hello@barelycamping.com\n',
-  'color:#c8a96e;font-family:monospace;font-size:13px;line-height:1.75'
+  '%c' + `
+                                                               :~7777~:
+                                                            ~YB@@@@@@@&BY.
+                                                  .:^~!7?JPB@@@@@@@J~5@@@J
+                                            :~7JPG#&@@@@@@@@@@@@@@@G5B@@@&^
+                                        :75B&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&?
+                                    :!YB&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&GG&@#?.
+                                .~JG&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&^  .!Y##5~
+                           ..^?P#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@J       ^JPP?^
+                      ~##BB#&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@5           :?PP?^
+                       J&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&?               ^JGP~
+                        :JB&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@G^                   ^!.
+                           :#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&?
+                            ^YPGGB&@@@@@@@@@@@@@@@@@@@@@@@@@@@&5:
+                                  .~?P&@@@@@@@@@@@@@@@@@@@@&&P7..
+                                      :75B&@@@@@@&@&&#BP5JYY?!!~^
+                                          :^~~!G#?^..      .^.
+                                                ^?YY7^
+                                                 :!7#@B?:.
+                                                    !&YBY77!^
+                                                     ^?~~!??!.
+
+  caught you snooping.
+  hello@barelycamping.com
+`,
+  'color:#c8a96e;font-family:monospace;font-size:11px;line-height:1.4'
 );
