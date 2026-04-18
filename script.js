@@ -217,6 +217,41 @@ function spawnEmberBurst() {
 }
 
 
+// ─── Flashlight Mode (press F = torch cone follows cursor) ─
+const flashlightEl = document.getElementById('flashlight');
+
+document.addEventListener('keydown', (e) => {
+  // ignore if typing in an input
+  const t = document.activeElement?.tagName;
+  if (t === 'INPUT' || t === 'TEXTAREA') return;
+  if (e.key === 'f' || e.key === 'F') {
+    document.body.classList.toggle('flashlight-on');
+  }
+});
+
+// Cone tracks the cursor (desktop) — reuses mousemove
+document.addEventListener('mousemove', (e) => {
+  if (!flashlightEl) return;
+  flashlightEl.style.setProperty('--fx', e.clientX + 'px');
+  flashlightEl.style.setProperty('--fy', e.clientY + 'px');
+});
+// Mobile: tap-drag moves the cone
+document.addEventListener('touchmove', (e) => {
+  if (!flashlightEl || !e.touches[0]) return;
+  flashlightEl.style.setProperty('--fx', e.touches[0].clientX + 'px');
+  flashlightEl.style.setProperty('--fy', e.touches[0].clientY + 'px');
+}, { passive: true });
+
+
+// ─── Heartbeat Pulse (night-only, 8pm–6am local) ─────────
+(function heartbeat() {
+  const h = new Date().getHours();
+  if (h >= 20 || h < 6) {
+    document.getElementById('heartbeat')?.classList.add('active');
+  }
+})();
+
+
 // ─── Logo Easter Egg (5 clicks = page glitch) ───────────
 const GLITCH_CHARS = '!@#$%Δ∑≠∞◆▲░▒▓';
 let logoClicks = 0;

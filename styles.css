@@ -43,6 +43,65 @@ a, button, .logo-stack, .ambient-btn {
   cursor: pointer !important;
 }
 
+/* ─── Heartbeat Pulse (night-only, silent-running vibe) ──── */
+#heartbeat {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 50%,
+    rgba(220, 30, 20, 0.08) 0%,
+    rgba(220, 30, 20, 0.03) 35%,
+    transparent 70%
+  );
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+#heartbeat.active {
+  animation: heartbeat 4.2s ease-in-out infinite;
+}
+@keyframes heartbeat {
+  0%, 100% { opacity: 0; }
+  18% { opacity: 0.85; }
+  30% { opacity: 0.35; }
+  42% { opacity: 0.75; }
+  55% { opacity: 0.1; }
+}
+
+/* ─── Flashlight Mode (press F to toggle) ────────────────── */
+#flashlight {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(
+    circle 200px at var(--fx, 50%) var(--fy, 50%),
+    transparent 0%,
+    rgba(0, 0, 0, 0.15) 25%,
+    rgba(0, 0, 0, 0.75) 55%,
+    rgba(0, 0, 0, 0.98) 80%,
+    #000 100%
+  );
+}
+body.flashlight-on #flashlight {
+  opacity: 1;
+}
+/* Soft warm tint at the cone's edge */
+body.flashlight-on #flashlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 220px at var(--fx, 50%) var(--fy, 50%),
+    rgba(255, 220, 160, 0.12) 0%,
+    transparent 60%
+  );
+  mix-blend-mode: screen;
+}
+
 /* ─── Custom Cursor ─────────────────────────────────────── */
 #cursor {
   position: fixed;
