@@ -370,7 +370,7 @@ body.glitching {
   .ambient-btn, .ambient-hint { display: none; }
 
   /* Keep the hero video on mobile — it's the whole vibe */
-  .hero-video { display: block; transform: scale(1.1); }
+  .hero-video { display: block; transform: scale(1.1) translateX(-6%); }
 
   /* Shrink hero so the video carousel peeks at the bottom */
   .hero { height: auto; min-height: 82vh; padding: 3.5rem 0 2rem; }
