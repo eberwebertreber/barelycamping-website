@@ -5,6 +5,17 @@ if (window.innerWidth > 768 && cursorEl) {
   document.addEventListener('mousemove', (e) => {
     cursorEl.style.transform = `translate(${e.clientX - 34}px, ${e.clientY - 16}px)`;
   });
+
+  // Hide submarine over clickable elements (let native pointer show)
+  const hideSub = () => { cursorEl.style.opacity = '0'; };
+  const showSub = () => { cursorEl.style.opacity = '1'; };
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest('a, button, .logo-stack, .ambient-btn')) hideSub();
+    else showSub();
+  });
+
+  // Cursor transition so it fades instead of snapping
+  cursorEl.style.transition = 'opacity 0.18s ease';
 }
 
 
@@ -205,10 +216,13 @@ ambientBtn?.addEventListener('click', async () => {
       await ambientAudio.play();
       ambientPlaying = true;
       ambientBtn.classList.add('playing');
-    } catch (e) { /* no file yet */ }
+    } catch (err) {
+      console.warn('Ambient audio failed to play:', err);
+      ambientBtn.style.borderColor = 'rgba(255,80,80,0.6)';
+      setTimeout(() => { ambientBtn.style.borderColor = ''; }, 600);
+    }
   } else {
     ambientAudio.pause();
-    ambientAudio.currentTime = 0;
     ambientPlaying = false;
     ambientBtn.classList.remove('playing');
   }
