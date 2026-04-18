@@ -10,6 +10,73 @@
   <link rel="apple-touch-icon" href="/submarine_white.png" />
   <link rel="stylesheet" href="/styles.css" />
   <style>
+    /* Deep-water background gradient — lighter "surface" up top,
+       pitch black at the bottom. Sells the descent. */
+    body {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%,
+          rgba(60, 120, 180, 0.18) 0%,
+          transparent 55%),
+        linear-gradient(180deg,
+          #0a1822 0%,
+          #050a12 45%,
+          #02040a 80%,
+          #000 100%);
+      background-attachment: fixed;
+    }
+
+    /* God rays — volumetric light shafts descending from surface */
+    .godrays {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+      mix-blend-mode: screen;
+    }
+    .ray {
+      position: absolute;
+      top: -12%;
+      width: var(--w, 160px);
+      height: 130%;
+      left: var(--x);
+      background: linear-gradient(180deg,
+        rgba(170, 215, 255, 0.22) 0%,
+        rgba(140, 200, 255, 0.14) 25%,
+        rgba(120, 180, 240, 0.06) 55%,
+        transparent 85%);
+      transform: rotate(var(--rot, -6deg));
+      transform-origin: top center;
+      filter: blur(28px);
+      opacity: 0.75;
+      animation: ray-drift var(--dur, 14s) ease-in-out infinite alternate;
+      animation-delay: var(--d, 0s);
+    }
+    @keyframes ray-drift {
+      0%   { opacity: 0.45; transform: rotate(calc(var(--rot, -6deg) - 1.2deg)) translateX(-14px); }
+      50%  { opacity: 0.9;  transform: rotate(var(--rot, -6deg)) translateX(0); }
+      100% { opacity: 0.5;  transform: rotate(calc(var(--rot, -6deg) + 1.2deg)) translateX(14px); }
+    }
+
+    /* Subtle caustics shimmer at the upper half — light dancing on particles */
+    .caustics {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.35;
+      mix-blend-mode: screen;
+      background:
+        radial-gradient(ellipse 40% 25% at 30% 15%, rgba(150, 210, 255, 0.2), transparent 60%),
+        radial-gradient(ellipse 30% 20% at 70% 25%, rgba(180, 220, 255, 0.15), transparent 60%),
+        radial-gradient(ellipse 35% 22% at 50% 8%,  rgba(140, 200, 240, 0.18), transparent 60%);
+      animation: caustics-shimmer 9s ease-in-out infinite alternate;
+    }
+    @keyframes caustics-shimmer {
+      0%   { opacity: 0.25; transform: translate(-8px, -4px) scale(1.02); }
+      100% { opacity: 0.45; transform: translate(8px, 4px)  scale(0.98); }
+    }
+
     .lost {
       min-height: 100vh;
       display: flex;
@@ -105,6 +172,16 @@
 
   <canvas id="particles"></canvas>
 
+  <!-- Underwater ambience -->
+  <div class="caustics" aria-hidden="true"></div>
+  <div class="godrays" aria-hidden="true">
+    <span class="ray" style="--x: 8%;  --w: 220px; --rot: -7deg; --dur: 13s; --d: 0s;"></span>
+    <span class="ray" style="--x: 28%; --w: 140px; --rot: -5deg; --dur: 17s; --d: -4s;"></span>
+    <span class="ray" style="--x: 46%; --w: 280px; --rot: -8deg; --dur: 19s; --d: -9s;"></span>
+    <span class="ray" style="--x: 66%; --w: 160px; --rot: -4deg; --dur: 15s; --d: -2s;"></span>
+    <span class="ray" style="--x: 84%; --w: 240px; --rot: -9deg; --dur: 21s; --d: -12s;"></span>
+  </div>
+
   <!-- Heartbeat + flashlight overlays still work here -->
   <div id="heartbeat" aria-hidden="true"></div>
   <div id="flashlight" aria-hidden="true"></div>
@@ -113,9 +190,6 @@
     <img src="/submarine_white.png" class="lost-sub" alt="" draggable="false" />
     <h1 class="lost-code">404</h1>
     <p class="lost-title">Signal Lost</p>
-    <p class="lost-msg">
-      You've drifted off the map. No campfire out here, no sub contact. Just black water.
-    </p>
     <a href="/" class="lost-back">Return to Camp</a>
     <p class="lost-coords">LAT —— · LON —— · DEPTH UNKNOWN</p>
   </main>
