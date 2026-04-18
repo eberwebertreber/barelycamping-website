@@ -72,16 +72,16 @@ class RadarRing {
   constructor(x, y, delay = 0) {
     this.x = x; this.y = y;
     this.radius   = 0;
-    this.maxRadius= 120;
+    this.maxRadius= 320;
     this.alpha    = 0;
-    this.speed    = 0.5;
+    this.speed    = 1.15;
     this.startAt  = Date.now() + delay;
     this.alive    = true;
   }
   update() {
     if (Date.now() < this.startAt) return;
     this.radius += this.speed;
-    this.alpha   = 0.4 * (1 - this.radius / this.maxRadius);
+    this.alpha   = 0.35 * (1 - this.radius / this.maxRadius);
     if (this.radius >= this.maxRadius) this.alive = false;
   }
   draw() {
@@ -251,29 +251,28 @@ window.addEventListener('DOMContentLoaded', () => {
 // ─── Console Easter Egg ──────────────────────────────────
 console.log(
   '%c' + `
-                                                               :~7777~:
-                                                            ~YB@@@@@@@&BY.
-                                                  .:^~!7?JPB@@@@@@@J~5@@@J
-                                            :~7JPG#&@@@@@@@@@@@@@@@G5B@@@&^
-                                        :75B&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&?
-                                    :!YB&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&GG&@#?.
-                                .~JG&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&^  .!Y##5~
-                           ..^?P#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@J       ^JPP?^
-                      ~##BB#&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@5           :?PP?^
-                       J&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&?               ^JGP~
-                        :JB&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@G^                   ^!.
-                           :#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&?
-                            ^YPGGB&@@@@@@@@@@@@@@@@@@@@@@@@@@@&5:
-                                  .~?P&@@@@@@@@@@@@@@@@@@@@&&P7..
-                                      :75B&@@@@@@&@&&#BP5JYY?!!~^
-                                          :^~~!G#?^..      .^.
-                                                ^?YY7^
-                                                 :!7#@B?:.
-                                                    !&YBY77!^
-                                                     ^?~~!??!.
+                         :~7777~:
+                      ~YB@@@@@@@&BY.
+             .:^~!7?JPB@@@@@@@J~5@@@J
+        :~7JPG#&@@@@@@@@@@@@@@@G5B@@@&^
+     :75B&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&?
+   :!YB&@@@@@@@@@@@@@@@@@@@@@@@@@@&GG&@#?.
+  .~JG&@@@@@@@@@@@@@@@@@@@@@@@@@@@&^  .!Y##5~
+ ..^?P#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@J       ^JPP?^
+ ~##BB#&@@@@@@@@@@@@@@@@@@@@@@@@@@@@5           :?PP?^
+  J&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&?               ^JGP~
+   :JB&@@@@@@@@@@@@@@@@@@@@@@@@@@G^                   ^!.
+      :#@@@@@@@@@@@@@@@@@@@@@@@@&?
+       ^YPGGB&@@@@@@@@@@@@@@@@@&5:
+             .~?P&@@@@@@@@@@@&&P7..
+                 :75B&@@@&@&&#BP5JYY?!!~^
+                     :^~~!G#?^..      .^.
+                           ^?YY7^
+                            :!7#@B?:.
+                               !&YBY77!^
+                                ^?~~!??!.
 
-  caught you snooping.
-  hello@barelycamping.com
+  MEEEEP MEEEEEP MEEEEEEP MEEEEEEP hi howd u get here
 `,
   'color:#c8a96e;font-family:monospace;font-size:11px;line-height:1.4'
 );
