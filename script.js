@@ -363,41 +363,6 @@ loadVideos();
 })();
 
 
-// ─── Idle Sonar Ping (30s of stillness → ring + ping) ────
-let audioCtx = null;
-function playPing() {
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    const now = audioCtx.currentTime;
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(900, now);
-    osc.frequency.exponentialRampToValueAtTime(380, now + 0.55);
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.09, now + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(now); osc.stop(now + 0.65);
-  } catch { /* silent */ }
-}
-
-if (window.innerWidth > 768) {
-  let lastIdlePing = 0;
-  setInterval(() => {
-    const now = Date.now();
-    if (!bootComplete) return;
-    if (now - lastMoveAt > 30000 && now - lastIdlePing > 30000) {
-      // Emit ring at last cursor position
-      rings.push(new RadarRing(mouseX, mouseY, 0));
-      playPing();
-      lastIdlePing = now;
-    }
-  }, 1000);
-}
-
-
 // ─── Boot Sequence ───────────────────────────────────────
 (function boot() {
   document.body.classList.add('booting');
