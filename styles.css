@@ -43,32 +43,6 @@ a, button, .logo-stack, .ambient-btn {
   cursor: pointer !important;
 }
 
-/* ─── Heartbeat Pulse (night-only, silent-running vibe) ──── */
-#heartbeat {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  background: radial-gradient(
-    ellipse 80% 60% at 50% 50%,
-    rgba(220, 30, 20, 0.08) 0%,
-    rgba(220, 30, 20, 0.03) 35%,
-    transparent 70%
-  );
-  opacity: 0;
-  mix-blend-mode: screen;
-}
-#heartbeat.active {
-  animation: heartbeat 4.2s ease-in-out infinite;
-}
-@keyframes heartbeat {
-  0%, 100% { opacity: 0; }
-  18% { opacity: 0.85; }
-  30% { opacity: 0.35; }
-  42% { opacity: 0.75; }
-  55% { opacity: 0.1; }
-}
-
 /* ─── Flashlight Mode (press F to toggle) ────────────────── */
 #flashlight {
   position: fixed;

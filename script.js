@@ -98,7 +98,7 @@ class RadarRing {
     this.radius   = 0;
     this.maxRadius= 320;
     this.alpha    = 0;
-    this.speed    = 1.15;
+    this.speed    = 0.55;
     this.startAt  = Date.now() + delay;
     this.alive    = true;
   }
@@ -254,15 +254,6 @@ document.addEventListener('touchmove', (e) => {
   flashlightEl.style.setProperty('--fx', e.touches[0].clientX + 'px');
   flashlightEl.style.setProperty('--fy', e.touches[0].clientY + 'px');
 }, { passive: true });
-
-
-// ─── Heartbeat Pulse (night-only, 8pm–6am local) ─────────
-(function heartbeat() {
-  const h = new Date().getHours();
-  if (h >= 20 || h < 6) {
-    document.getElementById('heartbeat')?.classList.add('active');
-  }
-})();
 
 
 // ─── Logo Easter Egg (5 clicks = page glitch) ───────────
