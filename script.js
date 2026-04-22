@@ -123,12 +123,10 @@ class RadarRing {
 if (window.innerWidth > 768) {
   document.addEventListener('mousemove', (e) => {
     const now = Date.now();
-    if (now - lastRingTime > 3800) {
+    if (now - lastRingTime > 2400) {
       rings.push(new RadarRing(e.clientX, e.clientY, 0));
       rings.push(new RadarRing(e.clientX, e.clientY, 380));
       rings.push(new RadarRing(e.clientX, e.clientY, 760));
-      rings.push(new RadarRing(e.clientX, e.clientY, 1140));
-      rings.push(new RadarRing(e.clientX, e.clientY, 1520));
       lastRingTime = now;
     }
   });
