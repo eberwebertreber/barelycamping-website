@@ -477,7 +477,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 // ─── Eirka Easter Egg (type "eirka" anywhere on the page) ─
-const EIRKA_SEQ = ['e','i','r','k','a'];
+const EIRKA_SEQ = ['e','r','i','k','a'];
 let eirkaPos = 0;
 
 document.addEventListener('keydown', (e) => {
