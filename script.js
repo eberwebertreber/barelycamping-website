@@ -530,6 +530,7 @@ function triggerEirka() {
 
   const audio = new Audio('eirka_song.mp3');
   audio.volume = 0;
+  audio.currentTime = 16;
   audio.play().catch(() => {});
 
   requestAnimationFrame(() => requestAnimationFrame(() => {
