@@ -529,35 +529,8 @@ function triggerEirka() {
   document.body.appendChild(overlay);
 
   const audio = new Audio('eirka_song.mp3');
+  audio.volume = 0;
   audio.currentTime = 16;
-
-  const actx = new (window.AudioContext || window.webkitAudioContext)();
-  const source = actx.createMediaElementSource(audio);
-
-  // Synthetic reverb via programmatic impulse response
-  const irLen = actx.sampleRate * 3;
-  const irBuf = actx.createBuffer(2, irLen, actx.sampleRate);
-  for (let ch = 0; ch < 2; ch++) {
-    const d = irBuf.getChannelData(ch);
-    for (let i = 0; i < irLen; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / irLen, 2.2);
-  }
-  const convolver = actx.createConvolver();
-  convolver.buffer = irBuf;
-
-  const dryGain = actx.createGain();
-  const wetGain = actx.createGain();
-  const masterGain = actx.createGain();
-  dryGain.gain.value = 0.55;
-  wetGain.gain.value = 0.45;
-  masterGain.gain.value = 0;
-
-  source.connect(dryGain);
-  source.connect(convolver);
-  convolver.connect(wetGain);
-  dryGain.connect(masterGain);
-  wetGain.connect(masterGain);
-  masterGain.connect(actx.destination);
-
   audio.play().catch(() => {});
 
   requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -569,7 +542,7 @@ function triggerEirka() {
   let audioVol = 0;
   const fadeInId = setInterval(() => {
     audioVol = Math.min(audioVol + 0.035, 0.82);
-    masterGain.gain.value = audioVol;
+    audio.volume = audioVol;
     if (audioVol >= 0.82) clearInterval(fadeInId);
   }, 70);
 
@@ -578,14 +551,13 @@ function triggerEirka() {
     overlay.style.background = 'rgba(0,0,0,0)';
     msg.style.color = 'rgba(255,255,255,0)';
     msg.style.textShadow = '0 0 0px rgba(255,200,150,0)';
-    let vol = masterGain.gain.value;
+    let vol = audio.volume;
     const fadeOut = setInterval(() => {
       vol = Math.max(vol - 0.035, 0);
-      masterGain.gain.value = vol;
+      audio.volume = vol;
       if (vol <= 0) {
         clearInterval(fadeOut);
         audio.pause();
-        actx.close();
         setTimeout(() => overlay.remove(), 1500);
       }
     }, 70);
