@@ -476,6 +476,97 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// ─── Eirka Easter Egg (type "eirka" anywhere on the page) ─
+const EIRKA_SEQ = ['e','i','r','k','a'];
+let eirkaPos = 0;
+
+document.addEventListener('keydown', (e) => {
+  const tag = document.activeElement?.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  const key = e.key.length === 1 ? e.key.toLowerCase() : null;
+  if (!key) { eirkaPos = 0; return; }
+  if (key === EIRKA_SEQ[eirkaPos]) {
+    eirkaPos++;
+    if (eirkaPos === EIRKA_SEQ.length) {
+      triggerEirka();
+      eirkaPos = 0;
+    }
+  } else {
+    eirkaPos = (key === EIRKA_SEQ[0]) ? 1 : 0;
+  }
+});
+
+function triggerEirka() {
+  if (document.getElementById('eirka-overlay')) return;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'eirka-overlay';
+  Object.assign(overlay.style, {
+    position: 'fixed', inset: '0', zIndex: '9999',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    background: 'rgba(0,0,0,0)',
+    transition: 'background 1.4s ease',
+    cursor: 'pointer',
+  });
+
+  const msg = document.createElement('p');
+  Object.assign(msg.style, {
+    fontFamily: "'Georgia', 'Times New Roman', serif",
+    fontSize: 'clamp(2.4rem, 9vw, 5.5rem)',
+    fontStyle: 'italic',
+    color: 'rgba(255,255,255,0)',
+    textAlign: 'center',
+    letterSpacing: '0.06em',
+    lineHeight: '1.4',
+    transition: 'color 1.4s ease, text-shadow 1.4s ease',
+    textShadow: '0 0 0px rgba(255,200,150,0)',
+    userSelect: 'none',
+    margin: '0',
+    padding: '0 2rem',
+  });
+  msg.textContent = 'te amo mi amor';
+  overlay.appendChild(msg);
+  document.body.appendChild(overlay);
+
+  const audio = new Audio('eirka_song.mp3');
+  audio.volume = 0;
+  audio.play().catch(() => {});
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    overlay.style.background = 'rgba(0,0,0,0.88)';
+    msg.style.color = 'rgba(255,255,255,1)';
+    msg.style.textShadow = '0 0 60px rgba(255,200,130,0.45), 0 2px 12px rgba(0,0,0,0.9)';
+  }));
+
+  let audioVol = 0;
+  const fadeInId = setInterval(() => {
+    audioVol = Math.min(audioVol + 0.035, 0.82);
+    audio.volume = audioVol;
+    if (audioVol >= 0.82) clearInterval(fadeInId);
+  }, 70);
+
+  function dismiss() {
+    overlay.removeEventListener('click', dismiss);
+    overlay.style.background = 'rgba(0,0,0,0)';
+    msg.style.color = 'rgba(255,255,255,0)';
+    msg.style.textShadow = '0 0 0px rgba(255,200,150,0)';
+    let vol = audio.volume;
+    const fadeOut = setInterval(() => {
+      vol = Math.max(vol - 0.035, 0);
+      audio.volume = vol;
+      if (vol <= 0) {
+        clearInterval(fadeOut);
+        audio.pause();
+        setTimeout(() => overlay.remove(), 1500);
+      }
+    }, 70);
+  }
+
+  overlay.addEventListener('click', dismiss);
+  setTimeout(dismiss, 10000);
+}
+
+
 // ─── Console Easter Egg ──────────────────────────────────
 console.log(
   '%c' + `
