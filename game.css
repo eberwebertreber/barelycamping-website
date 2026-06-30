@@ -28,7 +28,7 @@ html, body {
   width: min(96vw, 960px);
   height: auto;
   aspect-ratio: 240 / 160;
-  background: #2a8a3a;
+  background: #14110d;
   box-shadow:
     0 0 0 4px #1a1a1a,
     0 0 0 6px #2a2a2a,
@@ -37,55 +37,67 @@ html, body {
 }
 
 /* ─── Overlays ───────────────────────────────────────────── */
+/* Title sits over a blurred, dimmed view of the actual campsite. */
 .overlay {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(4,4,4,0.82);
-  backdrop-filter: blur(2px);
-  transition: opacity 0.45s ease;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(8,16,10,0.45) 0%, rgba(4,8,5,0.86) 80%);
+  backdrop-filter: blur(9px) saturate(1.05);
+  -webkit-backdrop-filter: blur(9px) saturate(1.05);
+  transition: opacity 0.55s ease;
 }
 .overlay.hidden { opacity: 0; pointer-events: none; }
 
-.title-inner { text-align: center; }
-.title-logo {
-  font-weight: 800;
-  font-size: clamp(34px, 6vw, 64px);
-  line-height: 0.92;
-  letter-spacing: 2px;
-  color: #fff;
-  text-shadow: 0 3px 0 #1c3a20, 0 6px 18px rgba(0,0,0,0.6);
+.title-inner { text-align: center; padding: 0 20px; }
+.title-logo-img {
+  width: min(74vw, 540px);
+  height: auto;
+  user-select: none;
+  filter: drop-shadow(0 6px 26px rgba(0,0,0,0.75)) drop-shadow(0 0 1px rgba(255,255,255,0.4));
+  animation: logo-float 5.5s ease-in-out infinite;
+}
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
 }
 .title-sub {
-  margin-top: 10px;
-  font-size: 14px;
-  letter-spacing: 6px;
+  margin-top: 14px;
+  font-size: 13px;
+  letter-spacing: 7px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.5);
 }
 .start-btn {
-  margin-top: 34px;
-  padding: 12px 26px;
+  margin-top: 36px;
+  padding: 13px 30px;
   font-size: 13px;
   letter-spacing: 3px;
   font-weight: 700;
   color: #fff;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(79,147,192,0.16);            /* brand sky, low alpha */
+  border: 1px solid rgba(138,166,143,0.55);     /* brand sage */
   border-radius: 50px;
   cursor: pointer;
-  animation: pulse 1.8s ease-in-out infinite;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  animation: pulse 2s ease-in-out infinite;
 }
-.start-btn:hover { background: rgba(255,255,255,0.14); }
-@keyframes pulse { 50% { opacity: 0.5; } }
+.start-btn:hover {
+  background: rgba(79,147,192,0.34);
+  border-color: rgba(255,255,255,0.7);
+  transform: translateY(-1px);
+  animation: none;
+}
+@keyframes pulse { 50% { opacity: 0.55; } }
 
 .title-controls {
-  margin-top: 22px;
+  margin-top: 24px;
   font-size: 11px;
   letter-spacing: 1px;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.32);
 }
 
 /* ─── In-game UI ─────────────────────────────────────────── */
@@ -216,7 +228,12 @@ html, body {
     padding: 28px;
   }
   .gate-card { text-align: center; max-width: 340px; }
-  .gate-card h1 { font-size: 30px; margin-bottom: 14px; }
+  .gate-logo { width: min(70vw, 280px); height: auto; filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6)); }
+  .gate-sub {
+    margin-top: 10px; margin-bottom: 18px;
+    font-size: 12px; letter-spacing: 6px; text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
   .gate-card p { color: rgba(255,255,255,0.6); line-height: 1.6; font-size: 15px; }
   .gate-link {
     display: inline-block;

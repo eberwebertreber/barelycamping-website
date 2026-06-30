@@ -531,7 +531,8 @@ const cardTent = { gone:false, blowT:0 };
 
 const cardProp = { sortY: CARD.y+18, solid:true, box:[CARD.x+1, CARD.y+1, 22, 16],
   draw:()=> cardTent.gone ? drawCardBlow(cardTent.blowT) : drawCardTent(CARD.x, CARD.y, 12*TILE+8, 11*TILE+2) };
-const shelterProp = { sortY: BLANKET.y+30, solid:true, box:[BLANKET.x-1, BLANKET.y-1, 26, 30], draw:()=>drawShelter(BLANKET.x, BLANKET.y) };
+// Only the TENT half is solid — you can walk over the sleeping bags below it for extra room.
+const shelterProp = { sortY: BLANKET.y+30, solid:true, box:[BLANKET.x+1, BLANKET.y, 22, 12], draw:()=>drawShelter(BLANKET.x, BLANKET.y) };
 const props = [
   { sortY: FIRE.y+12,    solid:true,  box:[FIRE.x+2, FIRE.y+8, 12, 5], draw:(t)=>drawFire(FIRE.x, FIRE.y, t, fireLit) },
   shelterProp,
@@ -668,10 +669,18 @@ function drawCharSprite(c, t) {
   drawTrainer(c.x, c.y, c.dir, step, charizard ? CHARIZARD : c.pal, bob);
   if (charizard) {
     const x = Math.round(c.x), y = Math.round(c.y) + bob;
-    ctx.fillStyle = '#f2d9a0'; ctx.fillRect(x+4, y+9, 7, 5);                    // cream belly
-    ctx.fillStyle = '#e8862f'; ctx.fillRect(x+2, y-2, 2, 3); ctx.fillRect(x+11, y-2, 2, 3); // horns
-    ctx.fillStyle = '#e8862f'; ctx.fillRect(x-2, y+13, 3, 4);                   // tail
-    ctx.fillStyle = '#f5631c'; ctx.fillRect(x-3, y+10, 2, 3); ctx.fillStyle = '#ffd24a'; ctx.fillRect(x-3, y+10, 1, 1); // tail flame
+    // big cream belly panel so he's not a solid orange block
+    ctx.fillStyle = '#f4dca8'; ctx.fillRect(x+4, y+9, 7, 6);
+    ctx.fillStyle = '#e7c98e'; ctx.fillRect(x+4, y+9, 7, 1);
+    // hood seam under the head + cream Charizard horns on top of the hood
+    ctx.fillStyle = '#c46a1f'; ctx.fillRect(x+3, y+1, 9, 1);
+    ctx.fillStyle = '#f2d9a0'; ctx.fillRect(x+2, y-2, 2, 3); ctx.fillRect(x+11, y-2, 2, 3);
+    // teal wing nubs at the shoulders
+    ctx.fillStyle = '#3f7d86'; ctx.fillRect(x-1, y+8, 2, 4); ctx.fillRect(x+13, y+8, 2, 4);
+    ctx.fillStyle = '#5aa3ad'; ctx.fillRect(x-1, y+8, 1, 2); ctx.fillRect(x+14, y+8, 1, 2);
+    // tail curling off the side with its flame
+    ctx.fillStyle = '#e8862f'; ctx.fillRect(x-2, y+13, 3, 4); ctx.fillRect(x-3, y+12, 2, 2);
+    ctx.fillStyle = '#f5631c'; ctx.fillRect(x-4, y+9, 2, 3); ctx.fillStyle = '#ffd24a'; ctx.fillRect(x-4, y+9, 1, 2);
   }
   headlampHead(c, bob);
   if (wading) {                                          // wading in the shallows: ripple over the feet + splash
@@ -714,31 +723,72 @@ function interact() {
   const isLuke = a === luke;
   const L = (lukeLine, teeboLine) => say(isLuke ? lukeLine : teeboLine);   // line depends on who you control
   const other = isLuke ? teebo : luke;
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const night = lighting(timeOfDay).d > 0.3;
+  const inWater = isWater(tileAt(Math.floor((a.x+7)/TILE), Math.floor((a.y+16)/TILE)));
   if (near(fx, fy, other.x+7, other.y+10, 16)) {        // a back-and-forth you click through
-    if (isLuke) say(["Luke: you gonna rip a pack or just stand there lookin good?", "Teebo: I'm saving my pulls, man. it's strategy.", "Luke: ...you don't even know the cards, bro."]);
-    else        say(["Teebo: we got any beers left in that cooler?", "Luke: like four, man.", "Teebo: ...so that's a no by sundown."]);
-  } else if (near(fx, fy, FIRE.x+8, FIRE.y+10, 18)) {
+    if (night) {
+      if (isLuke) say(["Luke: did you hang the bear bag?", "Teebo: I thought you were doing it.", "Luke: bro. so all our food's just sitting there. awesome."]);
+      else        say(["Teebo: ...you hear that?", "Luke: I don't hear anything.", "Teebo: exactly. it stopped. that's so much worse."]);
+    } else {
+      if (isLuke) say(["Luke: you actually gonna rip a pack today?", "Teebo: I'm waiting for the right energy.", "Luke: that is not how Pokemon works, man."]);
+      else        say(["Teebo: how many beers we got left?", "Luke: enough. relax.", "Teebo: that always means like two."]);
+    }
+  } else if (near(fx, fy, FIRE.x+8, FIRE.y+10, 11)) {
     fireLit = !fireLit;
-    if (fireLit) L("You get the fire going. finally something out here that actually works.", "Teebo: there we go. now we're camping.");
-    else L("You kick dirt over the fire till it hisses out.", "Teebo: fire's out. rip.");
+    if (fireLit) L(night ? "You get the fire going. way less creepy out here with this lit." : "You get the fire going.", night ? "Teebo: yeah, keep that thing on. please." : "Teebo: there it is.");
+    else L("You kick dirt over the fire till it dies down.", night ? "Teebo: why would you put that out right now." : "Teebo: eh, too hot for it anyway.");
   } else if (!cardTent.gone && near(fx, fy, CARD.x+10, CARD.y+8, 20)) {
     cardTent.gone = true; cardTent.blowT = 0; cardProp.solid = false;
-    L("You barely touch the card tent and the whole thing folds. we taped like 500 cards together for this.", "Teebo: bro do NOT lean on the cards... and there goes a $200 Gengar.");
-  } else if (near(fx, fy, CANS.x+7, CANS.y+5, 16)) {
-    L("Luke: half these Coors are still full. crack one, it's basically survival out here.", "Teebo: free Coors Light. I'm not asking who left em.");
-  } else if (near(fx, fy, TOTE.x+9, TOTE.y+8, 16)) {
-    L("Luke: the Pokemon cooler. holds the beer, holds the sausages, and it looks sick. I'd legit use it again.", "Teebo: that cooler's actually fire, man.");
-  } else if (near(fx, fy, CROCS.x+6, CROCS.y+4, 14)) {
-    L("Luke: my crocs. not getting in that frigid river without em.", "Teebo: those are Luke's. man loves those crocs.");
-  } else if (near(fx, fy, BLANKET.x+12, BLANKET.y+14, 28)) {
+    L(pick(["You barely bump the card tent and it folds. we taped like 500 cards together and it can't take a breeze.", "You lean on the card tent and the whole thing caves in. so much for that."]),
+      pick(["Teebo: do NOT touch the cards... too late. there goes a Gengar.", "Teebo: bro that was a $200 card holding up the roof."]));
+  } else if (near(fx, fy, CANS.x+7, CANS.y+5, 14)) {
+    L(pick(["a whole pile of empty Coors out here. half of em are still full though. found beer.", "who drank all these. oh wait. it was us.", "somebody had a real night out here, huh."]),
+      pick(["Teebo: free Coors. not gonna question it.", "Teebo: that's a lot of cans for two guys, Luke.", "Teebo: we did not drink all those. ...did we?"]));
+  } else if (near(fx, fy, TABLE.x+9, TABLE.y+6, 9)) {
+    L(pick(["this little table. honestly the comfiest, most normal thing we brought.", "set my drink down like an actual human for once."]),
+      pick(["Teebo: I love this dumb little table.", "Teebo: tiny table. kinda perfect though."]));
+  } else if (near(fx, fy, TOTE.x+9, TOTE.y+8, 10)) {
+    L(pick(["the Pokemon cooler. beers on the bottom, sausages up top. still cold too. I'd use this for real.", "popped the cooler open. this thing actually rips, not gonna lie."]),
+      pick(["Teebo: that cooler's sick, man.", "Teebo: anything good left in there?"]));
+  } else if (near(fx, fy, STOOL_Y.x+5, STOOL_Y.y+4, 8)) {
+    L("the Pikachu stool. tiny little thing, but somehow the best seat we got.", "Teebo: that one's Pikachu. that one's mine.");
+  } else if (near(fx, fy, STOOL_B.x+5, STOOL_B.y+4, 8)) {
+    L("Squirtle stool. my whole butt does not fit on this.", "Teebo: Squirtle. solid pick.");
+  } else if (near(fx, fy, STOOL_G.x+5, STOOL_G.y+4, 8)) {
+    L("Bulbasaur stool. sits about two inches off the ground.", "Teebo: Bulbasaur. only right answer for a starter.");
+  } else if (near(fx, fy, STOOL_O.x+5, STOOL_O.y+4, 8)) {
+    L("Charmander stool. matches the fire, I guess.", "Teebo: Charmander. fire starter. get it.");
+  } else if (near(fx, fy, CROCS.x+6, CROCS.y+4, 10)) {
+    L(pick(["my crocs. love em, but I hate how much sand gets stuck in all the little holes.", "crocs. instant sand collection the second I put em on."]),
+      pick(["Teebo: those are Luke's. little sand buckets.", "Teebo: man will not take those off, ever."]));
+  } else if (near(fx, fy, STUMP.x+9, STUMP.y+8, 13)) {
+    L(pick(["what's this old stump even doing out here? been dead a long time.", "somebody cut this stump down ages ago. wonder who camped here before us."]),
+      pick(["Teebo: that stump's older than both of us.", "Teebo: sit on it? nah. splinters, bro."]));
+  } else if (near(fx, fy, DRIFT.x+10, DRIFT.y+4, 13)) {
+    L(pick(["dragged this driftwood log the whole way over here. my back has not forgiven me.", "this log was such a pain to haul out. good bench though, kinda."]),
+      pick(["Teebo: we carried that thing way too far.", "Teebo: great log. miserable to move."]));
+  } else if (near(fx, fy, MILKWEED.x+7, MILKWEED.y+8, 11)) {
+    L("milkweed. leave it, the monarchs need that stuff.", "Teebo: don't pull that, that's the butterfly plant.");
+  } else if (near(fx, fy, BLANKET.x+12, BLANKET.y+22, 14)) {
     a.action = 'lay'; a.x = BLANKET.x + 10; a.y = BLANKET.y + 14;
-    L("You crawl under the quilt. first time cowboy camping, no tent, just you and the bugs.", "Teebo: quilt's mine. wake me when the sun's up.");
-  } else if (near(fx, fy, CHAIR.x+6, CHAIR.y+6, 16))  { a.action = 'sit'; a.x = CHAIR.x; a.y = CHAIR.y; L("You drop into the tiny Pikachu chair. your back already hates it.", "Teebo: metal poles right in the cheeks. love it."); }
-  else if (near(fx, fy, CHAIR2.x+6, CHAIR2.y+6, 16)) { a.action = 'sit'; a.x = CHAIR2.x; a.y = CHAIR2.y; L("You sit. somehow this one's even smaller than the other chair.", "Teebo: makes you really appreciate a backrest, huh."); }
-  else if (tcode === 'w' || tcode === 'W') { a.action = 'fish'; L("Luke: if I pull a Magikarp out of here I'm keeping it.", "Teebo: never catch anything but I'll stand here lookin good."); }
-  else if (tcode === 'T') L("Just woods. the perfect A-frame stick is back there somewhere.", "Teebo: lotta trees, man. real bushcraft.");
-  else if (tcode === 's') L("Soft sand out on the bar.", "Teebo: sand's gettin everywhere, dude.");
-  else L("Quiet out here. just the river. frigid as hell though.", "Teebo: this is the spot, man. unreal.");
+    L(night ? "You get in the quilt. no tent over us tonight, so every little sound is something now." : "You crawl under the quilt. cowboy camping it, no tent, just the open sky.",
+      night ? "Teebo: I'm not sleeping, man. I keep hearing stuff." : "Teebo: quilt's mine. wake me up later.");
+  } else if (near(fx, fy, CHAIR.x+6, CHAIR.y+6, 13))  { a.action = 'sit'; a.x = CHAIR.x; a.y = CHAIR.y; L("You drop into the chair. okay, this one's actually comfy.", "Teebo kicks back. now this is camping."); }
+  else if (near(fx, fy, CHAIR2.x+6, CHAIR2.y+6, 13)) { a.action = 'sit'; a.x = CHAIR2.x; a.y = CHAIR2.y; L("You sink into the chair. could honestly fall asleep right here.", "Teebo: yeah, not getting up for a while."); }
+  else if ((tcode === 'w' || tcode === 'W') && !inWater) { a.action = 'fish';
+    L(pick(["if I pull a Magikarp out of here, I'm keeping it.", "one of these casts I'll actually catch something. probably not today."]),
+      pick(["Teebo: never catch a thing, but I look good standing here.", "Teebo: somebody caught a real fish out here once, I swear."])); }
+  else if (tcode === 'w' || tcode === 'W') { L("dude, this water is freezing.", "Teebo: bro this water is so cold."); }
+  else if (tcode === 'T') {
+    if (night) L(pick(["something's moving back in the trees. I'm not looking.", "the woods get so loud at night out here."]),
+                 pick(["Teebo: that snapping turtle, man. it's still out there.", "Teebo: I'm not walking into those trees right now."]));
+    else L(pick(["just woods. the perfect ridgeline stick is in there somewhere.", "trees for days. good A-frame wood back there.", "where'd that snapping turtle go? swear it was right here."]),
+           pick(["Teebo: lotta trees, man.", "Teebo: real bushcrafty back here.", "Teebo: dude, that snapping turtle's been stalking us all day."]));
+  }
+  else if (tcode === 's') L(pick(["soft sand out on the bar.", "sand's already in the cooler somehow."]), "Teebo: sand's gettin in everything, dude.");
+  else L(night ? pick(["pitch black past the fire. kinda love it, kinda hate it.", "just us and whatever's out there now."]) : pick(["this is the spot, man. can't beat it.", "so quiet out here. just us and the river.", "could stay out here all day, honestly."]),
+         night ? pick(["Teebo: stay by the fire, bro.", "Teebo: I keep hearing the river and thinking it's footsteps."]) : pick(["Teebo: unreal out here, man.", "Teebo: I needed this, honestly.", "Teebo: best spot we've found, no question."]));
 }
 function drawDialog() {
   if (!dialog) return;
@@ -1129,7 +1179,9 @@ function sfx(type) {
 
 /* ─── Loop ────────────────────────────────────────────────── */
 let running = false;
-function frame(t) { if (running) { update(); updateAudio(); render(t/16); } requestAnimationFrame(frame); }
+// Render every frame so the world shows behind the (blurred) title screen.
+// Only step the simulation + audio once the player has actually started.
+function frame(t) { if (running) { update(); updateAudio(); } render(t/16); requestAnimationFrame(frame); }
 requestAnimationFrame(frame);
 
 /* ─── Title / start ───────────────────────────────────────── */
