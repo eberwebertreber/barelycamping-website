@@ -121,7 +121,7 @@ html, body {
 .edit-btn {
   position: absolute;
   top: 16px;
-  right: 18px;
+  right: 58px;
   font-size: 12px;
   letter-spacing: 1px;
   color: rgba(255,255,255,0.6);
@@ -135,7 +135,7 @@ html, body {
 .edit-panel {
   position: absolute;
   top: 54px;
-  right: 18px;
+  right: 58px;
   width: 260px;
   background: rgba(8,8,10,0.92);
   border: 1px solid rgba(255,255,255,0.16);
@@ -181,14 +181,14 @@ html, body {
 
 /* ─── Sound panel ────────────────────────────────────────── */
 .audio-btn {
-  position: absolute; top: 16px; right: 110px;
+  position: absolute; top: 16px; right: 18px;
   width: 30px; height: 30px; cursor: pointer; font-size: 15px;
   color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;
 }
 .audio-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
 .audio-panel {
-  position: absolute; top: 54px; right: 110px;
+  position: absolute; top: 54px; right: 18px;
   width: 170px; padding: 12px;
   background: rgba(8,8,10,0.92); border: 1px solid rgba(255,255,255,0.16); border-radius: 8px;
   display: flex; flex-direction: column; gap: 9px;

@@ -523,9 +523,9 @@ const STOOL_G = { x: 21*TILE, y: 8*TILE };
 const STOOL_O = { x: 24*TILE, y: 9*TILE };
 const STOOL_B = { x: 22*TILE, y: 10*TILE };
 const STOOL_Y = { x: 20*TILE, y: 7*TILE };
-const MILKWEED = { x: 8*TILE, y: 13*TILE };             // milkweed plant
-const STUMP    = { x: 6*TILE, y: 11*TILE };             // big dead stump with roots
-const DRIFT    = { x: 13*TILE, y: 17*TILE };            // driftwood on the bar
+const MILKWEED = { x: 9*TILE, y: 12*TILE };             // milkweed plant
+const STUMP    = { x: 24*TILE, y: 14*TILE };            // big dead stump with roots
+const DRIFT    = { x: 13*TILE, y: 18*TILE };            // driftwood on the bar
 let fireLit = true;
 const cardTent = { gone:false, blowT:0 };
 
@@ -702,11 +702,11 @@ addEventListener('keyup', (e) => { if (DIRKEYS[e.code]) keys[DIRKEYS[e.code]] = 
 
 /* ─── Dialog + interactions ───────────────────────────────── */
 let dialog = null;
-const say = txt => dialog = { text: txt };
+const say = t => dialog = { lines: Array.isArray(t) ? t : [t], i: 0 };   // one or many boxes to click through
 const near = (ax, ay, bx, by, r) => Math.abs(ax-bx) < r && Math.abs(ay-by) < r;
 function interact() {
   const a = chars[active];
-  if (dialog) { dialog = null; return; }
+  if (dialog) { if (++dialog.i >= dialog.lines.length) dialog = null; return; }   // advance / close the conversation
   if (a.action) { a.action = null; return; }            // stand back up
   const fx = a.x + 7 + (a.dir===2?-12:a.dir===3?12:0);
   const fy = a.y + 12 + (a.dir===0?14:a.dir===1?-14:0);
@@ -714,8 +714,9 @@ function interact() {
   const isLuke = a === luke;
   const L = (lukeLine, teeboLine) => say(isLuke ? lukeLine : teeboLine);   // line depends on who you control
   const other = isLuke ? teebo : luke;
-  if (near(fx, fy, other.x+7, other.y+10, 16)) {
-    L("Luke: yo Teebo, you actually gonna help set up or just stand there?", "Teebo: I'm supervising. It's a real job.");
+  if (near(fx, fy, other.x+7, other.y+10, 16)) {        // a back-and-forth you click through
+    if (isLuke) say(["Luke: yo, you gonna help set up or just stand there?", "Teebo: I'm supervising. it's a real job.", "Luke: ...right."]);
+    else        say(["Teebo: we got any food left?", "Luke: it's all in the cooler, man.", "Teebo: ...so that's a maybe."]);
   } else if (near(fx, fy, FIRE.x+8, FIRE.y+10, 18)) {
     fireLit = !fireLit;
     if (fireLit) L("You get the fire going again.", "Teebo: there we go, that's better.");
@@ -744,8 +745,12 @@ function drawDialog() {
   ctx.fillStyle = '#f0ece6'; ctx.fillRect(bx+2, by+2, bw-4, bh-4);
   ctx.fillStyle = '#102a45'; ctx.fillRect(bx+4, by+4, bw-8, bh-8);
   ctx.fillStyle = '#fff'; ctx.font = '8px monospace'; ctx.textBaseline = 'top';
-  wrapText(dialog.text, bx+9, by+9, bw-18, 10);
-  if (Math.floor(performance.now()/400) % 2 === 0) { ctx.fillStyle = '#f5a623'; ctx.fillRect(bx+bw-12, by+bh-11, 4, 4); }
+  wrapText(dialog.lines[dialog.i], bx+9, by+9, bw-18, 10);
+  if (Math.floor(performance.now()/400) % 2 === 0) {    // blinking prompt: ▸ if more boxes, ▾ to close
+    ctx.fillStyle = '#f5a623';
+    if (dialog.i < dialog.lines.length-1) { ctx.fillRect(bx+bw-13, by+bh-12, 2, 5); ctx.fillRect(bx+bw-11, by+bh-11, 2, 3); ctx.fillRect(bx+bw-9, by+bh-10, 2, 1); }
+    else ctx.fillRect(bx+bw-12, by+bh-11, 4, 4);
+  }
 }
 function wrapText(text, x, y, maxW, lh) {
   const words = text.split(' '); let line = '', yy = y;
