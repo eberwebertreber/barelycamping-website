@@ -1,4 +1,8 @@
 /* ─── The Campsite — pixel game tab ───────────────────────── */
+@font-face {
+  font-family: 'Bonfire';
+  src: url('BonfireRegular.otf') format('opentype');
+}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
@@ -53,23 +57,20 @@ html, body {
 .overlay.hidden { opacity: 0; pointer-events: none; }
 
 .title-inner { text-align: center; padding: 0 20px; }
-.title-logo-img {
-  width: min(74vw, 540px);
-  height: auto;
+.title-logo {
+  font-family: 'Bonfire', sans-serif;
+  font-weight: 400;
+  font-size: clamp(48px, 9.5vw, 104px);
+  line-height: 0.84;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 0 4px 22px rgba(0,0,0,0.7), 0 0 1px rgba(255,255,255,0.5);
   user-select: none;
-  filter: drop-shadow(0 6px 26px rgba(0,0,0,0.75)) drop-shadow(0 0 1px rgba(255,255,255,0.4));
   animation: logo-float 5.5s ease-in-out infinite;
 }
 @keyframes logo-float {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-7px); }
-}
-.title-sub {
-  margin-top: 14px;
-  font-size: 13px;
-  letter-spacing: 7px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
 }
 .start-btn {
   margin-top: 36px;
@@ -228,13 +229,8 @@ html, body {
     padding: 28px;
   }
   .gate-card { text-align: center; max-width: 340px; }
-  .gate-logo { width: min(70vw, 280px); height: auto; filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6)); }
-  .gate-sub {
-    margin-top: 10px; margin-bottom: 18px;
-    font-size: 12px; letter-spacing: 6px; text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-  }
-  .gate-card p { color: rgba(255,255,255,0.6); line-height: 1.6; font-size: 15px; }
+  .gate-logo { width: min(70vw, 280px); height: auto; margin-bottom: 22px; filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6)); }
+  .gate-note { color: rgba(255,255,255,0.6); line-height: 1.6; font-size: 15px; }
   .gate-link {
     display: inline-block;
     margin-top: 24px;
