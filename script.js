@@ -85,7 +85,9 @@ class Ember {
   }
 }
 
-const embers = Array.from({ length: 55 }, () => new Ember());
+// Ambient embers removed by request — no fire particles drifting up the page.
+// The array stays so the hidden konami burst still has somewhere to spawn into.
+const embers = [];
 
 
 // ─── Radar Rings (slow sonar pings) ─────────────────────
@@ -98,7 +100,7 @@ class RadarRing {
     this.radius   = 0;
     this.maxRadius= 320;
     this.alpha    = 0;
-    this.speed    = 0.55;
+    this.speed    = 0.32;
     this.startAt  = Date.now() + delay;
     this.alive    = true;
   }
@@ -123,10 +125,9 @@ class RadarRing {
 if (window.innerWidth > 768) {
   document.addEventListener('mousemove', (e) => {
     const now = Date.now();
-    if (now - lastRingTime > 2400) {
+    if (now - lastRingTime > 4600) {
       rings.push(new RadarRing(e.clientX, e.clientY, 0));
-      rings.push(new RadarRing(e.clientX, e.clientY, 380));
-      rings.push(new RadarRing(e.clientX, e.clientY, 760));
+      rings.push(new RadarRing(e.clientX, e.clientY, 520));
       lastRingTime = now;
     }
   });
@@ -359,69 +360,36 @@ loadVideos();
   document.body.classList.add('booting');
   const isDesktop = window.innerWidth > 768;
 
-  // Pre-position submarine off-screen (top center) so it can drop
+  // Submarine simply waits at the live cursor position — no drop-in animation
   if (cursorEl && isDesktop) {
     cursorEl.style.transition = 'none';
-    cursorEl.style.transform =
-      `translate(${window.innerWidth / 2 - 34}px, -140px)`;
+    cursorEl.style.transform = `translate(${mouseX - 34}px, ${mouseY - 16}px)`;
   }
 
-  // Stage 1 — Letters (already animating via existing CSS)
+  // Stage 1 — Letters animate via CSS
   // Stage 2 @ 1.5s — Background fades in
   setTimeout(() => document.body.classList.add('boot-bg'), 1500);
 
-  // Stage 3 @ 2.0s — Ember canvas appears + big burst from bottom
-  setTimeout(() => {
-    document.body.classList.add('boot-particles');
-    spawnBottomSurge();
-  }, 2000);
+  // Stage 3 @ 2.0s — radar canvas fades in
+  setTimeout(() => document.body.classList.add('boot-particles'), 2000);
 
   // Stage 4 @ 3.0s — Buttons, ambient, scroll hint, camper ID stagger in
   setTimeout(() => document.body.classList.add('boot-buttons'), 3000);
 
-  // Stage 5 @ 4.3s — Submarine drops from top and descends to cursor
-  setTimeout(() => {
-    if (!cursorEl || !isDesktop) return;
-    document.body.classList.add('boot-sub');
-    const targetX = mouseX - 34;
-    const targetY = mouseY - 16;
-    cursorEl.style.transition =
-      'transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease';
-    requestAnimationFrame(() => {
-      cursorEl.style.transform = `translate(${targetX}px, ${targetY}px)`;
-    });
-  }, 4300);
-
-  // Stage 6 @ 5.9s — Boot finished, cursor follows mouse normally
+  // Stage 5 @ 4.0s — Submarine just fades in where the cursor already is, then follows
   setTimeout(() => {
     document.body.classList.remove('booting');
-    if (cursorEl) {
-      cursorEl.style.transition = 'opacity 0.18s ease';
-      // Sync to current mouse position so there's no stale jump
-      if (isDesktop) {
-        cursorEl.style.transform = `translate(${mouseX - 34}px, ${mouseY - 16}px)`;
-      }
-    }
     bootComplete = true;
-  }, 5900);
+    if (cursorEl && isDesktop) {
+      cursorEl.style.opacity = '0';
+      cursorEl.style.transition = 'opacity 0.5s ease';
+      cursorEl.style.transform = `translate(${mouseX - 34}px, ${mouseY - 16}px)`;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        cursorEl.style.opacity = '1';
+      }));
+    }
+  }, 4000);
 })();
-
-function spawnBottomSurge() {
-  if (embers.length > 1000) return;
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  for (let i = 0; i < 220; i++) {
-    const b = new Ember();
-    b.x       = Math.random() * w;
-    b.y       = h + Math.random() * 30;
-    b.speedY  = Math.random() * 4 + 2.2;
-    b.speedX  = (Math.random() - 0.5) * 1.4;
-    b.alpha   = Math.random() * 0.5 + 0.55;
-    b.size    = Math.random() * 2.6 + 0.9;
-    b.decay   = Math.random() * 0.005 + 0.0025;
-    embers.push(b);
-  }
-}
 
 function initMobileCarousel(track) {
   const wrap = track.parentElement;

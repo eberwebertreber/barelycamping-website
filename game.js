@@ -715,28 +715,30 @@ function interact() {
   const L = (lukeLine, teeboLine) => say(isLuke ? lukeLine : teeboLine);   // line depends on who you control
   const other = isLuke ? teebo : luke;
   if (near(fx, fy, other.x+7, other.y+10, 16)) {        // a back-and-forth you click through
-    if (isLuke) say(["Luke: yo, you gonna help set up or just stand there?", "Teebo: I'm supervising. it's a real job.", "Luke: ...right."]);
-    else        say(["Teebo: we got any food left?", "Luke: it's all in the cooler, man.", "Teebo: ...so that's a maybe."]);
+    if (isLuke) say(["Luke: you gonna rip a pack or just stand there lookin good?", "Teebo: I'm saving my pulls, man. it's strategy.", "Luke: ...you don't even know the cards, bro."]);
+    else        say(["Teebo: we got any beers left in that cooler?", "Luke: like four, man.", "Teebo: ...so that's a no by sundown."]);
   } else if (near(fx, fy, FIRE.x+8, FIRE.y+10, 18)) {
     fireLit = !fireLit;
-    if (fireLit) L("You get the fire going again.", "Teebo: there we go, that's better.");
+    if (fireLit) L("You get the fire going. finally something out here that actually works.", "Teebo: there we go. now we're camping.");
     else L("You kick dirt over the fire till it hisses out.", "Teebo: fire's out. rip.");
   } else if (!cardTent.gone && near(fx, fy, CARD.x+10, CARD.y+8, 20)) {
     cardTent.gone = true; cardTent.blowT = 0; cardProp.solid = false;
-    L("You lean on the card tent and the whole thing blows over. Never gonna hold.", "Teebo: bro do NOT touch the card tent — ...and it's gone.");
+    L("You barely touch the card tent and the whole thing folds. we taped like 500 cards together for this.", "Teebo: bro do NOT lean on the cards... and there goes a $200 Gengar.");
   } else if (near(fx, fy, CANS.x+7, CANS.y+5, 16)) {
-    L("Luke: who leaves a whole pile of cans out here? ...wait, are some of these full?", "Teebo: free Coors. I'm not asking questions.");
+    L("Luke: half these Coors are still full. crack one, it's basically survival out here.", "Teebo: free Coors Light. I'm not asking who left em.");
+  } else if (near(fx, fy, TOTE.x+9, TOTE.y+8, 16)) {
+    L("Luke: the Pokemon cooler. holds the beer, holds the sausages, and it looks sick. I'd legit use it again.", "Teebo: that cooler's actually fire, man.");
   } else if (near(fx, fy, CROCS.x+6, CROCS.y+4, 14)) {
-    L("Luke: my crocs. can't go in the river without the crocs.", "Teebo: those are Luke's. man loves those crocs.");
+    L("Luke: my crocs. not getting in that frigid river without em.", "Teebo: those are Luke's. man loves those crocs.");
   } else if (near(fx, fy, BLANKET.x+12, BLANKET.y+14, 28)) {
     a.action = 'lay'; a.x = BLANKET.x + 10; a.y = BLANKET.y + 14;
-    L("You crawl into a sleeping bag, head in the tent.", "Teebo: bag time. wake me at noon.");
-  } else if (near(fx, fy, CHAIR.x+6, CHAIR.y+6, 16))  { a.action = 'sit'; a.x = CHAIR.x; a.y = CHAIR.y; L("You drop into the chair.", "Teebo kicks back."); }
-  else if (near(fx, fy, CHAIR2.x+6, CHAIR2.y+6, 16)) { a.action = 'sit'; a.x = CHAIR2.x; a.y = CHAIR2.y; L("You drop into the chair.", "Teebo kicks back."); }
-  else if (tcode === 'w' || tcode === 'W') { a.action = 'fish'; L("Luke: one of these days I'm actually gonna catch a fish.", "Teebo: i never catch anything but i'll stand here lookin good."); }
-  else if (tcode === 'T') L("Just woods. They go back a long way.", "Teebo: lotta trees, man.");
-  else if (tcode === 's') L("Soft sand out on the bar.", "Teebo: sand's gettin everywhere.");
-  else L("Quiet out here. Just the river.", "Teebo: this is the spot. unreal.");
+    L("You crawl under the quilt. first time cowboy camping, no tent, just you and the bugs.", "Teebo: quilt's mine. wake me when the sun's up.");
+  } else if (near(fx, fy, CHAIR.x+6, CHAIR.y+6, 16))  { a.action = 'sit'; a.x = CHAIR.x; a.y = CHAIR.y; L("You drop into the tiny Pikachu chair. your back already hates it.", "Teebo: metal poles right in the cheeks. love it."); }
+  else if (near(fx, fy, CHAIR2.x+6, CHAIR2.y+6, 16)) { a.action = 'sit'; a.x = CHAIR2.x; a.y = CHAIR2.y; L("You sit. somehow this one's even smaller than the other chair.", "Teebo: makes you really appreciate a backrest, huh."); }
+  else if (tcode === 'w' || tcode === 'W') { a.action = 'fish'; L("Luke: if I pull a Magikarp out of here I'm keeping it.", "Teebo: never catch anything but I'll stand here lookin good."); }
+  else if (tcode === 'T') L("Just woods. the perfect A-frame stick is back there somewhere.", "Teebo: lotta trees, man. real bushcraft.");
+  else if (tcode === 's') L("Soft sand out on the bar.", "Teebo: sand's gettin everywhere, dude.");
+  else L("Quiet out here. just the river. frigid as hell though.", "Teebo: this is the spot, man. unreal.");
 }
 function drawDialog() {
   if (!dialog) return;
@@ -970,14 +972,29 @@ function lighting(time) {
 const fireflies = Array.from({length:9}, (_,i)=>({ x:(2+i*1.2)*TILE, y:(1+(i%6)*1.7)*TILE, ph:i*2.3, vx:(i%2?0.045:-0.035), vy:(i%3?0.03:-0.025) }));
 
 const DIRV = [[0,1],[0,-1],[-1,0],[1,0]];               // down, up, left, right
-function headlampBeam(hx, hy, dir, additive, red) {     // the soft bloom (no clip/half-circle), nudged forward
-  const [dx, dy] = DIRV[dir], bx = hx + dx*18, by = hy + dy*18;
-  const g = ctx.createRadialGradient(bx, by, 1, bx, by, 26);
-  if (additive) { const col = red ? '255,16,16' : '255,250,228';   // headlamp glow — red is properly red now
-    g.addColorStop(0, `rgba(${col},${red?0.38:0.26})`); g.addColorStop(1, `rgba(${col},0)`); }
-  else { g.addColorStop(0, 'rgba(255,255,255,0.82)'); g.addColorStop(0.6, 'rgba(255,255,255,0.3)'); g.addColorStop(1, 'rgba(255,255,255,0)'); }
-  ctx.save(); ctx.translate(bx, by); ctx.scale(dx?1.5:0.7, dy?1.5:0.7); ctx.translate(-bx, -by);
-  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(bx, by, 26, 0, TAU); ctx.fill(); ctx.restore();
+function headlampBeam(hx, hy, dir, additive, red) {     // a directional cone thrown from the lamp, not a blob
+  const [dx, dy] = DIRV[dir];
+  const ox = hx + dx*3, oy = hy + dy*3;                 // beam starts just in front of the head
+  const len = 44, spread = 22;                          // throw distance + half-width where it lands
+  const ex = ox + dx*len, ey = oy + dy*len;             // far end of the throw
+  const px = -dy, py = dx;                              // perpendicular = the cone's width axis
+  const colA = red ? '255,16,16' : '255,247,222';
+  // wedge: tight at the lamp, fanning out to the far end, fading along its length
+  const g = ctx.createLinearGradient(ox, oy, ex, ey);
+  if (additive) { g.addColorStop(0, `rgba(${colA},${red?0.5:0.42})`); g.addColorStop(0.5, `rgba(${colA},${red?0.2:0.16})`); g.addColorStop(1, `rgba(${colA},0)`); }
+  else { g.addColorStop(0, 'rgba(255,255,255,0.92)'); g.addColorStop(0.55, 'rgba(255,255,255,0.38)'); g.addColorStop(1, 'rgba(255,255,255,0)'); }
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.moveTo(ox + px*2.5, oy + py*2.5);                 // narrow mouth at the lamp
+  ctx.lineTo(ox - px*2.5, oy - py*2.5);
+  ctx.lineTo(ex - px*spread, ey - py*spread);           // wide where the beam lands
+  ctx.lineTo(ex + px*spread, ey + py*spread);
+  ctx.closePath(); ctx.fill();
+  // soft pool of light at the spot the cone hits
+  const pool = ctx.createRadialGradient(ex, ey, 1, ex, ey, spread);
+  if (additive) { pool.addColorStop(0, `rgba(${colA},${red?0.26:0.2})`); pool.addColorStop(1, `rgba(${colA},0)`); }
+  else { pool.addColorStop(0, 'rgba(255,255,255,0.4)'); pool.addColorStop(1, 'rgba(255,255,255,0)'); }
+  ctx.fillStyle = pool; ctx.beginPath(); ctx.ellipse(ex, ey, spread, spread*0.7, 0, 0, TAU); ctx.fill();
 }
 function lightMask(t, additive, nightAmt) {
   if (fireLit && nightAmt > 0.05) {                     // campfire only glows once the moon's out
