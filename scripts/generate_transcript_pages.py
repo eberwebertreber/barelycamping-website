@@ -7,7 +7,7 @@ Reads the Video Content Google Sheet and produces:
   website/v/index.html          - hub page listing all videos
   website/sitemap.xml            - regenerated to include every video page
 
-Run from repo root (D:\\Projects\\BarelyCamping\\website\\):
+Run from repo root (D:\\Projects\\BarelyCamping\\_Claude\\website\\):
   python scripts/generate_transcript_pages.py
 
 Auth: uses drive_token.json (same Google OAuth used for Sheets elsewhere).
@@ -35,7 +35,7 @@ from googleapiclient.discovery import build
 
 # ─── Config ──────────────────────────────────────────────────
 SHEET_ID = "1yVPx3p6RIudIJN_6ZThoVVVULkOzAOm9-ZlQ35ByS0M"
-TOKEN_PATH = Path(r"D:\Projects\BarelyCamping\drive_token.json")
+TOKEN_PATH = Path(r"D:\Projects\BarelyCamping\_Claude\drive_token.json")
 WEBSITE_ROOT = Path(__file__).resolve().parent.parent  # /website/
 OUT_DIR = WEBSITE_ROOT / "v"
 SITEMAP_PATH = WEBSITE_ROOT / "sitemap.xml"
