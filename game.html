@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BarelyCamping - The Campsite</title>
+  <meta name="description" content="Walk around the BarelyCamping campsite. A little pixel world you can explore." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://barelycamping.com/game.html" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet" href="game.css" />
+</head>
+<body>
+
+  <!-- Desktop-only gate. On phones we show a note instead of the canvas. -->
+  <div id="mobileGate">
+    <div class="gate-card">
+      <h1>The Campsite</h1>
+      <p>This one's built for a keyboard. Open it on a desktop or laptop and use the arrow keys to walk around.</p>
+      <a href="index.html" class="gate-link">&larr; back to barelycamping</a>
+    </div>
+  </div>
+
+  <div id="stage">
+    <canvas id="game" width="480" height="320"></canvas>
+
+    <!-- Title screen -->
+    <div id="title" class="overlay">
+      <div class="title-inner">
+        <div class="title-logo">BARELY<br>CAMPING</div>
+        <div class="title-sub">the campsite</div>
+        <button id="startBtn" class="start-btn">PRESS ENTER</button>
+        <div class="title-controls">arrow keys move &nbsp;·&nbsp; Z interact &nbsp;·&nbsp; C swap character</div>
+      </div>
+    </div>
+
+    <!-- Corner hint while playing -->
+    <div id="hint" class="hint">&uarr;&darr;&larr;&rarr; move &nbsp;·&nbsp; Z interact &nbsp;·&nbsp; C swap &nbsp;·&nbsp; F headlamp &nbsp;·&nbsp; drag the sun dial (left) for time</div>
+
+    <a href="index.html" id="exitBtn" class="exit-btn">&larr; exit</a>
+
+    <!-- Map editor controls -->
+    <button id="editBtn" class="edit-btn">edit map</button>
+    <div id="editPanel" class="edit-panel hidden">
+      <p class="edit-help">Pick a tile and drag on the map to paint it. <b>move gear</b> lets you drag the fire/shelter/etc, and press <b>R</b> to rotate the shelter 90°. It auto-saves. Hit <b>copy map</b> and paste it to me to lock it in.</p>
+      <div id="brushRow" class="brush-row"></div>
+      <div class="size-row">brush&nbsp; <button data-sz="1">1</button><button data-sz="2" class="on">2</button><button data-sz="3">3</button></div>
+      <button id="copyBtn" class="edit-do">copy map</button>
+      <button id="clearBtn" class="edit-clear">reset painting</button>
+      <textarea id="layoutOut" class="edit-out" readonly placeholder="your map shows up here after Copy"></textarea>
+    </div>
+
+    <!-- Sound -->
+    <button id="audioBtn" class="audio-btn" title="sound (Esc)">&#9834;</button>
+    <div id="audioPanel" class="audio-panel hidden">
+      <label>music <input id="volMusic" type="range" min="0" max="100" value="5"></label>
+      <label>ambience <input id="volAmb" type="range" min="0" max="100" value="50"></label>
+      <label>sfx <input id="volSfx" type="range" min="0" max="100" value="50"></label>
+      <button id="muteBtn" class="audio-mute">mute all</button>
+    </div>
+    <audio id="bgMusic" loop preload="auto" src="game_music.mp3"></audio>
+    <audio id="ambRiver" loop preload="auto" src="amb_river.mp3"></audio>
+    <audio id="ambMeadow" loop preload="auto" src="amb_meadow.mp3"></audio>
+    <audio id="ambFire" loop preload="auto" src="amb_fire.mp3"></audio>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
