@@ -407,13 +407,6 @@ body.booting.boot-buttons .camper-id {
   opacity: 1;
 }
 
-/* Submarine cursor: hidden until stage-4, JS positions and animates it */
-body.booting #cursor {
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-body.booting.boot-sub #cursor { opacity: 1; }
-
 
 /* ─── Videos ────────────────────────────────────────────── */
 .videos-section {

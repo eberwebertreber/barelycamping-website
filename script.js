@@ -1,11 +1,9 @@
 // ─── DOM Cursor (no tilt) ────────────────────────────────
 const cursorEl = document.getElementById('cursor');
 
-// Track latest mouse position always — used for submarine boot landing
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
 let lastMoveAt = Date.now();
-let bootComplete = false;
 
 document.addEventListener('mousemove', (e) => {
   mouseX = e.clientX;
@@ -14,14 +12,15 @@ document.addEventListener('mousemove', (e) => {
 });
 
 if (window.innerWidth > 768 && cursorEl) {
+  // Submarine is live from the first frame — sits at center, then follows the mouse
+  cursorEl.style.transform = `translate(${mouseX - 34}px, ${mouseY - 16}px)`;
   document.addEventListener('mousemove', (e) => {
-    if (!bootComplete) return;                         // boot owns the cursor until ready
     cursorEl.style.transform = `translate(${e.clientX - 34}px, ${e.clientY - 16}px)`;
   });
 
   // Hide submarine over clickable elements (let native pointer show)
-  const hideSub = () => { if (bootComplete) cursorEl.style.opacity = '0'; };
-  const showSub = () => { if (bootComplete) cursorEl.style.opacity = '1'; };
+  const hideSub = () => { cursorEl.style.opacity = '0'; };
+  const showSub = () => { cursorEl.style.opacity = '1'; };
   document.addEventListener('mouseover', (e) => {
     if (e.target.closest('a, button, .logo-stack, .ambient-btn')) hideSub();
     else showSub();
@@ -358,37 +357,13 @@ loadVideos();
 // ─── Boot Sequence ───────────────────────────────────────
 (function boot() {
   document.body.classList.add('booting');
-  const isDesktop = window.innerWidth > 768;
 
-  // Submarine simply waits at the live cursor position — no drop-in animation
-  if (cursorEl && isDesktop) {
-    cursorEl.style.transition = 'none';
-    cursorEl.style.transform = `translate(${mouseX - 34}px, ${mouseY - 16}px)`;
-  }
-
-  // Stage 1 — Letters animate via CSS
-  // Stage 2 @ 1.5s — Background fades in
-  setTimeout(() => document.body.classList.add('boot-bg'), 1500);
-
-  // Stage 3 @ 2.0s — radar canvas fades in
-  setTimeout(() => document.body.classList.add('boot-particles'), 2000);
-
-  // Stage 4 @ 3.0s — Buttons, ambient, scroll hint, camper ID stagger in
-  setTimeout(() => document.body.classList.add('boot-buttons'), 3000);
-
-  // Stage 5 @ 4.0s — Submarine just fades in where the cursor already is, then follows
-  setTimeout(() => {
-    document.body.classList.remove('booting');
-    bootComplete = true;
-    if (cursorEl && isDesktop) {
-      cursorEl.style.opacity = '0';
-      cursorEl.style.transition = 'opacity 0.5s ease';
-      cursorEl.style.transform = `translate(${mouseX - 34}px, ${mouseY - 16}px)`;
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        cursorEl.style.opacity = '1';
-      }));
-    }
-  }, 4000);
+  // The page reveal stages in (bg, then particles, then the button stack).
+  // The submarine cursor is NOT part of this — it's already live from load.
+  setTimeout(() => document.body.classList.add('boot-bg'), 1500);        // background fades in
+  setTimeout(() => document.body.classList.add('boot-particles'), 2000); // radar canvas fades in
+  setTimeout(() => document.body.classList.add('boot-buttons'), 3000);   // buttons / hint / camper id
+  setTimeout(() => document.body.classList.remove('booting'), 4000);     // done
 })();
 
 function initMobileCarousel(track) {
