@@ -87,9 +87,10 @@
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
   <!-- Custom cursor -->
-  <div id="cursor">
+  <div id="cursor" aria-hidden="true">
     <img src="submarine_white.png" alt="" draggable="false" />
     <svg viewBox="0 0 240 110" xmlns="http://www.w3.org/2000/svg" style="display:none">
       <ellipse cx="130" cy="72" rx="95" ry="30" fill="white"/>
@@ -115,16 +116,18 @@
       <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
     </svg>
   </button>
-  <img src="listen_to_fire.png" class="ambient-hint" id="ambientHint" alt="" draggable="false" />
+  <img src="listen_to_fire.png" class="ambient-hint" id="ambientHint" alt="" aria-hidden="true" draggable="false" />
   <!-- Drop your campfire audio here when ready -->
   <audio id="ambientAudio" loop preload="auto">
     <source src="campfire.wav" type="audio/wav" />
   </audio>
 
-  <canvas id="particles"></canvas>
+  <canvas id="particles" aria-hidden="true"></canvas>
 
 <!-- Flashlight mode overlay (press F to toggle) -->
   <div id="flashlight" aria-hidden="true"></div>
+
+  <main id="main" tabindex="-1">
 
   <!-- HERO -->
   <section class="hero">
@@ -142,19 +145,19 @@
       </div>
 
       <nav class="links">
-        <a href="https://www.youtube.com/@barelycamping" target="_blank" class="link-btn">
+        <a href="https://www.youtube.com/@barelycamping" target="_blank" rel="noopener noreferrer" class="link-btn">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.107-2.117C19.379 3.5 12 3.5 12 3.5s-7.379 0-9.391.569A2.994 2.994 0 0 0 .502 6.186 31.35 31.35 0 0 0 0 12a31.35 31.35 0 0 0 .502 5.814 2.994 2.994 0 0 0 2.107 2.117C4.621 20.5 12 20.5 12 20.5s7.379 0 9.391-.569a2.994 2.994 0 0 0 2.107-2.117A31.35 31.35 0 0 0 24 12a31.35 31.35 0 0 0-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
           YouTube
         </a>
-        <a href="https://www.instagram.com/barelycampin" target="_blank" class="link-btn">
+        <a href="https://www.instagram.com/barelycampin" target="_blank" rel="noopener noreferrer" class="link-btn">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.242-1.308-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608C4.515 2.497 5.783 2.225 7.149 2.163 8.415 2.105 8.795 2.163 12 2.163zm0-2.163C8.741 0 8.332.014 7.052.072 5.197.157 3.355.673 2.014 2.014.673 3.355.157 5.197.072 7.052.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.085 1.855.601 3.697 1.942 5.038 1.341 1.341 3.183 1.857 5.038 1.942C8.332 23.986 8.741 24 12 24s3.668-.014 4.948-.072c1.855-.085 3.697-.601 5.038-1.942 1.341-1.341 1.857-3.183 1.942-5.038.058-1.28.072-1.689.072-4.948s-.014-3.668-.072-4.948c-.085-1.855-.601-3.697-1.942-5.038C20.645.673 18.803.157 16.948.072 15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
           Instagram
         </a>
-        <a href="https://www.tiktok.com/@barelycamping" target="_blank" class="link-btn">
+        <a href="https://www.tiktok.com/@barelycamping" target="_blank" rel="noopener noreferrer" class="link-btn">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
           TikTok
         </a>
-        <a href="https://www.facebook.com/profile.php?id=61576663508596" target="_blank" class="link-btn">
+        <a href="https://www.facebook.com/profile.php?id=61576663508596" target="_blank" rel="noopener noreferrer" class="link-btn">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21.5v-8h2.7l.4-3.1h-3.1V8.4c0-.9.25-1.5 1.55-1.5H16.7V4.12c-.29-.04-1.3-.12-2.48-.12-2.45 0-4.12 1.49-4.12 4.24v2.36H7.4v3.1h2.7v8h3.4z"/></svg>
           Facebook
         </a>
@@ -176,15 +179,18 @@
   </section>
 
   <!-- VIDEOS -->
-  <section class="videos-section">
+  <section class="videos-section" aria-label="Latest BarelyCamping videos">
     <div class="videos-track-wrap">
       <div class="videos-track" id="videoTrack"></div>
     </div>
   </section>
 
+  </main>
+
   <!-- Footer -->
   <footer class="site-footer">
     <a href="privacy.html">privacy</a>
+    <a href="accessibility.html">accessibility</a>
   </footer>
 
   <!-- Camper ID (bottom corner) -->

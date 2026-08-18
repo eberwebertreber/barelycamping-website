@@ -537,3 +537,38 @@ console.log(
 `,
   'color:#c8a96e;font-family:monospace;font-size:11px;line-height:1.4'
 );
+
+/* ─── Accessibility ───────────────────────────────────────────
+   Two things the CSS can't do on its own:
+   1. Give the real mouse pointer back the moment someone starts
+      navigating by keyboard, since body{cursor:none} hides it.
+   2. Freeze the hero video and the carousel when the visitor has
+      asked their OS to reduce motion.
+   ─────────────────────────────────────────────────────────── */
+(function () {
+  // 1. keyboard navigation flag
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') document.body.classList.add('kb-nav');
+  });
+  window.addEventListener('mousedown', function () {
+    document.body.classList.remove('kb-nav');
+  });
+
+  // 2. reduced motion
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function applyMotionPref() {
+    var vid = document.getElementById('heroVideo');
+    if (!vid) return;
+    if (mq.matches) {
+      vid.removeAttribute('autoplay');
+      vid.loop = false;
+      vid.pause();
+    } else if (vid.paused) {
+      vid.loop = true;
+      vid.play().catch(function () {});
+    }
+  }
+  applyMotionPref();
+  if (mq.addEventListener) mq.addEventListener('change', applyMotionPref);
+  else if (mq.addListener) mq.addListener(applyMotionPref);
+})();

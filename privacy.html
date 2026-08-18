@@ -65,10 +65,14 @@
       text-decoration: none;
     }
     .back:hover { color: #fff; }
+    .skip-link { position:absolute; left:12px; top:-70px; z-index:999; background:#f0ece6; color:#0a0a0a; font-size:15px; font-weight:600; padding:12px 18px; border-radius:4px; text-decoration:none; transition:top .12s ease-out; }
+    .skip-link:focus { top:12px; }
+    :focus-visible { outline:3px solid #ffb347; outline-offset:3px; border-radius:2px; }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <main class="wrap" id="main" tabindex="-1">
     <h1>Privacy</h1>
     <div class="updated">BarelyCamping &middot; updated June 2026</div>
 
@@ -92,7 +96,10 @@
     <h2>Questions</h2>
     <p>Email me at <a href="mailto:hello@barelycamping.com">hello@barelycamping.com</a> and I'll answer.</p>
 
+    <h2>Accessibility</h2>
+    <p>How this site works with a keyboard, a screen reader, and reduced motion is written up on the <a href="accessibility.html">accessibility page</a>.</p>
+
     <a class="back" href="/">&larr; back to camp</a>
-  </div>
+  </main>
 </body>
 </html>

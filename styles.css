@@ -558,3 +558,88 @@ body.booting.boot-buttons .camper-id {
   .link-btn { font-size: 0.74rem; padding: 0.7rem 1.1rem; }
   .hero-content { gap: 1.2rem; }
 }
+
+/* ============================================================
+   ACCESSIBILITY LAYER
+   WCAG 2.2 Level AA support. None of this changes the look of
+   the site for a mouse user with motion enabled. It only shows
+   up for keyboard, screen reader, and reduced-motion visitors.
+   ============================================================ */
+
+/* --- skip link (WCAG 2.4.1 Bypass Blocks) --- */
+.skip-link {
+  position: absolute; left: 12px; top: -70px;
+  z-index: 10000;
+  background: #f0ece6; color: #0a0a0a;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 15px; font-weight: 600;
+  padding: 12px 18px; border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer !important;
+  transition: top .12s ease-out;
+}
+.skip-link:focus { top: 12px; }
+
+/* --- visible focus (WCAG 2.4.7 / 2.4.11) ---
+   The site had no focus styling at all, so a keyboard user had
+   no way to tell where they were. */
+:focus-visible {
+  outline: 3px solid #ffb347;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+a:focus-visible, button:focus-visible, .link-btn:focus-visible, .ambient-btn:focus-visible {
+  outline: 3px solid #ffb347;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 7px rgba(255, 179, 71, .25);
+}
+/* the custom submarine cursor hides the system pointer, so a keyboard
+   user needs the real one back the moment they start tabbing */
+body.kb-nav { cursor: auto; }
+body.kb-nav #cursor { display: none; }
+
+/* --- target size (WCAG 2.2, 2.5.8) --- */
+.link-btn, .ambient-btn, .site-footer a { min-height: 24px; min-width: 24px; }
+
+/* --- reduced motion (WCAG 2.3.3) ---
+   The particle field, the drifting video carousel, the letter-in
+   logo reveal, the bobbing scroll hint and the custom cursor are
+   all decoration. Off they go. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  html { scroll-behavior: auto !important; }
+
+  /* the carousel is the one piece of continuous motion: stop it dead */
+  .videos-track { animation: none !important; transform: none !important; }
+
+  /* decorative canvases and overlays */
+  #particles, #cursor, .ambient-hint { display: none !important; }
+
+  /* give the real pointer back */
+  body { cursor: auto !important; }
+
+  /* the hero video keeps its poster frame instead of looping */
+  .hero-video { animation: none !important; }
+
+  .scroll-hint svg { animation: none !important; }
+}
+
+/* --- forced colours / Windows High Contrast --- */
+@media (forced-colors: active) {
+  .link-btn, .ambient-btn { border: 2px solid; }
+  :focus-visible { outline: 3px solid Highlight; }
+}
+
+/* --- legal / statement pages share the privacy page look --- */
+.wrap .a11y-box {
+  border-left: 3px solid #ffb347;
+  background: rgba(255, 179, 71, .07);
+  padding: 16px 18px;
+  margin: 18px 0;
+  border-radius: 4px;
+}
+.wrap .a11y-box p:last-child { margin-bottom: 0; }

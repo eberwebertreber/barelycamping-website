@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessibility - BarelyCamping</title>
+  <meta name="description" content="The BarelyCamping accessibility statement. The site targets WCAG 2.2 Level AA, works with a keyboard and a screen reader, and turns off motion if your system asks it to." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://barelycamping.com/accessibility.html" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    @font-face { font-family: 'Bonfire'; src: url('BonfireRegular.otf') format('opentype'); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #080808;
+      color: #f0ece6;
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 4.5rem 1.5rem 5rem;
+    }
+    h1 {
+      font-family: 'Bonfire', serif;
+      font-size: clamp(2.6rem, 8vw, 4rem);
+      font-weight: normal;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.4rem;
+    }
+    .updated {
+      font-family: ui-monospace, 'SF Mono', Consolas, monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.32);
+      margin-bottom: 2.4rem;
+    }
+    h2 {
+      font-size: 1.05rem;
+      letter-spacing: 0.02em;
+      margin: 2.2rem 0 0.6rem;
+      color: #fff;
+    }
+    p { color: rgba(255,255,255,0.72); margin-bottom: 0.9rem; }
+    ul { color: rgba(255,255,255,0.72); margin: 0 0 0.9rem 1.2rem; }
+    li { margin-bottom: 0.5rem; }
+    a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+    .lead {
+      font-size: 1.12rem;
+      color: rgba(255,255,255,0.9);
+      border-left: 2px solid rgba(255,255,255,0.2);
+      padding-left: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    .back {
+      display: inline-block;
+      margin-top: 3rem;
+      font-family: ui-monospace, 'SF Mono', Consolas, monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.12em;
+      text-transform: lowercase;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+    }
+    .back:hover { color: #fff; }
+    .skip-link {
+      position: absolute; left: 12px; top: -70px; z-index: 999;
+      background: #f0ece6; color: #0a0a0a; font-size: 15px; font-weight: 600;
+      padding: 12px 18px; border-radius: 4px; text-decoration: none;
+      transition: top .12s ease-out;
+    }
+    .skip-link:focus { top: 12px; }
+    :focus-visible { outline: 3px solid #ffb347; outline-offset: 3px; border-radius: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <main class="wrap" id="main" tabindex="-1">
+    <h1>Accessibility</h1>
+    <div class="updated">BarelyCamping &middot; last reviewed August 2026</div>
+
+    <p class="lead">Short version: this site is built to meet WCAG 2.2 Level AA. It works with a keyboard, it works with a screen reader, and all the moving stuff switches off if your system asks it to. If something here blocks you, email me and I will fix it.</p>
+
+    <h2>What I am aiming for</h2>
+    <p>The target is the <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener noreferrer">Web Content Accessibility Guidelines (WCAG) 2.2, Level AA</a>. That is the standard US courts and the Department of Justice point to when deciding whether a website is accessible under the Americans with Disabilities Act. I want anyone to be able to find my videos and my socials here, however they browse.</p>
+
+    <h2>What is in place</h2>
+    <ul>
+      <li>Every link and button works with a keyboard, and there is a skip link so you do not have to tab through the header every time.</li>
+      <li>Whatever you are focused on gets a bright outline, so you can see where you are.</li>
+      <li>The page has proper landmarks and headings so a screen reader can jump around it.</li>
+      <li>The drifting video row, the floating particles, the animated logo, the custom submarine cursor and the looping hero video all stop if your operating system is set to reduce motion. The normal mouse pointer comes back too.</li>
+      <li>The submarine cursor also steps aside the moment you start navigating with Tab.</li>
+      <li>Images that are purely decoration are hidden from screen readers instead of being read out as noise.</li>
+      <li>The campfire sound never plays on its own. You have to press the button, and you can press it again to stop.</li>
+      <li>Text stays readable when you zoom to 400%, and the layout works down to a 320 pixel wide screen.</li>
+      <li>Nothing on the site flashes more than three times a second.</li>
+    </ul>
+
+    <h2>Where it falls short</h2>
+    <p>Being honest about the gaps, since a statement claiming everything is perfect is not worth much:</p>
+    <ul>
+      <li><b>The campsite game.</b> The pixel game at <a href="game.html">explore the campsite</a> is played with arrow keys on a canvas. It is keyboard operable, but a screen reader cannot describe what is happening on screen, and there is no non-visual way to play it. It is a bonus toy rather than a way to get information, and nothing on the rest of the site depends on it.</li>
+      <li><b>The video row.</b> The strip of latest videos drifts sideways on its own. It stops for reduced motion, but there is no separate pause button yet. Every video in it is also on <a href="https://www.youtube.com/@barelycamping" target="_blank" rel="noopener noreferrer">my YouTube channel</a>, which is the more accessible way to browse them.</li>
+      <li><b>Captions on the videos themselves.</b> My videos live on YouTube, and captions there are a mix of ones I have uploaded and YouTube automatic ones. I am working through the back catalogue adding proper ones.</li>
+      <li><b>Other sites.</b> YouTube, Instagram, TikTok and Facebook are outside my control and follow their own accessibility practices.</li>
+    </ul>
+    <p>I have tested this site myself with a keyboard, with screen reader spot checks, and with automated tools. It has not had a formal third-party audit.</p>
+
+    <h2>No accessibility overlay</h2>
+    <p>This site does not use one of those floating accessibility widgets that promise instant compliance. They sit on top of a page without fixing the code underneath, a lot of screen reader users say they get in the way of the software they already use, and plenty of sites running one have been sued anyway. Fixing the actual markup takes longer and it is the part that works.</p>
+
+    <h2>Tell me if something blocks you</h2>
+    <p>If any part of this site stops you doing something, email <a href="mailto:hello@barelycamping.com">hello@barelycamping.com</a>. You do not need to explain why or prove anything.</p>
+    <p>Tell me what page you were on, what you were trying to do, and what got in the way. Your browser and any assistive tech helps if you know it, but do not worry if you do not. I aim to reply within <b>5 business days</b> with either the fix or a date for it. If you need something from this site in a different format, ask and I will sort it out with you.</p>
+
+    <h2>If you are not happy with my reply</h2>
+    <p>You can raise it with the <a href="https://www.ada.gov/file-a-complaint/" target="_blank" rel="noopener noreferrer">US Department of Justice Civil Rights Division</a>, which takes complaints under the ADA. I would much rather you came to me first so I can actually fix it, but that route is there.</p>
+
+    <a class="back" href="/">&larr; back to camp</a>
+  </main>
+</body>
+</html>

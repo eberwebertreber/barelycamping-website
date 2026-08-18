@@ -23,7 +23,9 @@
   </div>
 
   <div id="stage">
-    <canvas id="game" width="480" height="320"></canvas>
+    <canvas id="game" width="480" height="320" role="img"
+      aria-label="The campsite: a top-down pixel map of the real BarelyCamping spot. Arrow keys move, Z interacts, C swaps character, F toggles the headlamp."></canvas>
+    <p class="sr-only">This is a visual pixel game played on a canvas. A screen reader cannot describe what happens on screen. Nothing on the rest of the site depends on it. See the <a href="accessibility.html">accessibility page</a> for details.</p>
 
     <!-- Title screen -->
     <div id="title" class="overlay">
