@@ -356,6 +356,12 @@ loadVideos();
 
 // ─── Boot Sequence ───────────────────────────────────────
 (function boot() {
+  // Someone who asked for reduced motion should not sit through a 4 second
+  // staged reveal. Land straight on the finished state.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.body.classList.add('boot-bg', 'boot-particles', 'boot-buttons', 'booted');
+    return;
+  }
   document.body.classList.add('booting');
 
   // The page reveal stages in (bg, then particles, then the button stack).
@@ -363,7 +369,12 @@ loadVideos();
   setTimeout(() => document.body.classList.add('boot-bg'), 1500);        // background fades in
   setTimeout(() => document.body.classList.add('boot-particles'), 2000); // radar canvas fades in
   setTimeout(() => document.body.classList.add('boot-buttons'), 3000);   // buttons / hint / camper id
-  setTimeout(() => document.body.classList.remove('booting'), 4000);     // done
+  setTimeout(() => {                                                     // done
+    // add .booted BEFORE dropping .booting so there is never a frame
+    // where neither matches and the base stagger re-triggers
+    document.body.classList.add('booted');
+    document.body.classList.remove('booting');
+  }, 4000);
 })();
 
 function initMobileCarousel(track) {

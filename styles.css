@@ -407,6 +407,16 @@ body.booting.boot-buttons .camper-id {
   opacity: 1;
 }
 
+/* Boot finished. Pin the buttons where the boot stagger left them.
+   Without this, dropping .booting makes .link-btn fall back to the base
+   rule's 1.25s-2.0s delays, which re-times the entrance animation and the
+   whole stack blinks out and fades in a second time. */
+body.booted .link-btn {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
 
 /* ─── Videos ────────────────────────────────────────────── */
 .videos-section {
