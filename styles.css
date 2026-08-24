@@ -223,7 +223,27 @@ body.flashlight-on #flashlight::before {
   letter-spacing: 0.04em;
   display: block;
 
-  /* Glass gradient clipped to text */
+  /* Plain white until the JS splits this into .letter spans. Those spans
+     carry the glass gradient themselves — see the note on .letter below. */
+  color: #fff;
+
+  /* Frosted glass edge + subtle depth */
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
+  filter:
+    drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4))
+    drop-shadow(0 4px 14px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 18px rgba(255, 255, 255, 0.08));
+}
+
+/* ─── Letter animation (random directions set via JS) ───── */
+/* The glass gradient lives here, not on .logo-line. Each letter is an
+   inline-block with its own animation, which makes it a separate paint
+   layer, and a parent-level `background-clip: text` never reaches inside
+   one. That left every glyph transparent with only the stroke showing —
+   the hollow-outline logo. Clip the gradient per letter instead. */
+.letter {
+  display: inline-block;
+
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.98) 0%,
@@ -236,17 +256,6 @@ body.flashlight-on #flashlight::before {
   -webkit-text-fill-color: transparent;
   color: transparent;
 
-  /* Frosted glass edge + subtle depth */
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
-  filter:
-    drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4))
-    drop-shadow(0 4px 14px rgba(0, 0, 0, 0.55))
-    drop-shadow(0 0 18px rgba(255, 255, 255, 0.08));
-}
-
-/* ─── Letter animation (random directions set via JS) ───── */
-.letter {
-  display: inline-block;
   animation: letter-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: calc(var(--i) * 0.055s + 0.25s);
 }
