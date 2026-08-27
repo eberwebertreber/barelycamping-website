@@ -69,14 +69,26 @@
     .skip-link:focus { top:12px; }
     :focus-visible { outline:3px solid #ffb347; outline-offset:3px; border-radius:2px; }
   </style>
+
+  <!-- Vercel Web Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSK1QKWB8Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CSK1QKWB8Z');
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <main class="wrap" id="main" tabindex="-1">
     <h1>Privacy</h1>
-    <div class="updated">BarelyCamping &middot; updated June 2026</div>
+    <div class="updated">BarelyCamping &middot; updated August 2026</div>
 
-    <p class="lead">Short version: this is just a landing page for my YouTube channel. I don't collect your personal info, I don't sell anything to anyone, and I don't run ads or trackers on you.</p>
+    <p class="lead">Short version: this is just a landing page for my YouTube channel. I don't collect your personal info, I don't sell anything to anyone, and I don't run ads. I do count visits so I know whether anyone's actually out here.</p>
 
     <h2>What this site does</h2>
     <p>It shows links to my socials, pulls in my latest YouTube videos, and has a little camping game. That's it. There's no account, no login, no contact form, no email signup.</p>
@@ -86,6 +98,10 @@
 
     <h2>Visitor count</h2>
     <p>To give each person a "camper #" the site pings a simple public counter. It just bumps a number up by one. No names, no emails, nothing that points back to you.</p>
+
+    <h2>Analytics</h2>
+    <p>I use Google Analytics and Vercel Web Analytics to see how many people visit, which pages they land on, and roughly what country they're in. Google Analytics sets a cookie so it can tell a repeat visit from a new one. Vercel's version doesn't use cookies at all. Neither one tells me who you are, and I never see anything that points back to you personally.</p>
+    <p>If you'd rather not be counted, most ad blockers stop both of them, and the site works exactly the same either way.</p>
 
     <h2>Other companies</h2>
     <p>The site is hosted on Vercel and the videos come from YouTube, so those services see normal web traffic the way every website does (basically your IP and browser, for the request to work). I don't get any of that, and you can read their own policies if you want the details.</p>
