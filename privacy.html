@@ -72,34 +72,9 @@
 
   <meta name="facebook-domain-verification" content="oqv658cfrza5zhjb9ftm6t87j9te4u" />
 
-  <!-- Vercel Web Analytics -->
-  <script defer src="/_vercel/insights/script.js"></script>
+  <!-- Analytics and advertising, consent-gated for EU/UK visitors -->
+  <script src="/consent.js"></script>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSK1QKWB8Z"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-CSK1QKWB8Z');
-  </script>
-
-  <!-- Meta Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window,document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1791285082052936');
-  fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1791285082052936&ev=PageView&noscript=1" alt="" /></noscript>
-  <!-- End Meta Pixel Code -->
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -113,19 +88,22 @@
     <p>It shows links to my socials, pulls in my latest YouTube videos, and has a little camping game. That's it. There's no account, no login, no contact form, no email signup.</p>
 
     <h2>Stuff stored on your own device</h2>
-    <p>Your browser saves one small thing locally so the site behaves: a visitor number, so your camper number stays the same when you come back. That stays on your device. I never see it. Clear your browser data and it's gone.</p>
+    <p>Your browser saves two small things locally so the site behaves: a visitor number, so your camper number stays the same when you come back, and, if you were asked, your answer about tracking. Both stay on your device. I never see either one. Clear your browser data and they're gone.</p>
 
     <h2>Visitor count</h2>
     <p>To give each person a "camper #" the site pings a simple public counter. It just bumps a number up by one. No names, no emails, nothing that points back to you.</p>
 
     <h2>Analytics</h2>
-    <p>I use Google Analytics and Vercel Web Analytics to see how many people visit, which pages they land on, and roughly what country they're in. Google Analytics sets a cookie so it can tell a repeat visit from a new one. Vercel's version doesn't use cookies at all. Neither one tells me who you are, and I never see anything that points back to you personally.</p>
-    <p>If you'd rather not be counted, most ad blockers stop both of them, and the site works exactly the same either way.</p>
+    <p>Two things count visits here. Vercel Web Analytics is the plain one: no cookies, no following you around other websites, it just tallies pages. Google Analytics is the fuller one, and it does set a cookie so it can tell a returning visit from a new one. It shows me page counts, rough country, and what kind of device you're on. Neither one tells me who you are.</p>
 
     <h2>Advertising</h2>
-    <p>I also run the Meta Pixel, the tracking tool behind Facebook and Instagram ads. It tells Meta that a browser visited this site, which lets me show ads later to people who have been here before. Mostly that's for merch, whenever that finally launches.</p>
-    <p>Worth being clear about what this does and doesn't do: I never learn who you are. I can't pull your name or your email out of it, and I can't download a list of anyone who visited. All it gives me is the ability to point an ad at a group of people I'll never see.</p>
-    <p>Most ad blockers stop it, same as the analytics, and nothing on the site breaks if you block it.</p>
+    <p>I also run the Meta Pixel, the tracking tool behind Facebook and Instagram ads. It tells Meta that a browser visited this site, which lets me show ads to people who have been here before. Mostly that's for merch, whenever that finally launches.</p>
+    <p>Worth being clear about what it doesn't do. I never learn who you are. I can't pull a name or an email out of it, and I can't download a list of anyone who visited. All I get is the ability to point an ad at a group of people I'll never see.</p>
+
+    <h2>Your choice</h2>
+    <p>If you're in the EU or the UK, Google Analytics and the Meta Pixel don't load at all until you say yes. You'll get a small bar at the bottom of the page with two buttons, and until you pick one, neither of them runs. Say no and they never load. The cookieless visit counter keeps working either way, because it isn't tracking you.</p>
+    <p>Your answer is saved in your own browser, not on a server anywhere. To change it, clear this site's data in your browser and the bar comes back.</p>
+    <p>Everywhere else, both load by default. Any ad blocker or your browser's tracking protection stops them, and nothing on the site breaks if you block them.</p>
 
     <h2>Other companies</h2>
     <p>The site is hosted on Vercel and the videos come from YouTube, so those services see normal web traffic the way every website does (basically your IP and browser, for the request to work). I don't get any of that, and you can read their own policies if you want the details.</p>
