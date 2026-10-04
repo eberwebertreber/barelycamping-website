@@ -335,25 +335,6 @@ async function loadVideos() {
 loadVideos();
 
 
-// ─── Camper ID (persistent visitor number) ───────────────
-(async function assignCamperId() {
-  const el = document.getElementById('camperId');
-  if (!el) return;
-  let id = localStorage.getItem('bc_camperId');
-  if (!id) {
-    try {
-      const r = await fetch('https://abacus.jasoncameron.dev/hit/barelycamping.com/camper');
-      const data = await r.json();
-      id = data.value;
-    } catch {
-      id = Math.floor(Math.random() * 90000) + 10000;   // fallback
-    }
-    localStorage.setItem('bc_camperId', id);
-  }
-  el.textContent = `camper #${Number(id).toLocaleString()}`;
-})();
-
-
 // ─── Boot Sequence ───────────────────────────────────────
 (function boot() {
   // Someone who asked for reduced motion should not sit through a 4 second
@@ -368,7 +349,7 @@ loadVideos();
   // The submarine cursor is NOT part of this — it's already live from load.
   setTimeout(() => document.body.classList.add('boot-bg'), 1500);        // background fades in
   setTimeout(() => document.body.classList.add('boot-particles'), 2000); // radar canvas fades in
-  setTimeout(() => document.body.classList.add('boot-buttons'), 3000);   // buttons / hint / camper id
+  setTimeout(() => document.body.classList.add('boot-buttons'), 3000);   // buttons / hint
   setTimeout(() => {                                                     // done
     // add .booted BEFORE dropping .booting so there is never a frame
     // where neither matches and the base stagger re-triggers

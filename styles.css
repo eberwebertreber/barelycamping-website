@@ -402,17 +402,15 @@ body.booting.boot-buttons .link-btn:nth-child(4) { animation-delay: 0.42s; }
 body.booting.boot-buttons .link-btn:nth-child(5) { animation-delay: 0.56s; }
 body.booting.boot-buttons .link-btn:nth-child(6) { animation-delay: 0.70s; }
 
-/* Hide the ambient controls, scroll hint, camper ID until late */
+/* Hide the ambient controls and scroll hint until late */
 body.booting .ambient-btn,
 body.booting .ambient-hint,
-body.booting .scroll-hint,
-body.booting .camper-id {
+body.booting .scroll-hint {
   opacity: 0;
   transition: opacity 0.8s ease;
 }
 body.booting.boot-buttons .ambient-btn,
-body.booting.boot-buttons .scroll-hint,
-body.booting.boot-buttons .camper-id {
+body.booting.boot-buttons .scroll-hint {
   opacity: 1;
 }
 
@@ -473,23 +471,6 @@ body.booted .link-btn {
   transition: color 0.2s;
 }
 .site-footer a:hover { color: rgba(255, 255, 255, 0.6); }
-
-/* ─── Camper ID (bottom corner) ─────────────────────────── */
-.camper-id {
-  position: fixed;
-  bottom: 0.9rem;
-  left: 1rem;
-  font-family: ui-monospace, 'SF Mono', Consolas, monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.28);
-  pointer-events: none;
-  z-index: 5;
-  text-transform: lowercase;
-}
-@media (max-width: 768px) {
-  .camper-id { font-size: 0.62rem; bottom: 0.6rem; left: 0.7rem; }
-}
 
 .video-card {
   flex-shrink: 0;
