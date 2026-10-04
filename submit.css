@@ -1,0 +1,424 @@
+/* ============================================================
+   submit.css  -  "Let's Go Camping" video submission form
+
+   Plain form styling. Layers on top of styles.css, which gives
+   us #080808, the glass tokens, the skip link, the amber focus
+   ring, the reduced-motion kill switch and the cursor rule.
+
+   Radius rule: 4px on everything, full pill on the submit
+   button only (matching the homepage link pills).
+   ============================================================ */
+
+:root {
+  --line: rgba(255, 255, 255, 0.14);
+  --dim: rgba(255, 255, 255, 0.45);
+  --ok: #7bc08a;
+  --bad: #e07a6b;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.submit-page {
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.submit-page main {
+  display: flex;
+  justify-content: center;
+  padding: 5rem 1.25rem 4rem;
+}
+
+.card { width: 100%; max-width: 500px; }
+
+/* ─── Header ────────────────────────────────────────────── */
+.back-home {
+  position: fixed;
+  top: 1.1rem;
+  left: 1.3rem;
+  z-index: 100;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.back-home:hover { color: rgba(255, 255, 255, 0.75); }
+
+.submit-page h1 {
+  font-family: 'Bonfire', Georgia, serif;
+  font-weight: normal;
+  font-size: 2.4rem;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 0.55rem;
+}
+
+.lede {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ─── How to record ─────────────────────────────────────── */
+.howto {
+  margin: 1.8rem 0;
+  padding: 1.3rem 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.howto h2 {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.7rem;
+}
+
+.steps {
+  margin: 0 0 0.85rem 1.1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.steps li {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.68);
+  padding-left: 0.25rem;
+}
+.steps li::marker { color: rgba(255, 255, 255, 0.35); }
+.steps li strong { color: #fff; font-weight: 600; }
+
+.eg {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+.eg span { color: var(--dim); }
+
+/* ─── Example video, collapsed ──────────────────────────── */
+.example { margin-top: 0.9rem; }
+.example summary {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: var(--dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer !important;
+  list-style: none;
+  transition: color 0.18s;
+}
+.example summary::-webkit-details-marker { display: none; }
+.example summary:hover { color: #fff; }
+.example[open] summary { margin-bottom: 0.7rem; }
+
+.example-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #0d0d0d;
+}
+.example-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.example-pending {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+  background: #0d0d0d;
+}
+.example-frame.has-video .example-pending { display: none; }
+
+/* ─── Form fields ───────────────────────────────────────── */
+.field { margin-bottom: 1.5rem; }
+
+.label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.2rem;
+  padding: 0;
+}
+.label .opt {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--dim);
+  margin-left: 0.3rem;
+}
+
+.help {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--dim);
+  margin-bottom: 0.55rem;
+}
+
+.submit-page input[type="text"],
+.submit-page input[type="email"],
+.submit-page input[type="url"] {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  color: #f0ece6;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: border-color 0.18s;
+}
+.submit-page input::placeholder { color: rgba(255, 255, 255, 0.35); }
+.submit-page input[type="text"]:hover,
+.submit-page input[type="email"]:hover,
+.submit-page input[type="url"]:hover { border-color: rgba(255, 255, 255, 0.3); }
+.submit-page input[type="text"]:focus,
+.submit-page input[type="email"]:focus,
+.submit-page input[type="url"]:focus { border-color: rgba(255, 255, 255, 0.5); }
+
+.err {
+  display: none;
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--bad);
+}
+.err.show { display: block; }
+
+/* ─── File drop zone ────────────────────────────────────── */
+.drop {
+  position: relative;
+  border: 1px dashed var(--line);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 1.9rem 1.2rem;
+  text-align: center;
+  transition: border-color 0.18s, background 0.18s;
+}
+.drop:hover { border-color: rgba(255, 255, 255, 0.34); }
+.drop.dragover {
+  border-color: rgba(255, 255, 255, 0.6);
+  border-style: solid;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.drop input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer !important;
+}
+.drop[data-state="checking"] input[type="file"],
+.drop[data-state="picked"] input[type="file"] { display: none; }
+
+.drop-idle, .drop-checking, .drop-picked { display: none; }
+.drop[data-state="idle"]     .drop-idle     { display: block; }
+.drop[data-state="checking"] .drop-checking { display: block; }
+.drop[data-state="picked"]   .drop-picked   { display: block; }
+
+.drop-head { font-size: 0.95rem; font-weight: 600; color: #fff; }
+.drop-sub  { font-size: 0.85rem; color: var(--dim); margin-top: 0.1rem; }
+.drop-note { font-size: 0.76rem; color: rgba(255, 255, 255, 0.32); margin-top: 0.7rem; }
+
+.drop-checking p { font-size: 0.87rem; color: var(--dim); margin-top: 0.7rem; }
+.spin {
+  display: inline-block;
+  width: 20px; height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.16);
+  border-top-color: rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* What the browser read out of the file */
+.picked-name {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.6);
+  word-break: break-all;
+  margin-bottom: 0.8rem;
+}
+.checks {
+  list-style: none;
+  text-align: left;
+  display: grid;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+.checks li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+.checks li b { flex: none; width: 0.8rem; text-align: center; font-weight: 700; }
+.checks li.pass b { color: var(--ok); }
+.checks li.warn b { color: #d6b86a; }
+.checks li.fail b { color: var(--bad); }
+.checks li.fail   { color: var(--bad); }
+
+/* ─── "or" divider between upload and link ──────────────── */
+.or {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 1.5rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.8rem;
+}
+.or::before, .or::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ─── Confirmation checkboxes ───────────────────────────── */
+.confirm {
+  border: 0;
+  margin: 0 0 1.6rem;
+  padding: 0;
+}
+.confirm .label { margin-bottom: 0.65rem; }
+
+.check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  align-items: start;
+  margin-bottom: 0.7rem;
+  font-size: 0.87rem;
+  color: rgba(255, 255, 255, 0.65);
+  cursor: pointer !important;
+}
+.check input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  margin-top: 0.15rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  cursor: pointer !important;
+  transition: background 0.15s, border-color 0.15s;
+}
+.check input[type="checkbox"]:hover { border-color: rgba(255, 255, 255, 0.4); }
+.check input[type="checkbox"]:checked { background: #f0ece6; border-color: #f0ece6; }
+.check input[type="checkbox"]:checked::after {
+  content: '';
+  display: block;
+  width: 5px; height: 9px;
+  margin: 1px auto 0;
+  border: solid #0a0a0a;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.check:hover span { color: rgba(255, 255, 255, 0.88); }
+
+/* ─── Submit ────────────────────────────────────────────── */
+.send {
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 50px;
+  background: #f0ece6;
+  color: #0a0a0a;
+  font-family: inherit;
+  font-size: 0.93rem;
+  font-weight: 600;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background 0.18s;
+}
+.send:hover:not(:disabled) { background: #fff; }
+.send:active:not(:disabled) { transform: translateY(1px); }
+.send:disabled {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--line);
+  color: rgba(255, 255, 255, 0.35);
+  cursor: not-allowed !important;
+}
+
+.link-btn-sm {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: var(--dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer !important;
+  transition: color 0.18s;
+}
+.link-btn-sm:hover { color: #fff; }
+
+.progress { margin-top: 1rem; }
+.progress-bar {
+  height: 2px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+.progress-bar span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: #f0ece6;
+  transition: width 0.2s ease-out;
+}
+.progress-label {
+  margin-top: 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* ─── Success ───────────────────────────────────────────── */
+.done { padding: 0.5rem 0; }
+.done h2 {
+  font-family: 'Bonfire', Georgia, serif;
+  font-weight: normal;
+  font-size: 1.9rem;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+.done p { font-size: 0.93rem; color: rgba(255, 255, 255, 0.65); margin-bottom: 1rem; }
+
+/* ─── Fine print ────────────────────────────────────────── */
+.fine {
+  margin-top: 1.8rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.76rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.32);
+}
+
+/* ─── Small screens ─────────────────────────────────────── */
+@media (max-width: 680px) {
+  .submit-page { cursor: auto; }
+  #cursor { display: none; }
+  .submit-page main { padding: 4rem 1.1rem 3rem; }
+  .submit-page h1 { font-size: 2.1rem; }
+  .howto { padding: 1.1rem 1.1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin { animation: none !important; border-top-color: rgba(255, 255, 255, 0.16); }
+  .progress-bar span { transition: none !important; }
+  .submit-page { cursor: auto !important; }
+}
+
+@media (forced-colors: active) {
+  .drop, .check input[type="checkbox"], .send, .example-frame, .howto { border: 2px solid; }
+}

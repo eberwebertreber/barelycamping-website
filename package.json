@@ -1,0 +1,9 @@
+{
+  "name": "barelycamping-website",
+  "private": true,
+  "type": "module",
+  "description": "Static site. This file exists only so Vercel installs @vercel/blob for the clip-upload functions in api/. There is deliberately no build script.",
+  "dependencies": {
+    "@vercel/blob": "^2.8.0"
+  }
+}

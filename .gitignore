@@ -8,3 +8,8 @@ CLAUDE.md
 *.log
 .env
 .env.*
+
+# local dev only, never deployed
+dev-server.cjs
+_submissions/
+node_modules/

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Let's Go Camping Video Submissions - BarelyCamping</title>
+  <meta name="description" content="Submit a video of yourself saying let's go camping to be featured in an upcoming BarelyCamping video. Landscape, 1080p, under 15 seconds." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://barelycamping.com/submit.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="BarelyCamping" />
+  <meta property="og:title" content="Let's Go Camping Video Submissions" />
+  <meta property="og:description" content="Submit a video of yourself saying let's go camping to be featured in an upcoming BarelyCamping video." />
+  <meta property="og:url" content="https://barelycamping.com/submit.html" />
+  <meta property="og:image" content="https://barelycamping.com/og_image_dark.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Let's Go Camping Video Submissions" />
+  <meta name="twitter:image" content="https://barelycamping.com/og_image_dark.png" />
+
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="submit.css" />
+</head>
+<body class="submit-page">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <div id="cursor" aria-hidden="true">
+    <img src="submarine_white.png" alt="" draggable="false" />
+  </div>
+
+  <a class="back-home" href="/">barelycamping</a>
+
+  <main id="main" tabindex="-1">
+    <div class="card">
+
+      <h1>Let's Go Camping</h1>
+      <p class="lede">Submit a video of yourself saying "let's go camping" to be featured in an upcoming BarelyCamping video.</p>
+
+      <section class="howto">
+        <h2>How to record your video</h2>
+        <ol class="steps">
+          <li>Record somewhere you can be heard clearly.</li>
+          <li><strong>Hold your phone horizontally. Vertical videos will not be used.</strong></li>
+          <li>Say your name, where you're from, then say "let's go camping."</li>
+          <li>Keep the video under 15 seconds.</li>
+        </ol>
+        <p class="eg"><span>Example:</span> "I'm Dylan, I'm from Ohio, let's go camping."</p>
+
+        <details class="example" id="exampleWrap">
+          <summary>Watch an example</summary>
+          <div class="example-frame">
+            <video id="exampleVideo" playsinline muted loop controls preload="none" poster="example_poster.jpg">
+              <source src="example_lets_go_camping.mp4" type="video/mp4" />
+            </video>
+            <div class="example-pending" id="examplePending">example video goes here</div>
+          </div>
+        </details>
+      </section>
+
+      <form id="submitForm" novalidate>
+
+        <div class="field">
+          <span class="label" id="videoLabel">Your video</span>
+          <div class="drop" id="drop" data-state="idle" role="group" aria-labelledby="videoLabel">
+            <input type="file" id="fileInput" accept="video/mp4,video/quicktime,video/*" aria-label="Choose your video file" />
+
+            <div class="drop-idle">
+              <p class="drop-head">Choose a file</p>
+              <p class="drop-sub">or drag it here</p>
+              <p class="drop-note">MP4 or MOV, up to 200MB</p>
+            </div>
+
+            <div class="drop-checking">
+              <span class="spin" aria-hidden="true"></span>
+              <p>Checking video</p>
+            </div>
+
+            <div class="drop-picked">
+              <p class="picked-name" id="pickedName"></p>
+              <ul class="checks" id="checks"></ul>
+              <button type="button" class="link-btn-sm" id="clearFile">Choose a different file</button>
+            </div>
+          </div>
+          <p class="err" id="fileError" role="alert"></p>
+        </div>
+
+        <div class="or"><span>or</span></div>
+
+        <div class="field">
+          <label class="label" for="linkInput">Link to your video</label>
+          <p class="help">If you'd rather host it yourself, paste a link. Make sure the link opens for other people, which you can check in an incognito window.</p>
+          <input type="url" id="linkInput" placeholder="https://" maxlength="400" />
+          <p class="err" id="linkError" role="alert"></p>
+        </div>
+
+        <div class="field">
+          <label class="label" for="nameInput">First name</label>
+          <p class="help">This is what appears on screen if your video is used.</p>
+          <input type="text" id="nameInput" maxlength="40" autocomplete="given-name" required />
+          <p class="err" id="nameError" role="alert"></p>
+        </div>
+
+        <div class="field">
+          <label class="label" for="emailInput">Email <span class="opt">optional</span></label>
+          <p class="help">Only used to tell you which video you were featured in.</p>
+          <input type="email" id="emailInput" maxlength="120" autocomplete="email" />
+          <p class="err" id="emailError" role="alert"></p>
+        </div>
+
+        <fieldset class="field confirm">
+          <legend class="label">Please confirm before submitting</legend>
+          <label class="check">
+            <input type="checkbox" id="musicCheck" required />
+            <span>My video does not contain copyrighted music.</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="ageCheck" required />
+            <span>Everyone in my video is 18 or older.</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="rightsCheck" required />
+            <span>I filmed this video, and I give BarelyCamping permission to use it.</span>
+          </label>
+          <p class="err" id="consentError" role="alert"></p>
+        </fieldset>
+
+        <button type="submit" class="send" id="submitBtn" disabled>Submit</button>
+
+        <div class="progress" id="progress" hidden>
+          <div class="progress-bar"><span id="progressFill"></span></div>
+          <p class="progress-label" id="progressLabel">Uploading 0%</p>
+        </div>
+
+        <p class="err" id="formError" role="alert"></p>
+      </form>
+
+      <div class="done" id="done" hidden>
+        <h2>Submission received</h2>
+        <p>Every video gets watched. If yours is used, you'll see it in an upcoming upload.</p>
+        <button type="button" class="link-btn-sm" id="sendAnother">Submit another video</button>
+      </div>
+
+      <p class="fine">Please only submit once. All videos are deleted after the video they're used in is published.</p>
+
+    </div>
+  </main>
+
+  <script src="submit.js"></script>
+</body>
+</html>
