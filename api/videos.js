@@ -1,7 +1,6 @@
-// Fetches latest BarelyCamping videos.
-// Primary: YouTube RSS feed (reliable server-side, no API key).
-// Fallback: scrape youtube.com/@barelycamping/videos.
-// Returns: [{ id, title, thumbnail, url }, ...]
+// Latest videos for the homepage rows. Tries the YouTube RSS feed first
+// (no API key needed), then scrapes youtube.com/@barelycamping/videos.
+// Returns [{ id, title, thumbnail, url }, ...]
 
 const CHANNEL_ID = 'UCws7Cb7VJ78PszZiBoGOC8Q';
 const HANDLE     = '@barelycamping';

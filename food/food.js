@@ -40,9 +40,18 @@
   // hero clip: plays unless the visitor asked for less motion, and can be paused
   const video = document.getElementById('clip');
   const pp = document.getElementById('playpause');
+  let userPaused = reduce;
   const setPP = playing => { pp.innerHTML = `<i class="ph ph-${playing ? 'pause' : 'play'}" aria-hidden="true"></i>`; pp.setAttribute('aria-label', playing ? 'Pause the video' : 'Play the video'); };
-  if (!reduce) video.play().then(() => setPP(true)).catch(() => setPP(false)); else setPP(false);
-  pp.addEventListener('click', () => { if (video.paused) { video.play(); setPP(true); } else { video.pause(); setPP(false); } });
+  const go = () => { if (!userPaused) video.play().catch(() => {}); };
+  video.addEventListener('play', () => setPP(true));
+  video.addEventListener('pause', () => setPP(false));
+  const toggle = () => { userPaused = !video.paused; if (userPaused) video.pause(); else video.play().catch(() => {}); };
+  pp.addEventListener('click', toggle);
+  video.addEventListener('click', toggle);
+  if (reduce) { video.pause(); setPP(false); } else go();
+  // iOS pauses it when a system popup shows or you come back to the tab
+  addEventListener('pageshow', go);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) go(); });
 
   // filters
   const types = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Snack', 'Dessert'].filter(t => t === 'All' || M.some(m => m.type === t));
@@ -91,6 +100,7 @@
   document.addEventListener('click', e => {
     const a = e.target.closest('a[data-id]');
     if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+    if (matchMedia('(max-width: 768px)').matches) return;
     e.preventDefault();
     openMeal(a.dataset.id);
   });

@@ -1,4 +1,4 @@
-/* ─── The Campsite — pixel game tab ───────────────────────── */
+/* the campsite game page */
 @font-face {
   font-family: 'Bonfire';
   src: url('BonfireRegular.otf') format('opentype');
@@ -13,7 +13,6 @@ html, body {
   overflow: hidden;
 }
 
-/* Stage fills the viewport and centers the canvas */
 #stage {
   position: fixed;
   inset: 0;
@@ -40,7 +39,7 @@ html, body {
   border-radius: 3px;
 }
 
-/* ─── Overlays ───────────────────────────────────────────── */
+/* overlays */
 /* Title sits over a blurred, dimmed view of the actual campsite. */
 .overlay {
   position: absolute;
@@ -101,7 +100,7 @@ html, body {
   color: rgba(255,255,255,0.32);
 }
 
-/* ─── In-game UI ─────────────────────────────────────────── */
+/* in-game UI */
 .hint {
   position: absolute;
   bottom: 16px;
@@ -118,8 +117,9 @@ html, body {
 
 .exit-btn {
   position: absolute;
-  top: 16px;
-  left: 18px;
+  top: 8px;
+  left: 10px;
+  padding: 8px;
   font-size: 12px;
   letter-spacing: 1px;
   color: rgba(255,255,255,0.4);
@@ -130,7 +130,7 @@ html, body {
 .exit-btn.show { opacity: 1; }
 .exit-btn:hover { color: #fff; }
 
-/* ─── Map editor ─────────────────────────────────────────── */
+/* map editor */
 .edit-btn {
   position: absolute;
   top: 16px;
@@ -192,7 +192,7 @@ html, body {
   padding: 6px; resize: none;
 }
 
-/* ─── Sound panel ────────────────────────────────────────── */
+/* sound panel */
 .audio-btn {
   position: absolute; top: 16px; right: 18px;
   width: 30px; height: 30px; cursor: pointer; font-size: 15px;
@@ -216,7 +216,7 @@ html, body {
 }
 .audio-mute.on { background: #b23; color: #fff; border-color: #b23; }
 
-/* ─── Mobile gate ────────────────────────────────────────── */
+/* mobile gate */
 #mobileGate { display: none; }
 @media (max-width: 820px), (pointer: coarse) {
   #stage { display: none; }
@@ -233,7 +233,8 @@ html, body {
   .gate-note { color: rgba(255,255,255,0.6); line-height: 1.6; font-size: 15px; }
   .gate-link {
     display: inline-block;
-    margin-top: 24px;
+    padding: 8px 0;
+    margin-top: 16px;
     color: rgba(255,255,255,0.5);
     text-decoration: none;
     font-size: 13px;
@@ -242,7 +243,7 @@ html, body {
 }
 
 
-/* ─── Accessibility ───────────────────────────────────────── */
+/* accessibility */
 .sr-only {
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;

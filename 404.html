@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" href="/favicon.png" />
   <link rel="stylesheet" href="/styles.css" />
   <style>
-    /* Depth gradient — soft warm haze up top, pitch black descent. */
+    /* warm haze at the top, fading to black */
     body {
       background:
         radial-gradient(ellipse 80% 60% at 50% -10%,
@@ -24,7 +24,7 @@
       background-attachment: fixed;
     }
 
-    /* God rays — volumetric light shafts, warm ivory (moonlight / distant firelight) */
+    /* light shafts coming down from the surface */
     .godrays {
       position: fixed;
       inset: 0;
@@ -57,7 +57,7 @@
       100% { opacity: 0.5;  transform: rotate(calc(var(--rot, -6deg) + 1.2deg)) translateX(14px); }
     }
 
-    /* Subtle shimmer at the upper half — dust in a light beam */
+    /* faint shimmer near the top */
     .caustics {
       position: fixed;
       inset: 0;
@@ -149,7 +149,11 @@
       border-color: rgba(255,255,255,0.3);
       transform: translateX(6px);
     }
+    html, body { overflow-x: clip; }
     .lost-coords {
+      width: max-content;
+      max-width: calc(100% - 32px);
+      text-align: center;
       position: absolute;
       bottom: 2rem;
       left: 50%;
@@ -164,20 +168,18 @@
 
   <meta name="facebook-domain-verification" content="oqv658cfrza5zhjb9ftm6t87j9te4u" />
 
-  <!-- Analytics and advertising, consent-gated for EU/UK visitors -->
+  <!-- analytics, waits for consent in the EU/UK -->
   <script src="/consent.js"></script>
 
 </head>
 <body>
 
-  <!-- Custom cursor -->
   <div id="cursor">
     <img src="/submarine_white.png" alt="" draggable="false" />
   </div>
 
-  <canvas id="particles"></canvas>
+  <canvas id="particles" aria-hidden="true"></canvas>
 
-  <!-- Underwater ambience -->
   <div class="caustics" aria-hidden="true"></div>
   <div class="godrays" aria-hidden="true">
     <span class="ray" style="--x: 8%;  --w: 220px; --rot: -7deg; --dur: 13s; --d: 0s;"></span>
@@ -187,7 +189,6 @@
     <span class="ray" style="--x: 84%; --w: 240px; --rot: -9deg; --dur: 21s; --d: -12s;"></span>
   </div>
 
-  <!-- Heartbeat + flashlight overlays still work here -->
   <div id="heartbeat" aria-hidden="true"></div>
   <div id="flashlight" aria-hidden="true"></div>
 
@@ -196,7 +197,7 @@
     <h1 class="lost-code">404</h1>
     <p class="lost-title">Signal Lost</p>
     <a href="/" class="lost-back">Return to Camp</a>
-    <p class="lost-coords">LAT —— · LON —— · DEPTH UNKNOWN</p>
+    <p class="lost-coords">LAT --.---- · LON --.---- · DEPTH UNKNOWN</p>
   </main>
 
   <script src="/script.js"></script>

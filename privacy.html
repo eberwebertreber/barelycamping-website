@@ -13,6 +13,7 @@
     @font-face { font-family: 'Bonfire'; src: url('BonfireRegular.otf') format('opentype'); }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
+      overflow-wrap: anywhere;
       background: #080808;
       color: #f0ece6;
       font-family: system-ui, -apple-system, sans-serif;
@@ -36,7 +37,7 @@
       font-size: 0.72rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.32);
+      color: rgba(255,255,255,0.62);
       margin-bottom: 2.4rem;
     }
     h2 {
@@ -56,12 +57,13 @@
     }
     .back {
       display: inline-block;
-      margin-top: 3rem;
+      padding: 10px 0;
+      margin-top: 2.6rem;
       font-family: ui-monospace, 'SF Mono', Consolas, monospace;
       font-size: 0.74rem;
       letter-spacing: 0.12em;
       text-transform: lowercase;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.62);
       text-decoration: none;
     }
     .back:hover { color: #fff; }
@@ -72,7 +74,7 @@
 
   <meta name="facebook-domain-verification" content="oqv658cfrza5zhjb9ftm6t87j9te4u" />
 
-  <!-- Analytics and advertising, consent-gated for EU/UK visitors -->
+  <!-- analytics, waits for consent in the EU/UK -->
   <script src="/consent.js"></script>
 
 </head>
@@ -98,7 +100,7 @@
 
     <h2>Advertising</h2>
     <p>I also run the Meta Pixel, the tracking tool behind Facebook and Instagram ads. It tells Meta that a browser visited this site, which lets me show ads to people who have been here before. Mostly that's for merch, whenever that finally launches.</p>
-    <p>Worth being clear about what it doesn't do. I never learn who you are. I can't pull a name or an email out of it, and I can't download a list of anyone who visited. All I get is the ability to point an ad at a group of people I'll never see.</p>
+    <p>I never learn who you are. I can't pull a name or an email out of it, and I can't download a list of anyone who visited. All I get is the ability to point an ad at a group of people I'll never see.</p>
 
     <h2>Your choice</h2>
     <p>If you're in the EU or the UK, Google Analytics and the Meta Pixel don't load at all until you say yes. You'll get a small bar at the bottom of the page with two buttons, and until you pick one, neither of them runs. Say no and they never load. The cookieless visit counter keeps working either way, because it isn't tracking you.</p>

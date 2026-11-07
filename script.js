@@ -1,4 +1,4 @@
-// ─── DOM Cursor (no tilt) ────────────────────────────────
+// submarine cursor (no tilt)
 const cursorEl = document.getElementById('cursor');
 
 let mouseX = window.innerWidth / 2;
@@ -12,7 +12,7 @@ document.addEventListener('mousemove', (e) => {
 });
 
 if (window.innerWidth > 768 && cursorEl) {
-  // Submarine is live from the first frame — sits at center, then follows the mouse
+  // starts at the center on the first frame, then follows the mouse
   cursorEl.style.transform = `translate(${mouseX - 34}px, ${mouseY - 16}px)`;
   document.addEventListener('mousemove', (e) => {
     cursorEl.style.transform = `translate(${e.clientX - 34}px, ${e.clientY - 16}px)`;
@@ -31,7 +31,7 @@ if (window.innerWidth > 768 && cursorEl) {
 }
 
 
-// ─── Canvas Setup ────────────────────────────────────────
+// canvas setup
 const canvas = document.getElementById('particles');
 const ctx    = canvas.getContext('2d');
 
@@ -43,7 +43,7 @@ resize();
 window.addEventListener('resize', resize);
 
 
-// ─── Ember Particles ─────────────────────────────────────
+// ember particles
 const EMBER_COLORS = [
   'rgba(255,100,20,', 'rgba(255,60,10,',
   'rgba(255,160,40,', 'rgba(255,200,80,',
@@ -84,12 +84,12 @@ class Ember {
   }
 }
 
-// Ambient embers removed by request — no fire particles drifting up the page.
-// The array stays so the hidden konami burst still has somewhere to spawn into.
+// The drifting embers were removed. The array stays so the hidden
+// konami burst still has somewhere to spawn into.
 const embers = [];
 
 
-// ─── Radar Rings (slow sonar pings) ─────────────────────
+// radar rings (slow sonar pings)
 const rings = [];
 let lastRingTime = 0;
 
@@ -133,7 +133,7 @@ if (window.innerWidth > 768) {
 }
 
 
-// ─── Main Animation Loop ─────────────────────────────────
+// main animation loop
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   embers.forEach(e => { e.update(); e.draw(); });
@@ -147,7 +147,7 @@ function animate() {
 animate();
 
 
-// ─── Hero Video Parallax ─────────────────────────────────
+// hero video parallax
 const heroVideo = document.getElementById('heroVideo');
 if (heroVideo && window.innerWidth > 768) {
   document.addEventListener('mousemove', (e) => {
@@ -158,7 +158,7 @@ if (heroVideo && window.innerWidth > 768) {
 }
 
 
-// ─── Letter Drop (random directions) ────────────────────
+// letter drop (random directions)
 const DIRS = [
   ['0px',   '-50px'],  // top
   ['0px',    '50px'],  // bottom
@@ -187,7 +187,7 @@ if (line1 && line2) {
 }
 
 
-// ─── Konami Code Easter Egg (↑↑↓↓←→←→BA = ember burst) ──
+// Konami code Easter egg (↑↑↓↓←→←→BA = ember burst)
 const KONAMI = [
   'ArrowUp','ArrowUp','ArrowDown','ArrowDown',
   'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight',
@@ -209,7 +209,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 function spawnEmberBurst() {
-  if (embers.length > 1000) return;    // safety cap (raised for bigger burst)
+  if (embers.length > 1000) return;    // cap
   const cx = window.innerWidth  / 2;
   const cy = window.innerHeight / 2;
   for (let i = 0; i < 360; i++) {
@@ -230,7 +230,7 @@ function spawnEmberBurst() {
 }
 
 
-// ─── Flashlight Mode (press F = torch cone follows cursor) ─
+// flashlight mode (press F = torch cone follows cursor)
 const flashlightEl = document.getElementById('flashlight');
 
 document.addEventListener('keydown', (e) => {
@@ -242,7 +242,7 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Cone tracks the cursor (desktop) — reuses mousemove
+// cone follows the cursor on desktop, reuses mousemove
 document.addEventListener('mousemove', (e) => {
   if (!flashlightEl) return;
   flashlightEl.style.setProperty('--fx', e.clientX + 'px');
@@ -256,7 +256,7 @@ document.addEventListener('touchmove', (e) => {
 }, { passive: true });
 
 
-// ─── Logo Easter Egg (5 clicks = page glitch) ───────────
+// logo Easter egg (5 clicks = page glitch)
 const GLITCH_CHARS = '!@#$%Δ∑≠∞◆▲░▒▓';
 let logoClicks = 0;
 
@@ -288,7 +288,7 @@ document.getElementById('logoStack')?.addEventListener('click', () => {
 
 
 
-// ─── Video Carousel ──────────────────────────────────────
+// video carousel
 async function loadVideos() {
   const track = document.getElementById('videoTrack');
   if (!track) return;
@@ -305,12 +305,12 @@ async function loadVideos() {
 
     // Mobile: replace CSS auto-scroll with a touchable JS version
     if (window.innerWidth <= 768) initMobileCarousel(track);
-  } catch (e) { /* silent */ }
+  } catch (e) {}
 }
 loadVideos();
 
 
-// ─── Boot Sequence ───────────────────────────────────────
+// boot sequence
 (function boot() {
   // Someone who asked for reduced motion should not sit through a 4 second
   // staged reveal. Land straight on the finished state.
@@ -321,7 +321,7 @@ loadVideos();
   document.body.classList.add('booting');
 
   // The page reveal stages in (bg, then particles, then the button stack).
-  // The submarine cursor is NOT part of this — it's already live from load.
+  // The submarine cursor isn't part of this, it's live from page load.
   setTimeout(() => document.body.classList.add('boot-bg'), 1500);        // background fades in
   setTimeout(() => document.body.classList.add('boot-particles'), 2000); // radar canvas fades in
   setTimeout(() => document.body.classList.add('boot-buttons'), 3000);   // buttons / hint
@@ -350,7 +350,7 @@ function initMobileCarousel(track) {
     if (!paused) {
       const half = track.scrollWidth / 2;
       if (wrap.scrollLeft >= half) {
-        wrap.scrollLeft -= half; // seamless loop — we have cards duplicated
+        wrap.scrollLeft -= half; // cards are duplicated, so jump back half to loop
       } else {
         wrap.scrollLeft += SPEED;
       }
@@ -372,7 +372,7 @@ function initMobileCarousel(track) {
 }
 
 
-// ─── Fade in hero content ─────────────────────────────────
+// fade in hero content
 window.addEventListener('DOMContentLoaded', () => {
   const content = document.querySelector('.hero-content');
   if (!content) return;
@@ -386,7 +386,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ─── Eirka Easter Egg (type "eirka" anywhere on the page) ─
+// Eirka Easter egg (type "eirka" anywhere on the page)
 const EIRKA_SEQ = ['e','r','i','k','a'];
 let eirkaPos = 0;
 
@@ -478,7 +478,7 @@ function triggerEirka() {
 }
 
 
-// ─── Console Easter Egg ──────────────────────────────────
+// console Easter egg
 console.log(
   '%c' + `
                                         ~?5PPP5?~.
@@ -505,13 +505,9 @@ console.log(
   'color:#c8a96e;font-family:monospace;font-size:11px;line-height:1.4'
 );
 
-/* ─── Accessibility ───────────────────────────────────────────
-   Two things the CSS can't do on its own:
-   1. Give the real mouse pointer back the moment someone starts
-      navigating by keyboard, since body{cursor:none} hides it.
-   2. Freeze the hero video and the carousel when the visitor has
-      asked their OS to reduce motion.
-   ─────────────────────────────────────────────────────────── */
+/* accessibility, the two things CSS can't do on its own:
+   1. bring the real pointer back once someone tabs, since body{cursor:none} hides it
+   2. freeze the hero video when the OS asks for reduced motion */
 (function () {
   // 1. keyboard navigation flag
   window.addEventListener('keydown', function (e) {

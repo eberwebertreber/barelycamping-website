@@ -13,13 +13,13 @@
 
   <meta name="facebook-domain-verification" content="oqv658cfrza5zhjb9ftm6t87j9te4u" />
 
-  <!-- Analytics and advertising, consent-gated for EU/UK visitors -->
+  <!-- analytics, waits for consent in the EU/UK -->
   <script src="/consent.js"></script>
 
 </head>
 <body>
 
-  <!-- Desktop-only gate. On phones we show a note instead of the canvas. -->
+  <!-- phones get a note instead of the game -->
   <div id="mobileGate">
     <div class="gate-card">
       <img class="gate-logo" src="wordmark_white.png" alt="Barely Camping" draggable="false" />
@@ -33,7 +33,6 @@
       aria-label="The campsite: a top-down pixel map of the real BarelyCamping spot. Arrow keys move, Z interacts, C swaps character, F toggles the headlamp."></canvas>
     <p class="sr-only">This is a visual pixel game played on a canvas. A screen reader cannot describe what happens on screen. Nothing on the rest of the site depends on it. See the <a href="accessibility.html">accessibility page</a> for details.</p>
 
-    <!-- Title screen -->
     <div id="title" class="overlay">
       <div class="title-inner">
         <h1 class="title-logo">THE<br>CAMPSITE</h1>
@@ -42,15 +41,13 @@
       </div>
     </div>
 
-    <!-- Corner hint while playing -->
     <div id="hint" class="hint">&uarr;&darr;&larr;&rarr; move &nbsp;·&nbsp; Z interact &nbsp;·&nbsp; C swap &nbsp;·&nbsp; F headlamp &nbsp;·&nbsp; drag the sun dial (left) for time</div>
 
     <a href="index.html" id="exitBtn" class="exit-btn">&larr; exit</a>
 
-    <!-- Map editor controls -->
     <button id="editBtn" class="edit-btn">edit map</button>
     <div id="editPanel" class="edit-panel hidden">
-      <p class="edit-help">Pick a tile and drag on the map to paint it. <b>move gear</b> lets you drag the fire/shelter/etc, and press <b>R</b> to rotate the shelter 90°. It auto-saves. Hit <b>copy map</b> and paste it to me to lock it in.</p>
+      <p class="edit-help">Pick a tile and drag on the map to paint it. <b>move gear</b> lets you drag the fire/shelter/etc, and press <b>R</b> to rotate the shelter 90°. It auto-saves. Hit <b>copy map</b> to get the layout as text.</p>
       <div id="brushRow" class="brush-row"></div>
       <div class="size-row">brush&nbsp; <button data-sz="1">1</button><button data-sz="2" class="on">2</button><button data-sz="3">3</button></div>
       <button id="copyBtn" class="edit-do">copy map</button>
@@ -58,7 +55,6 @@
       <textarea id="layoutOut" class="edit-out" readonly placeholder="your map shows up here after Copy"></textarea>
     </div>
 
-    <!-- Sound -->
     <button id="audioBtn" class="audio-btn" title="sound (Esc)">&#9834;</button>
     <div id="audioPanel" class="audio-panel hidden">
       <label>music <input id="volMusic" type="range" min="0" max="100" value="5"></label>

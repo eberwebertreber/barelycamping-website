@@ -1,7 +1,5 @@
-/* ============================================================
-   submit.js  -  clip submission page
+/* The "let's go camping" clip submission page.
 
-   Jobs:
      1. the submarine cursor, same behaviour as the homepage
      2. inspect the chosen video IN THE BROWSER before uploading,
         so a portrait or 720p clip is caught on the user's phone
@@ -10,8 +8,7 @@
         never passes through a serverless function (Vercel caps
         function request bodies at 4.5MB)
      4. accept a plain link instead of a file, for anyone who
-        would rather host it themselves
-   ============================================================ */
+        would rather host it themselves */
 
 const SPEC = {
   minShortSide: 1080,
@@ -21,7 +18,7 @@ const SPEC = {
   maxBytes: 200 * 1024 * 1024,
 };
 
-/* ─── Submarine cursor ─────────────────────────────────── */
+/* submarine cursor */
 (function cursor() {
   const el = document.getElementById('cursor');
   if (!el) return;
@@ -52,7 +49,7 @@ const SPEC = {
   });
 })();
 
-/* ─── Example clip: keep the placeholder unless a file loads ── */
+/* example clip: keep the placeholder unless a file loads */
 (function example() {
   const video = document.getElementById('exampleVideo');
   if (!video) return;
@@ -60,7 +57,7 @@ const SPEC = {
   video.addEventListener('loadeddata', () => frame.classList.add('has-video'));
 })();
 
-/* ─── Helpers ──────────────────────────────────────────── */
+/* helpers */
 const $ = (id) => document.getElementById(id);
 
 function showError(el, msg) {
@@ -117,7 +114,7 @@ function probe(file) {
   });
 }
 
-/* ─── Validation ───────────────────────────────────────── */
+/* validation */
 function validate(file, meta) {
   const rows = [];
   let blocking = false;
@@ -167,7 +164,7 @@ function validate(file, meta) {
   return { rows, blocking };
 }
 
-/* ─── Form wiring ──────────────────────────────────────── */
+/* form wiring */
 (function form() {
   const form = $('submitForm');
   if (!form) return;
@@ -192,7 +189,7 @@ function validate(file, meta) {
     );
   };
 
-  /* -- file selection -- */
+  /* file selection */
   async function handleFile(file) {
     showError($('fileError'), '');
     if (!file) return;
@@ -236,7 +233,7 @@ function validate(file, meta) {
     refreshSubmit();
   });
 
-  /* -- drag and drop -- */
+  /* drag and drop */
   ['dragenter', 'dragover'].forEach((ev) =>
     drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('dragover'); })
   );
@@ -248,12 +245,12 @@ function validate(file, meta) {
     if (file) handleFile(file);
   });
 
-  /* -- live enable/disable -- */
+  /* live enable/disable */
   ['nameInput', 'linkInput', 'musicCheck', 'ageCheck', 'rightsCheck'].forEach((id) =>
     $(id).addEventListener('input', refreshSubmit)
   );
 
-  /* -- PUT the file with progress -- */
+  /* PUT the file with progress */
   function putFile(url, file, headers, onProgress) {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -269,7 +266,7 @@ function validate(file, meta) {
     });
   }
 
-  /* -- submit -- */
+  /* submit */
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     ['formError', 'nameError', 'consentError', 'linkError', 'emailError'].forEach((id) => showError($(id), ''));

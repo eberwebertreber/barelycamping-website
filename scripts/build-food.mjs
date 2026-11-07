@@ -96,7 +96,7 @@ const scripts = `
 
 const person = { '@type': 'Person', name: 'Luke', url: 'https://www.youtube.com/@barelycamping' };
 
-// ---------- the list page ----------
+// the list page
 const types = ['Breakfast', 'Lunch', 'Dinner', 'Snack', 'Dessert'].filter(t => M.some(m => m.type === t));
 const listLd = {
   '@context': 'https://schema.org',
@@ -125,7 +125,7 @@ const listPage = head({
         <ul class="jump" id="jump" aria-label="Jump to a meal type">${types.map(t => `<li><a class="t-${t}" href="#all" data-t="${t}">${F.ico(F.TYPE_ICON, t)}${t} <span>${M.filter(m => m.type === t).length}<span class="vh"> meals</span></span></a></li>`).join('')}</ul>
       </div>
       <div class="photo">
-        <video id="clip" src="/food/img/eating.mp4" poster="/food/img/eating-poster.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+        <video id="clip" src="/food/img/eating.mp4" poster="/food/img/eating-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
         <button type="button" class="playpause" id="playpause" aria-label="Play the video"><i class="ph ph-play" aria-hidden="true"></i></button>
         <a class="pin" href="${F.url(best)}" data-id="${best.id}"><img src="${best.img}" alt=""><span><small>Number 1 right now</small><strong>${esc(best.name)}</strong></span>${F.badge(best.score, 'sm')}</a>
       </div>
@@ -163,7 +163,7 @@ ${footer}
 ${scripts}`;
 writeFileSync(join(FOOD, 'index.html'), listPage);
 
-// ---------- one page per meal ----------
+// one page per meal
 // clear out pages for meals that were removed from meals.js
 for (const d of readdirSync(FOOD)) {
   const p = join(FOOD, d);
@@ -240,7 +240,7 @@ ${scripts}`;
   writeFileSync(join(FOOD, m.id, 'index.html'), page);
 }
 
-// ---------- the camp food button and strip on the homepage ----------
+// the camp food button and top 5 strip on the homepage
 const homePath = join(ROOT, 'index.html');
 let home = readFileSync(homePath, 'utf8');
 const fill = (name, html) => {
@@ -258,7 +258,7 @@ fill('food-strip', `
     `);
 writeFileSync(homePath, home);
 
-// ---------- sitemap ----------
+// sitemap
 const today = new Date().toISOString().slice(0, 10);
 const urls = [
   ['/', 'weekly', '1.0'],

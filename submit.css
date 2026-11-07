@@ -1,13 +1,9 @@
-/* ============================================================
-   submit.css  -  "Let's Go Camping" video submission form
-
-   Plain form styling. Layers on top of styles.css, which gives
+/* "Let's Go Camping" submission form. Layers on top of styles.css, which gives
    us #080808, the glass tokens, the skip link, the amber focus
    ring, the reduced-motion kill switch and the cursor rule.
 
    Radius rule: 4px on everything, full pill on the submit
-   button only (matching the homepage link pills).
-   ============================================================ */
+   button only (matching the homepage link pills). */
 
 :root {
   --line: rgba(255, 255, 255, 0.14);
@@ -30,7 +26,7 @@
 
 .card { width: 100%; max-width: 500px; }
 
-/* ─── Header ────────────────────────────────────────────── */
+/* header */
 .back-home {
   position: fixed;
   top: 1.1rem;
@@ -61,7 +57,7 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* ─── How to record ─────────────────────────────────────── */
+/* how to record */
 .howto {
   margin: 1.8rem 0;
   padding: 1.3rem 1.4rem;
@@ -96,7 +92,7 @@
 }
 .eg span { color: var(--dim); }
 
-/* ─── Example video, collapsed ──────────────────────────── */
+/* example video, collapsed */
 .example { margin-top: 0.9rem; }
 .example summary {
   display: inline-block;
@@ -136,7 +132,7 @@
 }
 .example-frame.has-video .example-pending { display: none; }
 
-/* ─── Form fields ───────────────────────────────────────── */
+/* form fields */
 .field { margin-bottom: 1.5rem; }
 
 .label {
@@ -190,7 +186,7 @@
 }
 .err.show { display: block; }
 
-/* ─── File drop zone ────────────────────────────────────── */
+/* file drop zone */
 .drop {
   position: relative;
   border: 1px dashed var(--line);
@@ -266,7 +262,7 @@
 .checks li.fail b { color: var(--bad); }
 .checks li.fail   { color: var(--bad); }
 
-/* ─── "or" divider between upload and link ──────────────── */
+/* "or" divider between upload and link */
 .or {
   display: flex;
   align-items: center;
@@ -282,7 +278,7 @@
   background: var(--line);
 }
 
-/* ─── Confirmation checkboxes ───────────────────────────── */
+/* confirmation checkboxes */
 .confirm {
   border: 0;
   margin: 0 0 1.6rem;
@@ -324,7 +320,7 @@
 }
 .check:hover span { color: rgba(255, 255, 255, 0.88); }
 
-/* ─── Submit ────────────────────────────────────────────── */
+/* submit */
 .send {
   width: 100%;
   padding: 0.85rem 1.5rem;
@@ -383,7 +379,7 @@
   color: var(--dim);
 }
 
-/* ─── Success ───────────────────────────────────────────── */
+/* success */
 .done { padding: 0.5rem 0; }
 .done h2 {
   font-family: 'Bonfire', Georgia, serif;
@@ -394,7 +390,7 @@
 }
 .done p { font-size: 0.93rem; color: rgba(255, 255, 255, 0.65); margin-bottom: 1rem; }
 
-/* ─── Fine print ────────────────────────────────────────── */
+/* fine print */
 .fine {
   margin-top: 1.8rem;
   padding-top: 1.2rem;
@@ -404,7 +400,7 @@
   color: rgba(255, 255, 255, 0.32);
 }
 
-/* ─── Small screens ─────────────────────────────────────── */
+/* small screens */
 @media (max-width: 680px) {
   .submit-page { cursor: auto; }
   #cursor { display: none; }

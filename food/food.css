@@ -43,7 +43,9 @@ button, input, select { font: inherit; color: inherit; }
 
 .photo { position: relative; }
 .photo video { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 22px; background: #1a1a1a; }
-.playpause { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; border-radius: 50%; border: none; background: rgba(255,255,255,.92); display: grid; place-items: center; font-size: 18px; cursor: pointer; }
+.playpause { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; border-radius: 50%; border: none; background: rgba(255,255,255,.92); display: grid; place-items: center; font-size: 18px; cursor: pointer; opacity: 0; pointer-events: none; }
+.playpause:focus-visible { opacity: 1; pointer-events: auto; }
+#clip { cursor: pointer; }
 .pin { position: absolute; left: -28px; bottom: 32px; display: flex; gap: 14px; align-items: center; background: var(--card); padding: 12px 18px 12px 12px; border-radius: 16px; box-shadow: 0 18px 40px rgba(18,18,18,.14); text-decoration: none; transition: transform .25s; }
 .pin:hover { transform: translateY(-3px); }
 .pin img { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; }
@@ -144,7 +146,9 @@ body.open .scrim { opacity: 1; pointer-events: auto; }
 body.open .panel { transform: none; visibility: visible; transition: transform .5s cubic-bezier(.16,1,.3,1); }
 .panel .pimg img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .panel .x { position: absolute; top: 14px; right: 14px; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,.95); font-size: 22px; cursor: pointer; z-index: 2; }
-.panel .recipe { padding: 26px 30px 56px; }
+.panel .recipe { padding: 26px 30px calc(56px + env(safe-area-inset-bottom)); }
+.panel { overscroll-behavior: contain; }
+html:has(body.open) { overflow: hidden; }
 .panel .full { display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 600; }
 
 /* meal page */

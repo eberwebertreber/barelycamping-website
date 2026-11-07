@@ -1,7 +1,4 @@
-/* ============================================================
-   api/submit-url.js
-
-   Step 1 of the clip upload. Hands the browser a one-time
+/* Step 1 of the clip upload. Hands the browser a one-time
    presigned PUT URL so the video goes straight to storage and
    never passes through this function. Vercel caps function
    request bodies at 4.5MB, so a 90MB phone clip could not come
@@ -16,8 +13,7 @@
    The limits below are set ON THE TOKEN, which means the CDN
    enforces them. Client-side checks in submit.js are there to
    give people a useful error on their phone. These are the ones
-   that actually stop a 4GB upload.
-   ============================================================ */
+   that actually stop a 4GB upload. */
 
 import { issueSignedToken, presignUrl } from '@vercel/blob';
 

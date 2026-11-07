@@ -46,9 +46,8 @@
         if (e.gamma == null) return;
         tilt = { x: Math.max(-1, Math.min(1, e.gamma / 30)), y: Math.max(-1, Math.min(1, (e.beta - 45) / 30)) };
       });
-      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        addEventListener('touchend', () => DeviceOrientationEvent.requestPermission().then(r => r === 'granted' && start()).catch(() => {}), { once: true });
-      } else start();
+      // iPhones ask permission for this, and that popup isn't worth it, so they skip the tilt
+      if (typeof DeviceOrientationEvent === 'undefined' || typeof DeviceOrientationEvent.requestPermission !== 'function') start();
     }
     const p = { x: innerWidth / 2, y: innerHeight * 0.4, tx: innerWidth / 2, ty: innerHeight * 0.4, active: false };
     addEventListener('pointermove', e => { p.tx = e.clientX; p.ty = e.clientY; p.active = true; });
@@ -83,7 +82,7 @@
   const setMotion = on => {
     document.body.classList.toggle('still', !on);
     if (on) video.play().catch(() => {}); else video.pause();
-    motion.innerHTML = `<i class="ph ph-${on ? 'pause' : 'play'}" aria-hidden="true"></i>${on ? 'Pause motion' : 'Play motion'}`;
+    motion.innerHTML = `<i class="ph ph-${on ? 'pause' : 'play'}" aria-hidden="true"></i><span class="vh">${on ? 'Pause motion' : 'Play motion'}</span>`;
   };
   setMotion(!reduce);
   motion.addEventListener('click', () => setMotion(document.body.classList.contains('still')));
@@ -109,6 +108,39 @@
     const imgs = reel.querySelectorAll('img');
     setInterval(() => { if (document.body.classList.contains('still')) return; imgs[k].classList.remove('on'); k = (k + 1) % imgs.length; imgs[k].classList.add('on'); }, 1800);
   }
+
+  // paper cutout flame that flares over the YouTube button now and then
+  const flame = document.querySelector('.flame');
+  if (flame && !reduce) {
+    const frames = [...flame.querySelectorAll('g')];
+    const seq = [[0, .35], [1, .7], [2, 1], [3, 1], [1, 1.05], [2, 1], [0, 1], [3, .95], [1, 1], [2, .7], [0, .35]];
+    let burning = false;
+    const burn = () => {
+      if (burning || document.body.classList.contains('still') || document.hidden) return;
+      burning = true;
+      let i = 0;
+      const step = () => {
+        frames.forEach(f => f.classList.remove('on'));
+        if (i === seq.length) { flame.style.transform = 'scaleY(0)'; burning = false; return; }
+        const [f, s] = seq[i++];
+        frames[f].classList.add('on');
+        flame.style.transform = `scale(${Math.min(1, s + .1)}, ${s})`;
+        setTimeout(step, 95);
+      };
+      step();
+    };
+    const later = () => setTimeout(() => { burn(); later(); }, 7000 + Math.random() * 8000);
+    setTimeout(burn, 3500); later();
+    flame.parentElement.addEventListener('mouseenter', burn);
+  }
+
+  // phone menu
+  const top = document.querySelector('.top'), menuBtn = document.getElementById('menuBtn');
+  const setMenu = open => { top.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', open); };
+  menuBtn.addEventListener('click', () => setMenu(!top.classList.contains('open')));
+  document.querySelectorAll('#menu a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && top.classList.contains('open')) { setMenu(false); menuBtn.focus(); } });
+  document.addEventListener('click', e => { if (top.classList.contains('open') && !top.contains(e.target)) setMenu(false); });
 
   // contact opens a card with the email, instead of scrolling to the bottom
   const card = document.getElementById('ccard');

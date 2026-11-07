@@ -1,5 +1,5 @@
 /*
-  Consent-gated tracking.
+  Tracking that waits for consent in the EU/UK.
 
   Vercel Web Analytics is cookieless and never gated, so visitor counts stay
   whole no matter what anyone chooses.

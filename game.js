@@ -1,14 +1,12 @@
-/* ════════════════════════════════════════════════════════════
-   THE CAMPSITE — a top-down pixel world for BarelyCamping.
-   GBA/Pokemon-style (240x160 internal res, scaled up crisp).
+/* The Campsite, a top-down pixel world for Barely Camping.
+   GBA/Pokemon style (240x160 internal res, scaled up crisp).
    Layout traced from Luke's marked aerial of the sandy point on
    the river: a grassy/sandy point fenced in by water, the tent +
-   blanket(sleeping bags) + campfire up by the water, a patch of
+   blanket (sleeping bags) + campfire up by the water, a patch of
    trees with the Pokemon-card tent tied to one, and the long
    sandbar out in the river you can wade to.
    Characters: Luke (you) and Teebo. Art is hand-drawn in code;
-   crew sprites get re-skinned from real photos later.
-   ════════════════════════════════════════════════════════════ */
+   crew sprites get re-skinned from real photos later. */
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -26,7 +24,7 @@ function hash(n) { return (Math.sin(n * 127.1) * 43758.5) % 1; }
 function rnd(a, b) { return Math.abs(hash(a * 12.9898 + b * 78.233)); }
 function inEllipse(x, y, cx, cy, rx, ry) { const dx = (x-cx)/rx, dy = (y-cy)/ry; return dx*dx + dy*dy <= 1; }
 
-/* ─── Terrain ──────────────────────────────────────────────
+/* terrain
    The point bulges toward the lower-center; river wraps the
    bottom and right. A sandbar sits out in the river.
    Codes: g grass  , tuft  * daisy  s sand  T tree
@@ -114,7 +112,7 @@ function paintBottom() {
   }
 }
 function regenMap() { for (let y = 0; y < MAP_H; y++) { let r = ''; for (let x = 0; x < MAP_W; x++) r += genTile(x, y); MAPG[y] = r; } paintBottom(); }
-// map is baked from Luke's editor export above — regenMap() is no longer called.
+// map is baked from Luke's editor export above, regenMap() is no longer called.
 const overrides = {};                                   // hand-painted tiles from the in-game brush
 try { const s = localStorage.getItem('bc_paint'); if (s) Object.assign(overrides, JSON.parse(s)); } catch (_) {}
 function tileAt(tx, ty) { if (tx<0||ty<0||tx>=MAP_W||ty>=MAP_H) return 'W'; const k = tx+'_'+ty; return (k in overrides) ? overrides[k] : MAPG[ty][tx]; }
@@ -127,7 +125,7 @@ function solidAtPx(px, py) {
   return false;
 }
 
-/* ─── Palettes ─────────────────────────────────────────────── */
+/* palettes */
 const OL = '#20201c';
 const PALETTES = {
   // Luke: dark slate long-sleeve, black shorts, brown hair
@@ -137,7 +135,7 @@ const PALETTES = {
 };
 const CHARIZARD = { hair:'#e07b2a', skin:'#f0c08a', shirt:'#e8862f', shirtD:'#c46a1f', pants:'#e8862f', pantsD:'#c46a1f', shoe:'#c46a1f' };
 
-/* ─── Tile painters ────────────────────────────────────────── */
+/* tile painters */
 function dither(x, y, tx, ty, base, dark) {
   ctx.fillStyle = base; ctx.fillRect(x, y, TILE, TILE);
   ctx.fillStyle = dark;
@@ -222,8 +220,8 @@ function drawTree(x, y) {
   ctx.fillStyle = '#46a84e'; ctx.beginPath(); ctx.ellipse(x+6, y, 2.5, 2.5, 0, 0, 7); ctx.fill();
 }
 
-/* ─── Prop painters ───────────────────────────────────────── */
-let shelterRot = 0;                                     // 0/1/2/3 — press R in the editor to rotate 90° at a time
+/* prop painters */
+let shelterRot = 0;                                     // 0/1/2/3, press R in the editor to rotate 90° at a time
 function logoPikachu(cx, yp) {
   cx = Math.round(cx); yp = Math.round(yp);
   ctx.fillStyle = '#f5d21f'; ctx.fillRect(cx-3, yp, 6, 4);
@@ -275,7 +273,7 @@ function drawShelter(x, y) {                            // green mat + 2 blue ba
   else if (r === 1) { drawMatBags(x+9, y, 19, 24, true, 'left'); tentRect(x, y, 14, 24, true); }
   else { drawMatBags(x, y, 19, 24, true, 'right'); tentRect(x+14, y, 14, 24, true); }
 }
-function drawCardTent(x, y, treeX, treeY) {             // little tent of Pokemon cards — a rectangle pyramid
+function drawCardTent(x, y, treeX, treeY) {             // little tent of Pokemon cards, a rectangle pyramid
   ctx.strokeStyle = 'rgba(40,30,20,0.6)'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(x+11, y+1); ctx.lineTo(treeX, treeY); ctx.stroke();
   ctx.fillStyle = 'rgba(0,0,0,0.16)'; ctx.fillRect(x+2, y+16, 20, 2);
@@ -299,7 +297,7 @@ function drawBlanketV(x, y) {                            // green mat + two blue
   const w = 26, h = 38;
   ctx.fillStyle = 'rgba(0,0,0,0.16)'; ctx.fillRect(x+1, y+h-1, w, 3);
   ctx.fillStyle = OL; ctx.fillRect(x-1, y-1, w+2, h+2);
-  ctx.fillStyle = '#3c6f38'; ctx.fillRect(x, y, w, h);                   // mat — a distinct green, outlined
+  ctx.fillStyle = '#3c6f38'; ctx.fillRect(x, y, w, h);                   // mat, a distinct green, outlined
   ctx.fillStyle = '#34632f'; for (let i=4;i<h;i+=6) ctx.fillRect(x, y+i, w, 1);
   ctx.fillStyle = OL; ctx.fillRect(x+2, y+2, 11, h-5); ctx.fillRect(x+13, y+2, 11, h-5);
   ctx.fillStyle = '#3a5fb2'; ctx.fillRect(x+3, y+3, 9, h-7);            // bag 1 (blue)
@@ -342,12 +340,12 @@ function drawFire(x, y, t, lit) {
     ctx.fillRect(Math.round(x+8 + Math.cos(a)*6.5 - 1.5), Math.round(y+10 + Math.sin(a)*3.5 - 1.5), 3, 3); }
   // charred logs inside
   ctx.fillStyle = '#3a2a1c'; ctx.fillRect(x+4, y+9, 8, 2); ctx.fillRect(x+6, y+8, 5, 3);
-  if (!lit) {                                            // put out — just a wisp of smoke
+  if (!lit) {                                            // put out, just a wisp of smoke
     ctx.fillStyle = 'rgba(180,180,180,0.22)';
     for (let i = 0; i < 3; i++) { const s = (t*0.5 + i*5) % 15; ctx.fillRect(Math.round(x+7 + Math.sin(s*0.3)*2), Math.round(y+6 - s), 2, 2); }
     return;
   }
-  // flame — gentle, slow flicker (no fast pulse, no constant glow)
+  // flame: gentle, slow flicker (no fast pulse, no constant glow)
   ctx.save(); ctx.translate(x+8, y+10);
   const f = Math.sin(t*0.09) * 0.8 + Math.sin(t*0.05) * 0.5;
   ctx.fillStyle = '#f5631c'; ctx.beginPath(); ctx.moveTo(-3, 0); ctx.quadraticCurveTo(0, -7-f, 3, 0); ctx.closePath(); ctx.fill();
@@ -464,7 +462,7 @@ function drawLog(x, y) {
   ctx.fillStyle = '#caa56e'; ctx.fillRect(x+14, y+6, 2, 4);
 }
 
-/* ─── Character renderer (outlined, clean 4-frame walk) ────── */
+/* character renderer (outlined, clean 4-frame walk) */
 function box(x, y, w, h, fill) { ctx.fillStyle = OL; ctx.fillRect(x, y, w, h); ctx.fillStyle = fill; ctx.fillRect(x+1, y+1, w-2, h-2); }
 function drawTrainer(sx, sy, dir, step, pal, bob) {
   const x = Math.round(sx), y = Math.round(sy) + bob;
@@ -507,7 +505,7 @@ function drawSeated(sx, sy, pal, t) {
   ctx.fillStyle = '#23150c'; ctx.fillRect(x+5, y+3+br, 2, 2); ctx.fillRect(x+8, y+3+br, 2, 2);
 }
 
-/* ─── Camp props ──────────────────────────────────────────── */
+/* camp props */
 const FIRE    = { x: 23*TILE, y: 9*TILE };              // from Luke's editor layout
 const BLANKET = { x: 22*TILE, y: 6*TILE };              // shelter anchor (tent + mat + bags)
 const CHAIR   = { x: 15*TILE, y: 19*TILE };             // blue chair
@@ -531,7 +529,7 @@ const cardTent = { gone:false, blowT:0 };
 
 const cardProp = { sortY: CARD.y+18, solid:true, box:[CARD.x+1, CARD.y+1, 22, 16],
   draw:()=> cardTent.gone ? drawCardBlow(cardTent.blowT) : drawCardTent(CARD.x, CARD.y, 12*TILE+8, 11*TILE+2) };
-// Only the tent's top/back is solid — the whole sleeping-bag mat below it is walkable.
+// Only the tent's top/back is solid. The sleeping-bag mat below it is walkable.
 const shelterProp = { sortY: BLANKET.y+30, solid:true, box:[BLANKET.x+2, BLANKET.y, 20, 7], draw:()=>drawShelter(BLANKET.x, BLANKET.y) };
 const props = [
   { sortY: FIRE.y+12,    solid:true,  box:[FIRE.x+2, FIRE.y+8, 12, 5], draw:(t)=>drawFire(FIRE.x, FIRE.y, t, fireLit) },
@@ -553,7 +551,7 @@ const props = [
   { sortY: DRIFT.y+8,     solid:false, box:[0,0,0,0], draw:()=>drawDrift(DRIFT.x, DRIFT.y) },
 ];
 
-/* ─── Characters — toggle control with C ──────────────────── */
+/* characters, press C to switch who you control */
 const SPEED = 1.1;
 const mkChar = (tx, ty, dir, pal, action) => ({ x:tx*TILE, y:ty*TILE, dir, pal, action, moving:false, animT:0, idleT:0 });
 const luke  = mkChar(19, 14, 0, PALETTES.luke, null);
@@ -561,7 +559,7 @@ const teebo = mkChar(17, 12, 0, PALETTES.teebo, null);   // standing (chairs mov
 const chars = [luke, teebo];
 let active = 0;
 
-/* ─── Ambient: jumping fish, a rare bald eagle, the secret sub ─── */
+/* ambient: jumping fish, a rare bald eagle, the secret sub */
 let fish = null, fishTimer = 90;
 let eagle = null, eagleTimer = 500;
 let sub = null;                                          // summoned by typing "sub"
@@ -615,7 +613,7 @@ function drawFishJump(f) {
   ctx.fillStyle = '#8fb0b8'; ctx.fillRect(Math.round(fx-5), Math.round(fy-1), 2, 3);
 }
 
-/* ─── Action sprites ──────────────────────────────────────── */
+/* action sprites */
 function drawLying(x, y, pal) {              // head poking out of the top sleeping bag
   box(x+3, y-2, 8, 8, pal.skin);
   ctx.fillStyle = pal.hair; ctx.fillRect(x+3, y-3, 8, 3); ctx.fillRect(x+3, y-3, 2, 5); ctx.fillRect(x+9, y-3, 2, 5);
@@ -689,7 +687,7 @@ function drawCharSprite(c, t) {
   }
 }
 
-/* ─── Input ───────────────────────────────────────────────── */
+/* input */
 const keys = {};
 let keyBuf = '';                                        // for the secret "sub" code
 let escaped = null;                                     // walk-off-the-top easter egg state
@@ -709,7 +707,7 @@ addEventListener('keydown', (e) => {
 });
 addEventListener('keyup', (e) => { if (DIRKEYS[e.code]) keys[DIRKEYS[e.code]] = false; });
 
-/* ─── Dialog + interactions ───────────────────────────────── */
+/* dialog + interactions */
 let dialog = null;
 const say = t => dialog = { lines: Array.isArray(t) ? t : [t], i: 0 };   // one or many boxes to click through
 const near = (ax, ay, bx, by, r) => Math.abs(ax-bx) < r && Math.abs(ay-by) < r;
@@ -812,7 +810,7 @@ function wrapText(text, x, y, maxW, lh) {
   ctx.fillText(line, x, yy);
 }
 
-/* ─── Update ──────────────────────────────────────────────── */
+/* update */
 function update() {
   const a = chars[active];
   if (editMode) {                                       // arrow keys pan the map while painting
@@ -863,7 +861,7 @@ function update() {
   updateAmbient();
 }
 
-/* ─── Render ──────────────────────────────────────────────── */
+/* render */
 function render(t) {
   const a = chars[active];
   if (!editMode) {                                      // edge-scroll: clamps at top/left, pans down/right
@@ -917,7 +915,7 @@ function render(t) {
   if (editMode) drawEditor();
 }
 
-/* ─── Map editor: paint tiles + move gear ─────────────────── */
+/* map editor: paint tiles + move gear */
 let editMode = false, drag = null, brush = null, brushSize = 2, painting = false, hover = null;
 const BRUSHES = [
   { c:null,    label:'move gear', col:'#aaaaaa' },
@@ -1017,7 +1015,7 @@ function exportJSON() {
   document.getElementById('clearBtn').addEventListener('click', ()=>{ for(const k in overrides) delete overrides[k]; saveOverrides(); });
 }
 
-/* ─── Atmosphere: time of day, lighting, weather ──────────── */
+/* atmosphere: time of day, lighting, weather */
 let timeOfDay = 15, lamp = 0, camX = 0, camY = 0, dialDrag = false, fogPhase = 0;
 const TAU = Math.PI * 2;
 const lerp = (a, b, f) => a + (b - a) * f;
@@ -1073,7 +1071,7 @@ function lightMask(t, additive, nightAmt) {
   if (lamp > 0) { const c = chars[active]; if (c.action !== 'lay') {
     const [hx, hy] = w2s(c.x+7, c.y+2); headlampBeam(hx, hy, c.dir, additive, lamp === 2); } }
 }
-function drawMoon(t, amt) {                              // no moon disc — only its reflection drifting on the river
+function drawMoon(t, amt) {                              // no moon disc, only its reflection drifting on the river
   let np = timeOfDay >= 19 ? (timeOfDay-19)/10 : (timeOfDay+5)/10;
   np = Math.max(0, Math.min(1, np));
   const [sx, sy] = w2s(28*TILE, (6 + np*10)*TILE);      // reflection moves down the right-side river over the night
@@ -1148,7 +1146,7 @@ function drawTimeDial(t) {
   ctx.fillText((hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm, cx, cy+r+11); ctx.textAlign = 'left';
 }
 
-/* ─── Audio: music + location-balanced ambience + chiptune SFX ─── */
+/* audio: music + location-balanced ambience + chiptune SFX */
 const AUD = { started:false, music:0.05, amb:0.5, sfx:0.5, muted:false, el:{} };
 let sfxCtx = null, lastWater = false, canSfxCd = 0;
 function startAudio() {
@@ -1193,14 +1191,14 @@ function sfx(type) {
   mute.addEventListener('click', () => { AUD.muted = !AUD.muted; mute.classList.toggle('on', AUD.muted); });
 }
 
-/* ─── Loop ────────────────────────────────────────────────── */
+/* loop */
 let running = false;
 // Render every frame so the world shows behind the (blurred) title screen.
 // Only step the simulation + audio once the player has actually started.
 function frame(t) { if (running) { update(); updateAudio(); } render(t/16); requestAnimationFrame(frame); }
 requestAnimationFrame(frame);
 
-/* ─── Title / start ───────────────────────────────────────── */
+/* title / start */
 const titleEl = document.getElementById('title');
 const hintEl = document.getElementById('hint');
 const exitEl = document.getElementById('exitBtn');

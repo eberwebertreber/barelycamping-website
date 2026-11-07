@@ -1,7 +1,4 @@
-/* ============================================================
-   api/submit-done.js
-
-   Step 2 of the clip upload. The bytes are already in storage by
+/* Step 2 of the clip upload. The bytes are already in storage by
    the time this runs. This writes a small JSON sidecar next to
    the clip holding who sent it and what they agreed to, so there
    is no database to run and "download the folder" gets you the
@@ -9,8 +6,7 @@
 
    Each clip ends up as a pair:
      lets-go-camping/2026-10-03T..._a1b2c3d4.mp4
-     lets-go-camping/2026-10-03T..._a1b2c3d4.mp4.json
-   ============================================================ */
+     lets-go-camping/2026-10-03T..._a1b2c3d4.mp4.json */
 
 import { put } from '@vercel/blob';
 
