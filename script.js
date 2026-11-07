@@ -286,31 +286,6 @@ document.getElementById('logoStack')?.addEventListener('click', () => {
 });
 
 
-// ─── Ambient Sound Toggle ────────────────────────────────
-const ambientBtn   = document.getElementById('ambientBtn');
-const ambientAudio = document.getElementById('ambientAudio');
-let ambientPlaying = false;
-
-ambientBtn?.addEventListener('click', async () => {
-  if (!ambientPlaying) {
-    try {
-      ambientAudio.volume = 0.35;
-      await ambientAudio.play();
-      ambientPlaying = true;
-      ambientBtn.classList.add('playing');
-      document.body.classList.add('ambient-on');
-    } catch (err) {
-      console.warn('Ambient audio failed to play:', err);
-      ambientBtn.style.borderColor = 'rgba(255,80,80,0.6)';
-      setTimeout(() => { ambientBtn.style.borderColor = ''; }, 600);
-    }
-  } else {
-    ambientAudio.pause();
-    ambientPlaying = false;
-    ambientBtn.classList.remove('playing');
-    document.body.classList.remove('ambient-on');
-  }
-});
 
 
 // ─── Video Carousel ──────────────────────────────────────

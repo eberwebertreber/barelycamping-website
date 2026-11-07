@@ -990,9 +990,24 @@ function exportJSON() {
 }
 {
   const editBtn=document.getElementById('editBtn'), panel=document.getElementById('editPanel'), out=document.getElementById('layoutOut'), row=document.getElementById('brushRow');
-  // editor is for building the map locally — hide it on the live site (still reachable via file:// or ?edit)
-  const editorAllowed = location.protocol === 'file:' || /^(localhost$|127\.|192\.168\.)/.test(location.hostname) || location.search.includes('edit');
-  if (!editorAllowed) editBtn.style.display = 'none';
+  // The map editor is Luke's only. It stays hidden unless this browser has been
+  // unlocked once with his private link (?edit=<key>), or the file is opened locally.
+  // Only the key's SHA-256 lives here, so reading this file doesn't reveal it.
+  const EDIT_HASH = '38a3d0dfa4a965acffc29723ffea7760c1a78ef00957f28a5cbbf823bbc65622';
+  editBtn.style.display = 'none';
+  (async () => {
+    let ok = location.protocol === 'file:';
+    try {
+      if (!ok && localStorage.getItem('bcEditor') === EDIT_HASH) ok = true;
+      const k = new URLSearchParams(location.search).get('edit');
+      if (!ok && k && crypto.subtle) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(k));
+        const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+        if (hex === EDIT_HASH) { ok = true; localStorage.setItem('bcEditor', EDIT_HASH); }
+      }
+    } catch (_) {}
+    if (ok) editBtn.style.display = '';
+  })();
   BRUSHES.forEach(b=>{ const btn=document.createElement('button'); btn.className='brush-btn'+(b.c===null?' on':''); btn.textContent=b.label; btn.style.setProperty('--bc', b.col);
     btn.addEventListener('click',()=>{ brush=b.c; [...row.children].forEach(c=>c.classList.remove('on')); btn.classList.add('on'); });
     row.appendChild(btn); });
