@@ -240,6 +240,24 @@ ${scripts}`;
   writeFileSync(join(FOOD, m.id, 'index.html'), page);
 }
 
+// ---------- the camp food button and strip on the homepage ----------
+const homePath = join(ROOT, 'index.html');
+let home = readFileSync(homePath, 'utf8');
+const fill = (name, html) => {
+  const re = new RegExp(`(<!-- ${name}:start -->)[\\s\\S]*?(<!-- ${name}:end -->)`);
+  if (!re.test(home)) throw new Error(`index.html is missing the ${name} markers`);
+  home = home.replace(re, `$1${html}$2`);
+};
+const tone = s => (s >= 8 ? 'good' : s < 6 ? 'bad' : '');
+fill('food-button', `<a class="food" href="/food/"><span class="reel" id="reel" aria-hidden="true"></span><span class="txt"><b><i class="ph ph-fork-knife" aria-hidden="true"></i>Camp food rankings</b><span>${M.length} meals ranked. Number 1 is <em>${esc(best.name.split(' with')[0])}</em></span></span><i class="ph ph-arrow-right arrow" aria-hidden="true"></i></a>`);
+fill('food-strip', `
+    <div class="hd"><h2 id="food-title">Camp food rankings</h2><a class="all" href="/food/">See all ${M.length} meals <i class="ph ph-arrow-right" aria-hidden="true"></i></a></div>
+    <ul class="egrid">${ranked.slice(0, 5).map(m => `
+      <li><a class="ecard" href="${F.url(m)}"><span class="pic"><img src="${m.img}" alt="" loading="lazy" width="1400" height="788"><span class="sc ${tone(m.score)}">${F.fmt(m.score)}<span class="vh"> out of 10</span></span></span><h3>${esc(m.name)}</h3><span class="meta">${m.type}. ${esc(m.method)}</span></a></li>`).join('')}
+    </ul>
+    `);
+writeFileSync(homePath, home);
+
 // ---------- sitemap ----------
 const today = new Date().toISOString().slice(0, 10);
 const urls = [

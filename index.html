@@ -33,11 +33,13 @@
   <meta name="theme-color" content="#0a0a0a" />
 
   <!-- Icons -->
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
 
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="/home.css" />
+  <link rel="preload" href="/BonfireRegular.otf" as="font" type="font/otf" crossorigin />
 
   <!-- JSON-LD: Brand + social links (tells Google all these socials belong to the same entity) -->
   <script type="application/ld+json">
@@ -94,99 +96,71 @@
 
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to main content</a>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="top">
+  <nav aria-label="Main"><ul>
+    <li><a href="#videos">Videos</a></li>
+    <li><a class="hl" href="/food/"><i class="ph ph-fork-knife" aria-hidden="true"></i>Camp food</a></li>
+    <li class="hide-xs"><a href="/game.html">Campsite</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul></nav>
+  <a class="yt" href="https://www.youtube.com/@barelycamping?sub_confirmation=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.4 3.5 12 3.5 12 3.5s-7.4 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c2 .6 9.4.6 9.4.6s7.4 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg><span class="vh">Subscribe on YouTube (opens in a new tab)</span></a>
+</header>
 
-  <!-- Custom cursor -->
-  <div id="cursor" aria-hidden="true">
-    <img src="submarine_white.png" alt="" draggable="false" />
-    <svg viewBox="0 0 240 110" xmlns="http://www.w3.org/2000/svg" style="display:none">
-      <ellipse cx="130" cy="72" rx="95" ry="30" fill="white"/>
-      <rect x="138" y="38" width="52" height="35" rx="8" fill="white"/>
-      <rect x="122" y="50" width="18" height="24" rx="5" fill="white"/>
-      <rect x="177" y="16" width="9" height="26" rx="3" fill="white"/>
-      <rect x="177" y="16" width="22" height="9" rx="3" fill="white"/>
-      <rect x="30" y="61" width="32" height="22" rx="5" fill="white"/>
-      <ellipse cx="16" cy="72" rx="14" ry="19" fill="white"/>
-      <rect x="12" y="54" width="7" height="36" rx="2" fill="#0a0a0a"/>
-      <rect x="3" y="68" width="26" height="7" rx="2" fill="#0a0a0a"/>
-    </svg>
-  </div>
-
-  <canvas id="particles" aria-hidden="true"></canvas>
-
-<!-- Flashlight mode overlay (press F to toggle) -->
-  <div id="flashlight" aria-hidden="true"></div>
-
-  <main id="main" tabindex="-1">
-
-  <!-- HERO -->
-  <section class="hero">
-    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline>
-      <source src="video_1.mp4" type="video/mp4" />
-    </video>
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-      <h1 class="sr-only">BarelyCamping - Budget Camping Challenges</h1>
-      <p class="sr-only">BarelyCamping is the official site for the BarelyCamping YouTube channel, hosted by Luke. Budget camping challenges, store-only survival videos, and gear battles. New videos every Friday at 4PM.</p>
-      <div class="logo-stack" id="logoStack" aria-hidden="true">
-        <span class="logo-line" id="line1">Barely</span>
-        <span class="logo-line" id="line2">Camping</span>
+<main id="main" tabindex="-1">
+  <section class="hero" id="hero">
+    <video id="heroVideo" muted loop playsinline preload="auto" aria-hidden="true"><source src="/video_1.mp4" type="video/mp4" /></video>
+    <div>
+      <h1 class="logo" id="logo"><span class="vh">Barely Camping</span><span class="line" aria-hidden="true">Barely</span><span class="line" aria-hidden="true">Camping</span></h1>
+      <p class="vh">Barely Camping is Luke's YouTube channel. Budget camping challenges, store-only survival and gear battles, with new videos every Friday at 4PM.</p>
+      <div class="below">
+        <!-- food-button:start --><a class="food" href="/food/"><span class="reel" id="reel" aria-hidden="true"></span><span class="txt"><b><i class="ph ph-fork-knife" aria-hidden="true"></i>Camp food rankings</b><span>9 meals ranked. Number 1 is <em>Campfire Chicken Sausage Completos</em></span></span><i class="ph ph-arrow-right arrow" aria-hidden="true"></i></a><!-- food-button:end -->
+        <ul class="social" aria-label="Socials"></ul>
+        <a class="camp" href="/game.html"><i class="ph ph-tent" aria-hidden="true"></i>explore the campsite</a>
       </div>
-
-      <nav class="links">
-        <a href="https://www.youtube.com/@barelycamping" target="_blank" rel="noopener noreferrer" class="link-btn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.107-2.117C19.379 3.5 12 3.5 12 3.5s-7.379 0-9.391.569A2.994 2.994 0 0 0 .502 6.186 31.35 31.35 0 0 0 0 12a31.35 31.35 0 0 0 .502 5.814 2.994 2.994 0 0 0 2.107 2.117C4.621 20.5 12 20.5 12 20.5s7.379 0 9.391-.569a2.994 2.994 0 0 0 2.107-2.117A31.35 31.35 0 0 0 24 12a31.35 31.35 0 0 0-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-          YouTube
-        </a>
-        <a href="https://www.instagram.com/barelycampin" target="_blank" rel="noopener noreferrer" class="link-btn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.242-1.308-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608C4.515 2.497 5.783 2.225 7.149 2.163 8.415 2.105 8.795 2.163 12 2.163zm0-2.163C8.741 0 8.332.014 7.052.072 5.197.157 3.355.673 2.014 2.014.673 3.355.157 5.197.072 7.052.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.085 1.855.601 3.697 1.942 5.038 1.341 1.341 3.183 1.857 5.038 1.942C8.332 23.986 8.741 24 12 24s3.668-.014 4.948-.072c1.855-.085 3.697-.601 5.038-1.942 1.341-1.341 1.857-3.183 1.942-5.038.058-1.28.072-1.689.072-4.948s-.014-3.668-.072-4.948c-.085-1.855-.601-3.697-1.942-5.038C20.645.673 18.803.157 16.948.072 15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-          Instagram
-        </a>
-        <a href="https://www.tiktok.com/@barelycamping" target="_blank" rel="noopener noreferrer" class="link-btn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
-          TikTok
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=61576663508596" target="_blank" rel="noopener noreferrer" class="link-btn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21.5v-8h2.7l.4-3.1h-3.1V8.4c0-.9.25-1.5 1.55-1.5H16.7V4.12c-.29-.04-1.3-.12-2.48-.12-2.45 0-4.12 1.49-4.12 4.24v2.36H7.4v3.1h2.7v8h3.4z"/></svg>
-          Facebook
-        </a>
-        <a href="mailto:hello@barelycamping.com" class="link-btn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-          hello@barelycamping.com
-        </a>
-        <a href="game.html" class="link-btn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 2 20h20L12 3zm0 4.6 5.2 9.4h-2.7L12 12l-2.5 5H6.8L12 7.6z"/></svg>
-          explore the campsite
-        </a>
-        <a href="/food/" class="link-btn">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2a1 1 0 0 1 1 1v5a1 1 0 0 0 1 1V3a1 1 0 1 1 2 0v6a3 3 0 0 1-2 2.83V21a1 1 0 1 1-2 0v-9.17A3 3 0 0 1 5 9V3a1 1 0 0 1 2 0v6a1 1 0 0 0 0 0V3a1 1 0 0 1 0-1zm10 0a1 1 0 0 1 1 1v18a1 1 0 1 1-2 0v-6h-1a1 1 0 0 1-1-1V7a5 5 0 0 1 3-5z"/></svg>
-          camp food rankings
-        </a>
-      </nav>
     </div>
-
-    <div class="scroll-hint">
-      <span>videos</span>
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
-    </div>
+    <button type="button" class="motion" id="motion"></button>
   </section>
 
-  <!-- VIDEOS -->
-  <section class="videos-section" aria-label="Latest BarelyCamping videos">
-    <div class="videos-track-wrap">
-      <div class="videos-track" id="videoTrack"></div>
-    </div>
+  <section class="drift" id="videos" aria-labelledby="videos-title">
+    <h2 class="vh" id="videos-title">Latest videos</h2>
+    <ul class="belt" id="belt1"></ul>
+    <ul class="belt rev" id="belt2"></ul>
   </section>
 
-  </main>
+  <section class="eats" id="food" aria-labelledby="food-title">
+    <!-- food-strip:start -->
+    <div class="hd"><h2 id="food-title">Camp food rankings</h2><a class="all" href="/food/">See all 9 meals <i class="ph ph-arrow-right" aria-hidden="true"></i></a></div>
+    <ul class="egrid">
+      <li><a class="ecard" href="/food/chicken-sausage-completos/"><span class="pic"><img src="/food/img/meals/chicken-sausage-completos.jpg" alt="" loading="lazy" width="1400" height="788"><span class="sc good">9.3<span class="vh"> out of 10</span></span></span><h3>Campfire Chicken Sausage Completos</h3><span class="meta">Dinner. Foil</span></a></li>
+      <li><a class="ecard" href="/food/everything-bagel-mac/"><span class="pic"><img src="/food/img/meals/everything-bagel-mac.jpg" alt="" loading="lazy" width="1400" height="788"><span class="sc good">9.1<span class="vh"> out of 10</span></span></span><h3>Everything Bagel Mac</h3><span class="meta">Dinner. Pot</span></a></li>
+      <li><a class="ecard" href="/food/smash-burgers/"><span class="pic"><img src="/food/img/meals/smash-burgers.jpg" alt="" loading="lazy" width="1400" height="788"><span class="sc good">8.2<span class="vh"> out of 10</span></span></span><h3>Cast Iron Smash Burgers</h3><span class="meta">Dinner. Cast iron</span></a></li>
+      <li><a class="ecard" href="/food/mountain-pie/"><span class="pic"><img src="/food/img/meals/mountain-pie.jpg" alt="" loading="lazy" width="1400" height="788"><span class="sc ">7.5<span class="vh"> out of 10</span></span></span><h3>Campfire Apple Mountain Pie</h3><span class="meta">Dessert. Pie iron</span></a></li>
+      <li><a class="ecard" href="/food/street-corn/"><span class="pic"><img src="/food/img/meals/street-corn.jpg" alt="" loading="lazy" width="1400" height="788"><span class="sc ">7.3<span class="vh"> out of 10</span></span></span><h3>Campfire Mexican Street Corn with Takis</h3><span class="meta">Dinner. Over the fire</span></a></li>
+    </ul>
+    <!-- food-strip:end -->
+  </section>
+</main>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <a href="privacy.html">privacy</a>
-    <a href="accessibility.html">accessibility</a>
-  </footer>
+<footer class="foot">
+  <p>Brand deals and everything else</p>
+  <a class="mail" href="mailto:hello@barelycamping.com">hello@barelycamping.com</a>
+  <nav aria-label="Footer"><a href="/privacy.html">privacy</a><a href="/accessibility.html">accessibility</a></nav>
+</footer>
 
-  <script src="script.js"></script>
+<div class="cscrim" id="cscrim"></div>
+<div class="ccard" id="ccard" role="dialog" aria-modal="true" aria-labelledby="ctitle">
+  <button type="button" class="x" id="cclose" aria-label="Close">&times;</button>
+  <h2 id="ctitle">Brand deals and everything else</h2>
+  <a class="em" href="mailto:hello@barelycamping.com">hello@barelycamping.com</a>
+  <div class="btns">
+    <button type="button" class="primary" id="ccopy"><i class="ph ph-copy" aria-hidden="true"></i>Copy email</button>
+    <a href="mailto:hello@barelycamping.com"><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i>Open mail app</a>
+  </div>
+  <ul class="social" aria-label="Socials"></ul>
+</div>
+
+<script src="/food/meals.js"></script>
+<script src="/home.js"></script>
 </body>
 </html>
