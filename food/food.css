@@ -35,7 +35,7 @@ button, input, select { font: inherit; color: inherit; }
 .hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; padding: 36px 0 72px; }
 .hero h1 { font-size: clamp(42px, 5.6vw, 76px); line-height: .98; letter-spacing: -0.045em; font-weight: 750; margin-top: 18px; }
 .lede { font-size: 19px; line-height: 1.45; color: var(--muted); max-width: 44ch; margin-top: 18px; }
-.stats { display: flex; gap: 40px; margin-top: 36px; }
+.stats { display: flex; flex-wrap: wrap; gap: 24px 40px; margin-top: 36px; }
 .stats b { display: block; font-size: 44px; line-height: 1; letter-spacing: -0.04em; font-weight: 700; }
 .stats span { color: var(--muted); font-size: 14px; }
 .btn { display: inline-flex; align-items: center; gap: 8px; border: none; border-radius: 999px; padding: 15px 26px; font-weight: 600; text-decoration: none; cursor: pointer; background: var(--ink); color: #fff; transition: transform .15s; }
@@ -99,8 +99,9 @@ h2.sec { font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.035em; line-hei
 .card:hover .clip img { transform: scale(1.06); }
 .card .badge { position: absolute; top: 10px; right: 10px; }
 .card h3 { font-size: 17px; line-height: 1.25; letter-spacing: -0.015em; font-weight: 620; margin-top: 12px; }
-.card .meta { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 14px; margin-top: 2px; }
-.card .meta i { color: var(--tc); font-size: 15px; }
+.card .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.card .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; line-height: 1; padding: 5px 10px; border-radius: 999px; white-space: nowrap; background: color-mix(in srgb, var(--tc) 9%, #fff); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tc) 22%, transparent); }
+.card .pill i { color: var(--tc); font-size: 14px; }
 .card.top .pic::before { content: ""; position: absolute; inset: -4px; z-index: -1; border-radius: 18px; background: var(--good); }
 .card .tag { position: absolute; top: 10px; left: 10px; z-index: 2; padding: 5px 10px 4px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: .02em; background: var(--good); color: #fff; }
 .card .tag i { font-size: 13px; vertical-align: -2px; margin-right: 4px; }
@@ -173,6 +174,7 @@ html:has(body.open) { overflow: hidden; }
   .hero { grid-template-columns: 1fr; gap: 28px; padding: 16px 0 56px; }
   .photo video { aspect-ratio: 4 / 3; }
   .pin { left: 12px; bottom: 12px; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; }
   .stats b { font-size: 34px; }
   .legend { grid-template-columns: 1fr; margin-top: -24px; }
   .jump { gap: 6px; } .jump a { font-size: 14px; padding: 9px 13px; }
@@ -180,6 +182,7 @@ html:has(body.open) { overflow: hidden; }
   .divider { display: none; }
   .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
   .card h3 { font-size: 15px; }
+  .card .pill { font-size: 12px; padding: 5px 9px; }
   .badge.sm { min-width: 36px; height: 36px; font-size: 14px; }
   .panel { top: auto; height: 90dvh; border-radius: 20px 20px 0 0; transform: translateY(100%); }
   .meal { grid-template-columns: 1fr; gap: 24px; }

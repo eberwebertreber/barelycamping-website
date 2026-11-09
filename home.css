@@ -93,7 +93,9 @@ body.scrolled .top { background: rgba(10,10,10,.85); }
 .ecard .sc.good { background: #13803F; color: #fff; }
 .ecard .sc.bad { background: #C8302C; color: #fff; }
 .ecard h3 { font-size: 16px; font-weight: 600; line-height: 1.25; margin-top: 10px; letter-spacing: -0.01em; }
-.ecard .meta { font-size: 13px; color: rgba(255,255,255,.65); }
+.ecard .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.ecard .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; line-height: 1; padding: 5px 9px; border-radius: 999px; white-space: nowrap; color: rgba(255,255,255,.85); background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+.ecard .pill i { font-size: 13px; }
 
 /* footer */
 .foot { text-align: center; padding: 70px 20px 40px; border-top: 1px solid rgba(255,255,255,.08); }

@@ -22,6 +22,16 @@ const { esc } = F;
 const ranked = [...M].sort((a, b) => b.score - a.score);
 const best = ranked[0];
 
+// the numbers under the intro.
+// NIGHTS is typed by hand: 30 long-form camping videos went up in 2026 (YouTube Data API, 2026-11-09),
+// one night each at least, and he camps way more than he films, so it's a floor with a "+".
+// Update it when he gives a real count, and reset it in January.
+const NIGHTS = '30+';
+const stats = [
+  [M.length, 'meals ranked'],
+  [NIGHTS, 'nights camped this year'],
+];
+
 // the YouTube videos the meals come from, for the video part of the structured data
 const VIDEOS = {
   'hsOuKba9Jro': { title: 'I Camped With Camo Items ONLY', date: '2026-05-22' },
@@ -121,7 +131,7 @@ const listPage = head({
       <div>
         <h1>Every camping meal I've made, ranked</h1>
         <p class="lede">Hi, I'm Luke. These are the meals I've cooked while camping, so you can figure out what you should make on your next trip.</p>
-        <div class="stats"><div><b class="num">${M.length}</b><span>meals ranked</span></div></div>
+        <div class="stats">${stats.map(([n, label]) => `<div><b class="num">${n}</b><span>${label}</span></div>`).join('')}</div>
         <ul class="jump" id="jump" aria-label="Jump to a meal type">${types.map(t => `<li><a class="t-${t}" href="#all" data-t="${t}">${F.ico(F.TYPE_ICON, t)}${t} <span>${M.filter(m => m.type === t).length}<span class="vh"> meals</span></span></a></li>`).join('')}</ul>
       </div>
       <div class="photo">
@@ -253,7 +263,7 @@ fill('food-button', `<a class="food" href="/food/"><span class="reel" id="reel" 
 fill('food-strip', `
     <div class="hd"><h2 id="food-title">Camp food rankings</h2><a class="all" href="/food/">See all ${M.length} meals <i class="ph ph-arrow-right" aria-hidden="true"></i></a></div>
     <ul class="egrid">${ranked.slice(0, 5).map(m => `
-      <li><a class="ecard" href="${F.url(m)}"><span class="pic"><img src="${m.img}" alt="" loading="lazy" width="1400" height="788"><span class="sc ${tone(m.score)}">${F.fmt(m.score)}<span class="vh"> out of 10</span></span></span><h3>${esc(m.name)}</h3><span class="meta">${m.type}. ${esc(m.method)}</span></a></li>`).join('')}
+      <li><a class="ecard" href="${F.url(m)}"><span class="pic"><img src="${m.img}" alt="" loading="lazy" width="1400" height="788"><span class="sc ${tone(m.score)}">${F.fmt(m.score)}<span class="vh"> out of 10</span></span></span><h3>${esc(m.name)}</h3>${F.pills(m)}</a></li>`).join('')}
     </ul>
     `);
 writeFileSync(homePath, home);
