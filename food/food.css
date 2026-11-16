@@ -11,7 +11,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--ink); font-family: "Geist", system-ui, -apple-system, "Segoe UI", Arial, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
-img { display: block; max-width: 100%; }
+img { display: block; max-width: 100%; height: auto; }
 button, input, select { font: inherit; color: inherit; }
 .wrap { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
 .num { font-variant-numeric: tabular-nums; }
@@ -145,7 +145,7 @@ footer nav { display: flex; gap: 20px; }
 .panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(540px, 100%); background: var(--card); z-index: 51; transform: translateX(100%); visibility: hidden; transition: transform .5s cubic-bezier(.16,1,.3,1), visibility 0s .5s; overflow-y: auto; }
 body.open .scrim { opacity: 1; pointer-events: auto; }
 body.open .panel { transform: none; visibility: visible; transition: transform .5s cubic-bezier(.16,1,.3,1); }
-.panel .pimg img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.panel .pimg img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
 .panel .x { position: absolute; top: 14px; right: 14px; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,.95); font-size: 22px; cursor: pointer; z-index: 2; }
 .panel .recipe { padding: 26px 30px calc(56px + env(safe-area-inset-bottom)); }
 .panel { overscroll-behavior: contain; }
@@ -159,7 +159,7 @@ html:has(body.open) { overflow: hidden; }
 .crumbs a:hover { text-decoration: underline; }
 .meal { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: start; padding-bottom: 80px; }
 .meal .shot { position: sticky; top: 76px; }
-.meal .shot img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 20px; }
+.meal .shot img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 20px; }
 .meal .recipe .rt { font-size: clamp(32px, 4vw, 48px); }
 .meal .src { color: var(--muted); font-size: 14px; margin-top: 10px; }
 .more { padding: 0 0 96px; }
