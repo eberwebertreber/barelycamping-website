@@ -62,7 +62,7 @@ button, input, select { font: inherit; color: inherit; }
 .jump a span { color: var(--muted); font-weight: 500; }
 
 /* score badge */
-.badge { display: inline-grid; place-items: center; min-width: 52px; height: 52px; padding: 3px 8px 0; line-height: 1; border-radius: 999px; font-weight: 700; font-size: 19px; letter-spacing: -0.02em; background: var(--mid); color: var(--ink); }
+.badge { display: inline-grid; place-items: center; min-width: 52px; height: 52px; padding: 0 8px; line-height: 1; border-radius: 999px; font-weight: 700; font-size: 19px; letter-spacing: -0.02em; background: var(--mid); color: var(--ink); }
 .badge.good { background: var(--good); color: #fff; }
 .badge.bad { background: var(--bad); color: #fff; }
 .badge.sm { min-width: 42px; height: 42px; font-size: 16px; }

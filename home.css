@@ -89,7 +89,7 @@ body.scrolled .top { background: rgba(10,10,10,.85); }
 .ecard .pic { display: block; position: relative; aspect-ratio: 4 / 5; border-radius: 14px; overflow: hidden; background: #1a1a1a; }
 .ecard img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.16,1,.3,1); }
 .ecard:hover img { transform: scale(1.06); }
-.ecard .sc { position: absolute; top: 10px; right: 10px; min-width: 44px; height: 44px; display: grid; place-items: center; padding-top: 3px; line-height: 1; border-radius: 999px; background: #F2C12E; color: #121212; font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; }
+.ecard .sc { position: absolute; top: 10px; right: 10px; min-width: 44px; height: 44px; display: grid; place-items: center; line-height: 1; border-radius: 999px; background: #F2C12E; color: #121212; font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; }
 .ecard .sc.good { background: #13803F; color: #fff; }
 .ecard .sc.bad { background: #C8302C; color: #fff; }
 .ecard h3 { font-size: 16px; font-weight: 600; line-height: 1.25; margin-top: 10px; letter-spacing: -0.01em; }
